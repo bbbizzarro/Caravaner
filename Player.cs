@@ -13,7 +13,7 @@ public class Player : KinematicBody2D {
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta) {
-		direction = Input.GetVector("ui_right", "ui_left", "ui_up", "ui_down");
+		direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 		MoveAndCollide(MAX_FRAME_RATE * delta * speed * direction);
 	}
 }
