@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="100mm"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
+   sodipodi:docname="Tiles.svg"
+   inkscape:export-filename="/Users/brandon/Caravaner/Sprites/Tiles.png"
+   inkscape:export-xdpi="32.512001"
+   inkscape:export-ydpi="32.512001"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="0.68436458"
+     inkscape:cx="197.99388"
+     inkscape:cy="90.594987"
+     inkscape:window-width="1312"
+     inkscape:window-height="746"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid824"
+       units="mm"
+       spacingx="50"
+       spacingy="50" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#d7b594;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
+       id="rect848"
+       width="50"
+       height="50"
+       x="0"
+       y="0" />
+    <rect
+       style="fill:#a8ca58;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
+       id="rect850"
+       width="50"
+       height="50"
+       x="50"
+       y="0" />
+    <rect
+       style="fill:#de9e41;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
+       id="rect852"
+       width="50"
+       height="50"
+       x="0"
+       y="50" />
+    <rect
+       style="fill:#c65197;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
+       id="rect854"
+       width="50"
+       height="50"
+       x="50"
+       y="50" />
+    <image
+       width="389.46667"
+       height="8.4666662"
+       preserveAspectRatio="none"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABcAAAAAgCAYAAAA1z9vHAAAABHNCSVQICAgIfAhkiAAAAh9JREFU
+eJzt2E1qU2EYhuFUWpImoU0JGhOaP5OaEFJOS0RUHAqOHFTEbTjRoVO34NhVuLVCB3YV8sDLdW3g
+hgMH3u85Gi3e/GsFnU1eJvOt0fo62h/eNtH+uhlH+7fzTrT/4+vnaL+/Oor2l/vjaL+5uoj2D6un
+0f528Dba/3n3J9q/np5H+4fmWbQ/nF5G+6PlMtofLObR/qeP36P9/eAk2t/Oo+df6/U+mm8tNtn/
+v7vK3n/vv/yN9qedbrT/qt2O9m/699H+btOP9nvNk2j/w++HaP9F93m0/+58F+1vO9n7fz3sRfvj
+w1m0v/v1Ldpvd7Pf/+T0NNrvXWTfP+PL7P4z226i/d1V9v2xmWXff/PJJNpfz6bRfvb6AAAAAACA
+/8QADgAAAABASQZwAAAAAABKMoADAAAAAFCSARwAAAAAgJIM4AAAAAAAlGQABwAAAACgJAM4AAAA
+AAAlGcABAAAAACjJAA4AAAAAQEkGcAAAAAAASjKAAwAAAABQkgEcAAAAAICSDOAAAAAAAJRkAAcA
+AAAAoCQDOAAAAAAAJRnAAQAAAAAoyQAOAAAAAEBJBnAAAAAAAEoygAMAAAAAUJIBHAAAAACAkgzg
+AAAAAACUZAAHAAAAAKAkAzgAAAAAACUZwAEAAAAAKMkADgAAAABASQZwAAAAAABKMoADAAAAAFCS
+ARwAAAAAgJIM4AAAAAAAlGQABwAAAACgpEfbThgAryOtpQAAAABJRU5ErkJggg==
+"
+       id="image1036"
+       x="-100"
+       y="-50" />
+  </g>
+</svg>
