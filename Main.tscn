@@ -2,16 +2,21 @@
 
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://Game.cs" type="Script" id=3]
+[ext_resource path="res://World.cs" type="Script" id=4]
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 0.0
 
-[sub_resource type="TileSet" id=3]
-
-[node name="Main" type="YSort"]
+[node name="Main" type="Node2D"]
 script = ExtResource( 3 )
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 384, -256 )
+current = true
+zoom = Vector2( 2, 2 )
+
 [node name="TestCollision" type="StaticBody2D" parent="."]
+visible = false
 position = Vector2( 128, 0 )
 
 [node name="Sprite" type="Sprite" parent="TestCollision"]
@@ -20,7 +25,5 @@ texture = ExtResource( 2 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TestCollision"]
 shape = SubResource( 2 )
 
-[node name="TileMap" type="TileMap" parent="."]
-visible = false
-tile_set = SubResource( 3 )
-format = 1
+[node name="World" type="Node2D" parent="."]
+script = ExtResource( 4 )
