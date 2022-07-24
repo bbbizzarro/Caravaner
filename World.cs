@@ -3,37 +3,102 @@ using System;
 using System.Collections.Generic;
 
 public class World : Node2D {
-	List<Tile> tiles;
+	[Export]
 	private int height = 10;
+	[Export]
 	private int width = 10;
 	private int scale = 64;
+	[Export]
+	private int radius = 2;
+	Tile[,] tiles;
 
 	PackedScene tileScene = (PackedScene)ResourceLoader.Load("res://Tile.tscn");
+	private HashSet<Tile> renderedTiles;
+
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
+		renderedTiles = new HashSet<Tile>();
 		GenerateMap();
-		DrawMap();
+		//DrawRadius(width / 2, height / 2, radius);
+		DrawRadius(0, 0, radius);
+		//DrawMap();
+	}
+
+	public override void _Process(float delta) {
+		if (Input.IsActionJustPressed("ui_select")) {
+			radius += 1;
+			//DrawRadius(width / 2, height / 2, radius);
+			//DrawRadius(0, 0, radius);
+		}
+		if (Input.IsActionJustPressed("ui_click")) {
+			GridPos pos = WorldToGrid(GetGlobalMousePosition());
+			DrawRadius(pos.x, pos.y, radius);
+			GD.Print("Mouse Click/Unclick at: ", pos);
+		}
+	}
+
+	private struct GridPos {
+		public int x;
+		public int y;
+		public GridPos(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+
+	private GridPos WorldToGrid(Vector2 pos) {
+		return new GridPos(Mathf.RoundToInt(pos.x / scale), - Mathf.RoundToInt(pos.y / scale));
 	}
 
 	// Might be better to create dictionary of data to instantiate with.
-	private void GenerateMap() { 
-		tiles = new List<Tile>();
-		for (int x = 0; x < width; ++x) { 
+	private void GenerateMap() {
+		tiles = new Tile[width, height];
+		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
-				tiles.Add(new Tile(x * scale, y * scale));
+				tiles[x, y] = new Tile(x * scale, y * scale);
 			}
 		}
 	}
 
+	private void DrawRadius(int centX, int centY, int radius) {
+		for (int x = Mathf.Max(0, centX - radius); x <= Mathf.Min(width, centX + radius); ++x) {
+			for (int y = Mathf.Max(0, centY - radius); y <= Mathf.Min(height, centY + radius); ++y) {
+				float length = Mathf.Sqrt(Mathf.Pow(centX - x, 2) + Mathf.Pow(centY - y, 2));
+				if (length <= radius) {
+					Tile tile = GetTile(x, y);
+					DrawTile(tile);
+				}
+			}
+		}
+	}
+
+
+	public Tile GetTile(int x, int y) {
+		if (tiles == default
+			|| x < 0 || x >= width
+			|| y < 0 || y >= height) {
+			return null;
+		}
+		return tiles[x, y];
+	}
+
+	private void DrawTile(Tile tile) {
+		if (tile == null || renderedTiles.Contains(tile)) {
+			return;
+		}
+		var newTileObject = (Node2D)tileScene.Instance();
+		AddChild(newTileObject);
+		newTileObject.Position = new Vector2(tile.xPos, -tile.yPos);
+		renderedTiles.Add(tile);
+	}
+
 	private void DrawMap() {
-		foreach (Tile tile in tiles) { 
-			var newTileObject = (Node2D)tileScene.Instance();
-			AddChild(newTileObject);
+		foreach (Tile tile in tiles) {
+			DrawTile(tile);
 			//newTileObject.Name = Guid.NewGuid().ToString();
 			//newTileObject.Set("Position", new Vector2(tile.xPos, tile.yPos));
 			//newTileObject.Set("Position", new Vector2(500, 500));
-			newTileObject.Position = new Vector2(tile.xPos, -tile.yPos);
 			//GD.Print(String.Format("Initializing tile at ('{0}', '{1}').", tile.xPos, tile.yPos));
 		}
 	}
@@ -42,8 +107,13 @@ public class World : Node2D {
 public class Tile {
 	public readonly int xPos;
 	public readonly int yPos;
+	public bool visible = false;
 	public Tile(int xPos, int yPos) {
 		this.xPos = xPos;
 		this.yPos = yPos;
+	}
+
+	public void SetVisible(bool isVisible) {
+		visible = isVisible;
 	}
 }

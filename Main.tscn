@@ -11,7 +11,7 @@ radius = 0.0
 script = ExtResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 384, -256 )
+position = Vector2( 896, -512 )
 current = true
 zoom = Vector2( 2, 2 )
 
@@ -27,3 +27,5 @@ shape = SubResource( 2 )
 
 [node name="World" type="Node2D" parent="."]
 script = ExtResource( 4 )
+height = 500
+width = 500
