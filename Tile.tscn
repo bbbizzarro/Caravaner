@@ -1,9 +1,17 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Sprites/GrassTileTest.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/tileset.png" type="Texture" id=1]
+[ext_resource path="res://TileRenderer.cs" type="Script" id=2]
+[ext_resource path="res://SpriteController.cs" type="Script" id=3]
 
 [node name="Tile" type="Node2D"]
+script = ExtResource( 2 )
 
 [node name="Ground" type="Sprite" parent="."]
 position = Vector2( 0, 32 )
 texture = ExtResource( 1 )
+hframes = 4
+vframes = 4
+script = ExtResource( 3 )
+
+[connection signal="SpriteSet" from="." to="Ground" method="_on_Tile_SpriteSet"]

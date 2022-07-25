@@ -34,7 +34,6 @@ public class World : Node2D {
 		if (Input.IsActionJustPressed("ui_click")) {
 			GridPos pos = WorldToGrid(GetGlobalMousePosition());
 			DrawRadius(pos.x, pos.y, radius);
-			GD.Print("Mouse Click/Unclick at: ", pos);
 		}
 	}
 
@@ -62,12 +61,17 @@ public class World : Node2D {
 	}
 
 	private void DrawRadius(int centX, int centY, int radius) {
+		var rng = new RandomNumberGenerator();
+		rng.Randomize();
 		for (int x = Mathf.Max(0, centX - radius); x <= Mathf.Min(width, centX + radius); ++x) {
 			for (int y = Mathf.Max(0, centY - radius); y <= Mathf.Min(height, centY + radius); ++y) {
 				float length = Mathf.Sqrt(Mathf.Pow(centX - x, 2) + Mathf.Pow(centY - y, 2));
 				if (length <= radius) {
 					Tile tile = GetTile(x, y);
-					DrawTile(tile);
+					TileRenderer tileRen = DrawTile(tile);
+					if (tileRen != null) {
+						tileRen.SetSprite(rng.RandiRange(0, 3));
+					}
 				}
 			}
 		}
@@ -83,14 +87,15 @@ public class World : Node2D {
 		return tiles[x, y];
 	}
 
-	private void DrawTile(Tile tile) {
+	private TileRenderer DrawTile(Tile tile) {
 		if (tile == null || renderedTiles.Contains(tile)) {
-			return;
+			return null;
 		}
-		var newTileObject = (Node2D)tileScene.Instance();
+		var newTileObject = (TileRenderer)tileScene.Instance();
 		AddChild(newTileObject);
 		newTileObject.Position = new Vector2(tile.xPos, -tile.yPos);
 		renderedTiles.Add(tile);
+		return newTileObject;
 	}
 
 	private void DrawMap() {
