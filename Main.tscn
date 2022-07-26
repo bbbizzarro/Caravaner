@@ -1,14 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://Game.cs" type="Script" id=3]
-[ext_resource path="res://World.cs" type="Script" id=4]
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 0.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
+NEW_GAME = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 896, -512 )
@@ -24,8 +24,3 @@ texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TestCollision"]
 shape = SubResource( 2 )
-
-[node name="World" type="Node2D" parent="."]
-script = ExtResource( 4 )
-height = 500
-width = 500

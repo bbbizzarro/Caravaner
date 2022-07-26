@@ -29,6 +29,10 @@ public class Game : Node {
 		var newObjectScene = (PackedScene)ResourceLoader.Load("res://Player.tscn");
 		var newObject = newObjectScene.Instance();
 		AddChild(newObject);
+		var newWorldScene = (PackedScene)ResourceLoader.Load("res://World.tscn");
+		var newWorld =(World)newWorldScene.Instance();
+		AddChild(newWorld);
+		newWorld.Generate();
 	}
 
 	private void LoadGame() {
@@ -54,6 +58,16 @@ public class Game : Node {
 			// Get the saved dictionary from the next line in the save file
 			var nodeData = new Godot.Collections.Dictionary<string, object>((Godot.Collections.Dictionary)JSON.Parse(saveGame.GetLine()).Result);
 
+			// Ensure that key data is present.
+			if (!nodeData.ContainsKey("Filename")) { 
+				GD.Print("Data does not contain resource file name. Skipping.");
+				continue;
+			}
+			if (!nodeData.ContainsKey("Parent")) { 
+				GD.Print("Data does not contain resource parent node name. Skipping.");
+				continue;
+			}
+
 			// Firstly, we need to create the object and add it to the tree and set its position.
 			var newObjectScene = (PackedScene)ResourceLoader.Load(nodeData["Filename"].ToString());
 			var newObject = (Node)newObjectScene.Instance();
@@ -72,6 +86,8 @@ public class Game : Node {
 	}
 
 	/*
+	Default save file paths:
+
 	Windows: %APPDATA%\Godot\app_userdata\[project_name]
 
 	macOS: ~/Library/Application Support/Godot/app_userdata/[project_name]

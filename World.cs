@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class World : Node2D {
+public class World :  Node2D, ISavable {
 	[Export]
 	private int height = 10;
 	[Export]
@@ -18,6 +18,9 @@ public class World : Node2D {
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
+	}
+
+	public void Generate() { 
 		renderedTiles = new HashSet<Tile>();
 		GenerateMap();
 		//DrawRadius(width / 2, height / 2, radius);
@@ -55,7 +58,7 @@ public class World : Node2D {
 		tiles = new Tile[width, height];
 		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
-				tiles[x, y] = new Tile(x * scale, y * scale);
+				tiles[x, y] = new Tile(x * scale, y * scale, false);
 			}
 		}
 	}
@@ -107,18 +110,53 @@ public class World : Node2D {
 			//GD.Print(String.Format("Initializing tile at ('{0}', '{1}').", tile.xPos, tile.yPos));
 		}
 	}
+
+	public Godot.Collections.Dictionary<string, object> Save() {
+		List<string> tileData = new List<string>();
+		foreach (Tile tile in tiles) {
+			tileData.Add(JSON.Print(tile.Save()));
+		}
+
+		return new Godot.Collections.Dictionary<string, object>() {
+			{ "Filename", Filename },
+			{ "Parent", GetParent().GetPath()},
+			{ "Map", tileData}
+		};
+	}
+
+	public void Load(Godot.Collections.Dictionary<string, object> data) {
+		var test = data["Map"];
+		GD.Print(test);
+	}
 }
 
-public class Tile {
-	public readonly int xPos;
-	public readonly int yPos;
+public class Tile : ISavable {
+	public int xPos;
+	public int yPos;
 	public bool visible = false;
-	public Tile(int xPos, int yPos) {
+	public Tile(int xPos, int yPos, bool visible) {
 		this.xPos = xPos;
 		this.yPos = yPos;
+		this.visible = visible;
+	}
+
+
+	public void Load(Godot.Collections.Dictionary<string, object> data) {
+		xPos = (int)data["PosX"];
+		yPos = (int)data["PosY"];
+		visible = (bool)data["visible"];
+	}
+
+	public Godot.Collections.Dictionary<string, object> Save() {
+		return new Godot.Collections.Dictionary<string, object>() {
+			{ "PosX", xPos },
+			{ "PosY", yPos },
+			{ "visible", visible }
+		};
 	}
 
 	public void SetVisible(bool isVisible) {
 		visible = isVisible;
 	}
+
 }
