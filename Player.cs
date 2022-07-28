@@ -25,12 +25,10 @@ public class Player : KinematicBody2D, ISavable {
 	}
 
 	public Godot.Collections.Dictionary<string, object> Save() {
-		return new Godot.Collections.Dictionary<string, object>() {
-			{ "Filename", Filename },
-			{ "Parent", GetParent().GetPath() },
-			{ "PosX", Position.x }, 
-			{ "PosY", Position.y }
-		};
+		var data = JSONUtils.SerializeNode(this);
+		data["PosX"] = Position.x;
+		data["PosY"] = Position.y;
+		return data;
 	}
 
 	public void Load(Dictionary<string, object> data) {
