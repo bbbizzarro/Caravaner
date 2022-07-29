@@ -30,5 +30,12 @@ namespace Caravaner {
         public override string ToString() {
             return String.Format("('{0}', '{1}'", x, y);
         }
+
+        public override int GetHashCode() {
+            int hashCode = 1502939027;
+            hashCode = hashCode * -1521134295 + x.GetHashCode();
+            hashCode = hashCode * -1521134295 + y.GetHashCode();
+            return hashCode;
+        }
     }
 }

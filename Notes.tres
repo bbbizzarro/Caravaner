@@ -1,4 +1,4 @@
 Notes:
-	- Create setup procedures for new game
-	- Tile Object pooling (create separate world renderer class)
+	- Tile Object pooling/batch draws (create separate world renderer class)
+	X Create setup procedures for new game
 	X Make deserialization generic
