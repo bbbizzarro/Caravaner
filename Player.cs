@@ -1,19 +1,22 @@
 using Godot;
 using Godot.Collections;
 using System;
+using Caravaner;
 
 public class Player : KinematicBody2D, ISavable {
 
-	private float speed = 100f;
+	[SerializeField] private float speed = 100f;
+	[SerializeField] private int scale = 64;
+
 	private Vector2 direction = Vector2.Zero;
+	private Vector2Int lastPos = Vector2Int.Zero;
 	//private readonly float MAX_FRAME_RATE = 60f;
 
 	[Signal]
-	delegate void Test();
+	delegate void GridPositionChanged();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
-		EmitSignal(nameof(Test));
 	}
 
 
@@ -22,6 +25,20 @@ public class Player : KinematicBody2D, ISavable {
 		direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 		//MoveAndCollide(MAX_FRAME_RATE * delta * speed * direction);
 		MoveAndSlide(speed * direction);
+		TrackLocation();
+	}
+
+	private void TrackLocation() {
+		Vector2Int pos = new Vector2Int(Mathf.RoundToInt(Position.x / scale), 
+										Mathf.RoundToInt(Position.y / scale));
+		if (pos != lastPos) {
+			lastPos = pos;
+			EmitSignal(nameof(GridPositionChanged));
+		}
+	}
+
+	public Vector2Int GetGridPosition() {
+		return lastPos;
 	}
 
 	public Godot.Collections.Dictionary<string, object> Save() {

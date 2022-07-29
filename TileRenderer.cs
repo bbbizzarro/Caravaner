@@ -1,7 +1,8 @@
 using Godot;
 using System;
+using Caravaner;
 
-public class TileRenderer : Node2D
+public class TileRenderer : Node2D, IActive
 {
 	[Signal]
 	delegate void SpriteSet(int id);
@@ -13,5 +14,9 @@ public class TileRenderer : Node2D
 
 	public void SetSprite(int id) {
 		EmitSignal(nameof(SpriteSet), id);
+	}
+
+	public void SetActive(bool active) {
+		throw new NotImplementedException();
 	}
 }

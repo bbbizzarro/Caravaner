@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Caravaner;
 
 public class Game : Node {
 
@@ -7,6 +8,8 @@ public class Game : Node {
 	public bool NEW_GAME = false;
 	[Export]
 	public string SAVE_FILE_PATH = "user://debug_save.save";
+	World world;
+	Player player;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
@@ -16,6 +19,7 @@ public class Game : Node {
 		else { 
 			LoadGame();
 		}
+		Initialize();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -26,13 +30,15 @@ public class Game : Node {
 	}
 
 	private void NewGame() { 
-		var newObjectScene = (PackedScene)ResourceLoader.Load("res://Player.tscn");
-		var newObject = newObjectScene.Instance();
-		AddChild(newObject);
+		// Generate and initialize world
 		var newWorldScene = (PackedScene)ResourceLoader.Load("res://World.tscn");
 		var newWorld =(World)newWorldScene.Instance();
 		AddChild(newWorld);
 		newWorld.Generate();
+		// Initialize player
+		var newObjectScene = (PackedScene)ResourceLoader.Load("res://Player.tscn");
+		var newObject = newObjectScene.Instance();
+		AddChild(newObject);
 	}
 
 	private void LoadGame() {
@@ -81,8 +87,18 @@ public class Game : Node {
 
 			newObject.Call("Load", nodeData);
 		}
-
 		saveGame.Close();
+	}
+
+	private void Initialize() {
+		world = (World)GetNode("World");
+		player = (Player)GetNode("Player");
+		player.Connect("GridPositionChanged", this, "OnPlayerGridPositionChanged");
+		OnPlayerGridPositionChanged();
+	}
+
+	public void OnPlayerGridPositionChanged() {
+		world.DrawRadius(player.Position, 4);
 	}
 
 	/*

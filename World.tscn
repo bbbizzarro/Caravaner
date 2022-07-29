@@ -4,5 +4,5 @@
 
 [node name="World" type="Node2D" groups=["Persist"]]
 script = ExtResource( 1 )
-height = 2
-width = 2
+height = 32
+width = 32

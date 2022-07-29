@@ -52,6 +52,11 @@ public class World :  Node2D, ISavable {
 		}
 	}
 
+	public void DrawRadius(Vector2 pos, int radius) {
+		Vector2Int gridPos = WorldToGrid(pos);
+		DrawRadius(gridPos.x, gridPos.y, radius);
+	}
+
 	private void DrawRadius(int centX, int centY, int radius) {
 		for (int x = Mathf.Max(0, centX - radius); x <= Mathf.Min(width, centX + radius); ++x) {
 			for (int y = Mathf.Max(0, centY - radius); y <= Mathf.Min(height, centY + radius); ++y) {
@@ -96,6 +101,7 @@ public class World :  Node2D, ISavable {
 	}
 
 	public Godot.Collections.Dictionary<string, object> Save() {
+		// Save map data;
 		List<string> tileData = new List<string>();
 		foreach (Tile tile in tiles) {
 			tileData.Add(JSON.Print(tile.Save()));
@@ -106,12 +112,12 @@ public class World :  Node2D, ISavable {
 	}
 
 	public void Load(Godot.Collections.Dictionary<string, object> data) {
-		width = Mathf.RoundToInt((float)data["width"]);
-		height = Mathf.RoundToInt((float)data["height"]);
-		scale = Mathf.RoundToInt((float)data["scale"]);
+		JSONUtils.Deserialize(this, data);
+
 		// When drawing tile set visible and only then.
 		Generate();
 
+		// Load map data
 		int index = 0;
 		int x, y;
 		foreach (string tile in (Godot.Collections.Array)data["map"]) {
@@ -130,14 +136,14 @@ public class World :  Node2D, ISavable {
 public class Tile : ISavable {
 	[SerializeField] public bool visible = false;
 	[SerializeField] public int type;
+
 	public Tile(int type, bool visible) {
 		this.visible = visible;
 		this.type = type;
 	}
 
 	public void Load(Godot.Collections.Dictionary<string, object> data) {
-		visible = (bool)data["visible"];
-		type = Mathf.RoundToInt((float)data["type"]);
+		JSONUtils.Deserialize(this, data);
 	}
 
 	public Godot.Collections.Dictionary<string, object> Save() {

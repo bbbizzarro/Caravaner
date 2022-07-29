@@ -10,11 +10,6 @@ radius = 0.0
 script = ExtResource( 3 )
 NEW_GAME = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 896, -512 )
-current = true
-zoom = Vector2( 2, 2 )
-
 [node name="TestCollision" type="StaticBody2D" parent="."]
 visible = false
 position = Vector2( 128, 0 )

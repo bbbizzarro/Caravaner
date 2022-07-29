@@ -1,2 +1,4 @@
 Notes:
 	- Create setup procedures for new game
+	- Tile Object pooling (create separate world renderer class)
+	X Make deserialization generic
