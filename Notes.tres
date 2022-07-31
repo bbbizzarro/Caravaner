@@ -1,4 +1,31 @@
-Notes:
+------------------------------------------------------------
+TODO:
+------------------------------------------------------------
+
 	- Tile Object pooling/batch draws (create separate world renderer class)
+		- Move exported data to game. Pass data to world constructor
+		- switch back to subdivision method!
+	- editor tools
+	- towns and trade routes
+	- Simple simulator -> plant growth cycle?
+	- Player-Object interaction
+		- Need-fulfillment
+	- Inventories
 	X Create setup procedures for new game
 	X Make deserialization generic
+
+------------------------------------------------------------
+NOTES:
+------------------------------------------------------------
+
+World
+	Tile({data})
+
+Game(SaveFile->World)
+	Simulator(World)
+		SimulatorSystem
+	WorldRenderer(World)
+
+Sunless Seas/Skies style game with embarking and disembarking and discrete story points. Goal is to get across the map?
+The point is simulation not generation, the game is about trade routes.
+

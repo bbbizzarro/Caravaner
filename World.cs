@@ -8,36 +8,40 @@ public class World :  Node2D, ISavable {
 	[Export, SerializeField] private int width = 10;
 	[Export, SerializeField] private int scale = 64;
 	[Export, SerializeField] private int radius = 2;
-
 	Tile[,] tiles;
-	PackedScene tileScene = (PackedScene)ResourceLoader.Load("res://Tile.tscn");
-	private HashSet<Tile> renderedTiles;
 
 	public void Generate() {
 		Initialize();
 	}
 
 	private void Initialize() { 
-		renderedTiles = new HashSet<Tile>();
 		GenerateMap();
 	}
 
-	public override void _Process(float delta) {
-		if (Input.IsActionJustPressed("ui_select")) {
-			radius += 1;
-		}
-		if (Input.IsActionJustPressed("ui_click")) {
-			Vector2Int pos = WorldToGrid(GetGlobalMousePosition());
-			DrawRadius(pos.x, pos.y, radius);
-		}
+	public int GetHeight() {
+		return height;
+	}
+
+	public int GetWidth() {
+		return width;
 	}
 
 	private Vector2Int WorldToGrid(Vector2 pos) {
 		return new Vector2Int(Mathf.RoundToInt(pos.x / scale), - Mathf.RoundToInt(pos.y / scale));
 	}
 
-	private Vector2 GridToWorld(Vector2Int pos) {
-		return new Vector2(pos.x * scale, -pos.y * scale);
+	public Tile GetTile(Vector2 pos) {
+		Vector2Int gridPos = WorldToGrid(pos);
+		return GetTile(gridPos.x, gridPos.y);
+	}
+
+	public Tile GetTile(int x, int y) {
+		if (tiles == default
+			|| x < 0 || x >= width
+			|| y < 0 || y >= height) {
+			return null;
+		}
+		return tiles[x, y];
 	}
 
 	// Might be better to create dictionary of data to instantiate with.
@@ -50,44 +54,6 @@ public class World :  Node2D, ISavable {
 				tiles[x, y] = new Tile(rng.RandiRange(0, 3), false);
 			}
 		}
-	}
-
-	public void DrawRadius(Vector2 pos, int radius) {
-		Vector2Int gridPos = WorldToGrid(pos);
-		DrawRadius(gridPos.x, gridPos.y, radius);
-	}
-
-	private void DrawRadius(int centX, int centY, int radius) {
-		for (int x = Mathf.Max(0, centX - radius); x <= Mathf.Min(width, centX + radius); ++x) {
-			for (int y = Mathf.Max(0, centY - radius); y <= Mathf.Min(height, centY + radius); ++y) {
-				float length = Mathf.Sqrt(Mathf.Pow(centX - x, 2) + Mathf.Pow(centY - y, 2));
-				if (length <= radius) {
-					DrawTile(x, y, GetTile(x,y));
-				}
-			}
-		}
-	}
-
-	public Tile GetTile(int x, int y) {
-		if (tiles == default
-			|| x < 0 || x >= width
-			|| y < 0 || y >= height) {
-			return null;
-		}
-		return tiles[x, y];
-	}
-
-	private TileRenderer DrawTile(int x, int y, Tile tile) {
-		if (tile == null || renderedTiles.Contains(tile)) {
-			return null;
-		}
-		tile.visible = true;
-		TileRenderer newTileObject = (TileRenderer)tileScene.Instance();
-		AddChild(newTileObject);
-		// Initialize tile renderer
-		newTileObject.Initialize(x * scale, -y * scale, tile.type);
-		renderedTiles.Add(tile);
-		return newTileObject;
 	}
 
 	private void DrawMap() {
@@ -125,33 +91,7 @@ public class World :  Node2D, ISavable {
 			x = index / width;
 			y = index % width;
 			tiles[x, y].Load(tileData);
-			if (tiles[x, y].visible) {
-				DrawTile(x, y, tiles[x, y]);
-			}
 			index += 1;
 		}
 	}
-}
-
-public class Tile : ISavable {
-	[SerializeField] public bool visible = false;
-	[SerializeField] public int type;
-
-	public Tile(int type, bool visible) {
-		this.visible = visible;
-		this.type = type;
-	}
-
-	public void Load(Godot.Collections.Dictionary<string, object> data) {
-		JSONUtils.Deserialize(this, data);
-	}
-
-	public Godot.Collections.Dictionary<string, object> Save() {
-		return JSONUtils.Serialize(this);
-	}
-
-	public void SetVisible(bool isVisible) {
-		visible = isVisible;
-	}
-
 }

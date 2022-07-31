@@ -11,14 +11,12 @@ public class Player : KinematicBody2D, ISavable {
 	private Vector2 direction = Vector2.Zero;
 	private Vector2Int lastPos = Vector2Int.Zero;
 	//private readonly float MAX_FRAME_RATE = 60f;
+	[Signal] delegate void GridPositionChanged();
+	World world;
 
-	[Signal]
-	delegate void GridPositionChanged();
-
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready() {
+	public void Initialize(World world) {
+		this.world = world;
 	}
-
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta) {
@@ -26,6 +24,16 @@ public class Player : KinematicBody2D, ISavable {
 		//MoveAndCollide(MAX_FRAME_RATE * delta * speed * direction);
 		MoveAndSlide(speed * direction);
 		TrackLocation();
+		if (Input.IsActionJustPressed("interact")) {
+			Interact();
+		}
+	}
+
+	private void Interact() {
+		Tile tile = world.GetTile(Position);
+		if (tile != null) {
+			GD.Print(tile.type);
+		}
 	}
 
 	private void TrackLocation() {

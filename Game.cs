@@ -8,8 +8,10 @@ public class Game : Node {
 	public bool NEW_GAME = false;
 	[Export]
 	public string SAVE_FILE_PATH = "user://debug_save.save";
+	WorldRenderer worldRenderer;
 	World world;
 	Player player;
+	Simulator simulator;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
@@ -27,6 +29,11 @@ public class Game : Node {
 		if (Input.IsActionJustPressed("ui_save")) {
 			SaveGame();
 		}
+		simulator.Simulate(world, delta);
+	}
+
+	public void OnPlayerGridPositionChanged() {
+		worldRenderer.DrawRadius(player.Position, 4);
 	}
 
 	private void NewGame() { 
@@ -39,6 +46,21 @@ public class Game : Node {
 		var newObjectScene = (PackedScene)ResourceLoader.Load("res://Player.tscn");
 		var newObject = newObjectScene.Instance();
 		AddChild(newObject);
+	}
+
+	private void Initialize() {
+		world = (World)GetNode("World");
+		worldRenderer = (WorldRenderer)GetNode("WorldRenderer");
+		worldRenderer.Initialize(world.GetWidth() * world.GetHeight(), 64, world);
+		worldRenderer.DrawMap();
+
+		player = (Player)GetNode("Player");
+		player.Connect("GridPositionChanged", this, "OnPlayerGridPositionChanged");
+		player.Initialize(world);
+
+		simulator = new Simulator();
+
+		OnPlayerGridPositionChanged();
 	}
 
 	private void LoadGame() {
@@ -88,17 +110,6 @@ public class Game : Node {
 			newObject.Call("Load", nodeData);
 		}
 		saveGame.Close();
-	}
-
-	private void Initialize() {
-		world = (World)GetNode("World");
-		player = (Player)GetNode("Player");
-		player.Connect("GridPositionChanged", this, "OnPlayerGridPositionChanged");
-		OnPlayerGridPositionChanged();
-	}
-
-	public void OnPlayerGridPositionChanged() {
-		world.DrawRadius(player.Position, 4);
 	}
 
 	/*
