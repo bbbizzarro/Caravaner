@@ -14,6 +14,8 @@ public class Player : KinematicBody2D, ISavable {
 	[Signal] delegate void GridPositionChanged();
 	World world;
 
+	private float INTERACT_DIST = 80f;
+
 	public void Initialize(World world) {
 		this.world = world;
 	}
@@ -27,12 +29,31 @@ public class Player : KinematicBody2D, ISavable {
 		if (Input.IsActionJustPressed("interact")) {
 			Interact();
 		}
+		HandlePointerClick();
+	}
+
+	private void HandlePointerClick() { 
+		if (Input.IsActionJustPressed("ui_select")) {
+			Vector2 mousePos = GetGlobalMousePosition();
+			//if ((mousePos - Position).Length() > INTERACT_DIST) {
+			//	return;
+			//}
+			Tile tile = world.GetTile(mousePos);
+			if (tile != null) {
+				GD.Print("FROM:" + tile.type);
+				tile.type = 0;
+				world.UpdateTile(mousePos);
+				GD.Print("TO:" + tile.type);
+			}
+		}
 	}
 
 	private void Interact() {
 		Tile tile = world.GetTile(Position);
 		if (tile != null) {
-			GD.Print(tile.type);
+			//tile.type = 0;
+			//world.UpdateTile(Position);
+			//GD.Print(tile.type);
 		}
 	}
 

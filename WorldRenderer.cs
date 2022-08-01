@@ -7,7 +7,8 @@ public class WorldRenderer : Node2D {
 
 	PackedScene tileScene = (PackedScene)ResourceLoader.Load("res://Tile.tscn");
 
-	HashSet<Tile> activeTiles;
+	//HashSet<Tile> activeTiles;
+	Dictionary<Tile, TileRenderer> activeTiles;
     Pool<TileRenderer> tilePool;
 	private int scale;
 	private int radius = 1;
@@ -16,21 +17,23 @@ public class WorldRenderer : Node2D {
 	bool[] renderedBatches;
 
 	public override void _Process(float delta) {
-		if (Input.IsActionJustPressed("ui_select")) {
-			radius += 1;
-		}
-		if (Input.IsActionJustPressed("ui_click")) {
-			Vector2Int pos = WorldToGrid(GetGlobalMousePosition());
-			DrawRadius(pos.x, pos.y, radius);
-		}
+		//if (Input.IsActionJustPressed("ui_select")) {
+		//	radius += 1;
+		//}
+		//if (Input.IsActionJustPressed("ui_click")) {
+		//	Vector2Int pos = WorldToGrid(GetGlobalMousePosition());
+		//	DrawRadius(pos.x, pos.y, radius);
+		//}
 	}
 
     public void Initialize(int tileCount, int scale, World world) { 
 		this.scale = scale;
 		this.world = world;
-		activeTiles = new HashSet<Tile>();
+		//activeTiles = new HashSet<Tile>();
+		activeTiles = new Dictionary<Tile, TileRenderer>();
 		int subdivs = 6;
 		int sideLength = Mathf.RoundToInt(Mathf.Ceil(Mathf.Sqrt((float)world.GetWidth() * (float)world.GetHeight() / (float)subdivs)));
+		world.Connect("TileChanged", this, "UpdateTile");
 
 		// Fill the pool with tile renderers.
         tilePool = new Pool<TileRenderer>();
@@ -87,11 +90,22 @@ public class WorldRenderer : Node2D {
 		}
 	}
 
+	private void UpdateTile(int x, int y) {
+		Tile tile = world.GetTile(x, y);
+		if (tile == null || !activeTiles.ContainsKey(tile)) return;
+		activeTiles[tile].Initialize(x * scale, -y * scale, tile.type);
+		//activeTiles[tile].Initialize(-64, 64, tile.type);
+	}
+
 	private void DrawTile(int x, int y, Tile tile) {
-		if (tile == null || tilePool.IsEmpty() || activeTiles.Contains(tile)) return;
-		tile.visible = true;
-		tilePool.Get().Initialize(x * scale, -y * scale, tile.type);
-		activeTiles.Add(tile);
+		if (tile == null || tilePool.IsEmpty() || activeTiles.ContainsKey(tile)) 
+			return;
+		else { 
+			tile.visible = true;
+			TileRenderer tileRenderer = tilePool.Get();
+			tileRenderer.Initialize(x * scale, -y * scale, tile.type);
+			activeTiles[tile] = tileRenderer;
+		}
 	}
 
 	private void BatchDraw(Vector2 center) {

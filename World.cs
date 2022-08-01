@@ -10,6 +10,8 @@ public class World :  Node2D, ISavable {
 	[Export, SerializeField] private int radius = 2;
 	Tile[,] tiles;
 
+	[Signal] delegate void TileChanged(int x, int y);
+
 	public void Generate() {
 		Initialize();
 	}
@@ -27,12 +29,20 @@ public class World :  Node2D, ISavable {
 	}
 
 	private Vector2Int WorldToGrid(Vector2 pos) {
-		return new Vector2Int(Mathf.RoundToInt(pos.x / scale), - Mathf.RoundToInt(pos.y / scale));
+		return new Vector2Int(Mathf.RoundToInt((pos.x) / scale), - Mathf.RoundToInt((pos.y) / scale));
 	}
 
 	public Tile GetTile(Vector2 pos) {
 		Vector2Int gridPos = WorldToGrid(pos);
 		return GetTile(gridPos.x, gridPos.y);
+	}
+
+	public void UpdateTile(Vector2 pos) {
+		Vector2Int gridPos = WorldToGrid(pos);
+		Tile tile = GetTile(gridPos.x, gridPos.y);
+		if (tile != null) { 
+			EmitSignal(nameof(TileChanged), gridPos.x, gridPos.y);
+		}
 	}
 
 	public Tile GetTile(int x, int y) {
