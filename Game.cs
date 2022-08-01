@@ -12,6 +12,7 @@ public class Game : Node {
 	World world;
 	Player player;
 	Simulator simulator;
+	UI ui;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
@@ -49,18 +50,24 @@ public class Game : Node {
 	}
 
 	private void Initialize() {
+		// Initialize world.
 		world = (World)GetNode("World");
 		worldRenderer = (WorldRenderer)GetNode("WorldRenderer");
 		worldRenderer.Initialize(world.GetWidth() * world.GetHeight(), 64, world);
 		worldRenderer.DrawMap();
 
+		// Initialize player.
 		player = (Player)GetNode("Player");
 		player.Connect("GridPositionChanged", this, "OnPlayerGridPositionChanged");
 		player.Initialize(world);
+		OnPlayerGridPositionChanged();
 
+		// Initialize simulator.
 		simulator = new Simulator();
 
-		OnPlayerGridPositionChanged();
+		// Initialize UI.
+		ui = (UI)GetNode("UI");
+		ui.Initialize(world, player);
 	}
 
 	private void LoadGame() {

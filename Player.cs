@@ -1,12 +1,13 @@
 using Godot;
-using Godot.Collections;
+using System.Collections.Generic;
 using System;
 using Caravaner;
 
-public class Player : KinematicBody2D, ISavable {
+public class Player : KinematicBody2D, ISavable, IContainer<int> {
 
 	[SerializeField] private float speed = 100f;
 	[SerializeField] private int scale = 64;
+	[SerializeField] private List<int> items;
 
 	private Vector2 direction = Vector2.Zero;
 	private Vector2Int lastPos = Vector2Int.Zero;
@@ -18,6 +19,7 @@ public class Player : KinematicBody2D, ISavable {
 
 	public void Initialize(World world) {
 		this.world = world;
+		items = new List<int>() { 0, 1, 2, 3, 4, 5 };
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -40,10 +42,8 @@ public class Player : KinematicBody2D, ISavable {
 			//}
 			Tile tile = world.GetTile(mousePos);
 			if (tile != null) {
-				GD.Print("FROM:" + tile.type);
 				tile.type = 0;
 				world.UpdateTile(mousePos);
-				GD.Print("TO:" + tile.type);
 			}
 		}
 	}
@@ -74,12 +74,18 @@ public class Player : KinematicBody2D, ISavable {
 		var data = JSONUtils.SerializeNode(this);
 		data["PosX"] = Position.x;
 		data["PosY"] = Position.y;
+		data["items"] = items;
 		return data;
 	}
 
-	public void Load(Dictionary<string, object> data) {
+	public void Load(Godot.Collections.Dictionary<string, object> data) {
+		JSONUtils.Deserialize(this, data);
 		if (data.ContainsKey("PosX") && data.ContainsKey("PosY")) {
 			Position = new Vector2((float)data["PosX"], (float)data["PosY"]);
 		}
+	}
+
+	public IEnumerable<int> GetItems() {
+		return items;
 	}
 }

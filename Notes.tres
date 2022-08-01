@@ -1,7 +1,9 @@
 ------------------------------------------------------------
 TODO:
 ------------------------------------------------------------
-
+	- Locations where you can buy maps for the neighboring regions
+	- Towns with 3 buy options. Clicking on inventory sells item.
+	- Regions with name displaying
 	- Tile Object pooling/batch draws (create separate world renderer class)
 		- Move exported data to game. Pass data to world constructor
 		- switch back to subdivision method!
@@ -28,4 +30,5 @@ Game(SaveFile->World)
 
 Sunless Seas/Skies style game with embarking and disembarking and discrete story points. Goal is to get across the map?
 The point is simulation not generation, the game is about trade routes.
+
 
