@@ -42,19 +42,13 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 			//}
 			Tile tile = world.GetTile(mousePos);
 			if (tile != null) {
-				tile.type = 0;
+				//tile.type = 0;
 				world.UpdateTile(mousePos);
 			}
 		}
 	}
 
 	private void Interact() {
-		Tile tile = world.GetTile(Position);
-		if (tile != null) {
-			//tile.type = 0;
-			//world.UpdateTile(Position);
-			//GD.Print(tile.type);
-		}
 	}
 
 	private void TrackLocation() {
@@ -87,5 +81,14 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 
 	public IEnumerable<int> GetItems() {
 		return items;
+	}
+
+	public int Remove(int item) {
+		items.Remove(item);
+		return item;
+	}
+
+	public void Add(int item) {
+		items.Add(item);
 	}
 }

@@ -21,12 +21,32 @@ public class UI : Node2D {
 		if (Input.IsActionJustPressed("interact")) {
 			GD.Print(FormatItems(player.GetItems()));
 		}
+		HandlePointerClick();
+	}
+
+	private void HandlePointerClick() { 
+		if (Input.IsActionJustPressed("ui_select")) {
+			Vector2 mousePos = GetGlobalMousePosition();
+			Tile tile = world.GetTile(mousePos);
+			if (tile != null) {
+				var tileItems = new List<int>(tile.GetItems());
+				if (tileItems.Count > 0) { 
+					int item = tile.Remove(tileItems[0]);
+					player.Add(item);
+					GD.Print(String.Format("Obtained {0}!", database.Get(item)));
+				}
+				//GD.Print(FormatItems(tile.GetItems()));
+			}
+		}
+	}
+
+	private void UpdatePlayerUI() { 
 	}
 
 	private string FormatItems(IEnumerable<int> items) {
 		string sm = "[";
 		foreach (int id in items) {
-			sm += String.Format(" '{0}' ", database.Get(id));
+			sm += String.Format(" {0} ", database.Get(id));
 		}
 		sm += "]";
 		return sm;

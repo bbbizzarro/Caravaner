@@ -61,7 +61,10 @@ public class World :  Node2D, ISavable {
 		rng.Randomize();
 		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
-				tiles[x, y] = new Tile(rng.RandiRange(0, 3), false);
+				tiles[x, y] = new Tile(rng.RandiRange(0, 4), false);
+				if (tiles[x,y].type == 4) { 
+					tiles[x, y].items.Add(rng.RandiRange(0, 4));
+				}
 			}
 		}
 	}
