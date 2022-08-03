@@ -6,14 +6,16 @@ public class UI : Node2D {
 	private World world;
 	private IContainer<int> player;
 	private Database database;
+	[Signal] delegate void PlayerContainerUpdated(IEnumerable<Item> items);
+	private Hotbar hotbar;
 
 	public void Initialize(World world, IContainer<int> player) {
 		this.world = world;
 		this.player = player;
-		database = new Database();
-		for (int i = 0; i < 20; ++i) {
-			database.Add(new Item(i, String.Format("ITEM{0}", i)));
-		}
+		DEBUGInitDB();
+		player.SubscribeToUpdate(UpdatePlayerUI);
+		hotbar = (Hotbar)GetNode("CanvasLayer/MarginContainer/PanelContainer/Hotbar");
+		UpdatePlayerUI();
 	}
 
 	public override void _Process(float delta) {
@@ -40,7 +42,18 @@ public class UI : Node2D {
 		}
 	}
 
-	private void UpdatePlayerUI() { 
+	private void UpdatePlayerUI() {
+		hotbar.OnPlayerContainerUpdated(GetItemsFromIds(player.GetItems()));
+		GD.Print(FormatItems(player.GetItems()));
+		//EmitSignal(nameof(PlayerContainerUpdated), GetItemsFromIds(player.GetItems()));
+	}
+
+	private IEnumerable<Item> GetItemsFromIds(IEnumerable<int> ids) {
+		List<Item> items = new List<Item>();
+		foreach (int id in ids) {
+			items.Add(database.Get(id));
+		}
+		return items;
 	}
 
 	private string FormatItems(IEnumerable<int> items) {
@@ -50,5 +63,16 @@ public class UI : Node2D {
 		}
 		sm += "]";
 		return sm;
+	}
+
+	private void DEBUGInitDB() {
+		// Too specific?
+		database = new Database();
+		database.Add(new Item(0, "Martial Training", "STR", 1));
+		database.Add(new Item(1, "Olympic Champion", "STR", 3));
+		database.Add(new Item(2, "Read: Gant's Almanac", "INT", 1));
+		database.Add(new Item(3, "Visited: Amon's Library", "INT", 2));
+		database.Add(new Item(4, "Dreamt: A Better Future", "WIL", 2));
+		database.Add(new Item(5, "Toxic Water Reservoir", "NON", 0));
 	}
 }

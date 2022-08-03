@@ -13,6 +13,7 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 	private Vector2Int lastPos = Vector2Int.Zero;
 	//private readonly float MAX_FRAME_RATE = 60f;
 	[Signal] delegate void GridPositionChanged();
+	private event ContainerUpdated ContainerUpdated;
 	World world;
 
 	private float INTERACT_DIST = 80f;
@@ -85,10 +86,16 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 
 	public int Remove(int item) {
 		items.Remove(item);
+		ContainerUpdated?.Invoke();
 		return item;
 	}
 
 	public void Add(int item) {
 		items.Add(item);
+		ContainerUpdated?.Invoke();
+	}
+
+	public void SubscribeToUpdate(ContainerUpdated receiver) {
+		ContainerUpdated += receiver;
 	}
 }

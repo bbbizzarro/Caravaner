@@ -79,6 +79,7 @@ public class WorldRenderer : Node2D {
 		return new Vector2(pos.x * scale, -pos.y * scale);
 	}
 
+
 	private void DrawRadius(int centX, int centY, int radius) {
 		for (int x = Mathf.Max(0, centX - radius); x <= Mathf.Min(world.GetWidth(), centX + radius); ++x) {
 			for (int y = Mathf.Max(0, centY - radius); y <= Mathf.Min(world.GetHeight(), centY + radius); ++y) {

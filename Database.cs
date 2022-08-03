@@ -42,11 +42,15 @@ public class Database : ISavable {
 public struct Item : ISavable {
     [SerializeField] public readonly int id;
     [SerializeField] public readonly string name;
-    public static readonly Item Default = new Item(0, "");
+    [SerializeField] public readonly string req;
+    [SerializeField] public readonly int amount;
+    public static readonly Item Default = new Item(-1, "", "", -1);
 
-    public Item(int id, string name) {
+    public Item(int id, string name, string req, int amount) {
         this.id = id;
         this.name = name;
+        this.req = req;
+        this.amount = amount;
 	}
 
     public int GetID() {

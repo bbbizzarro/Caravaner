@@ -1,6 +1,11 @@
 ------------------------------------------------------------
 TODO:
 ------------------------------------------------------------
+Today's Goal: 
+	I can set an active item with the number keys
+	When I click on the world I should see which qualities I need to interact
+	I should be able to clearly distinguish interactable tiles.
+
 	- Locations where you can buy maps for the neighboring regions
 	- Towns with 3 buy options. Clicking on inventory sells item.
 	- Regions with name displaying

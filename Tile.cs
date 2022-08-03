@@ -37,4 +37,8 @@ public class Tile : ISavable, IContainer<int> {
     public void Add(int item) {
 		items.Add(item);
     }
+
+    public void SubscribeToUpdate(ContainerUpdated receiver) {
+        throw new NotImplementedException();
+    }
 }
