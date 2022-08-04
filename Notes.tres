@@ -2,6 +2,12 @@
 TODO:
 ------------------------------------------------------------
 Today's Goal: 
+	- Again, go back to caravaner simulator! Explore, trade, sleep under the stars, do ordinary daily things. Stick to simulation rather than game design. Just make a small little thing. 
+	- Each tile reacts differently to one of STR, CHA, and INT. 
+	- Maybe we only use items for now-let them recharge. 
+	- Still do the drag and drop thing?
+	- I should be able to select what I want to do when clicking on a tile
+
 	I can set an active item with the number keys
 	When I click on the world I should see which qualities I need to interact
 	I should be able to clearly distinguish interactable tiles.

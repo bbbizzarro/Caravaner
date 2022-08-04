@@ -16,7 +16,7 @@ public class Hotbar : HBoxContainer {
 		int index = 0;
 		foreach (Item i in items) {
 			if (index >= count) return;
-			itemViews[index].Initialize(i.name);
+			itemViews[index].Initialize(i);
 			index += 1;
 		}
 	}

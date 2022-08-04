@@ -8,6 +8,7 @@ public class UI : Node2D {
 	private Database database;
 	[Signal] delegate void PlayerContainerUpdated(IEnumerable<Item> items);
 	private Hotbar hotbar;
+	[Signal] delegate void DisplayItem(int x, int y, string title);
 
 	public void Initialize(World world, IContainer<int> player) {
 		this.world = world;
@@ -32,10 +33,12 @@ public class UI : Node2D {
 			Tile tile = world.GetTile(mousePos);
 			if (tile != null) {
 				var tileItems = new List<int>(tile.GetItems());
-				if (tileItems.Count > 0) { 
-					int item = tile.Remove(tileItems[0]);
-					player.Add(item);
-					GD.Print(String.Format("Obtained {0}!", database.Get(item)));
+				if (tileItems.Count > 0) {
+					Item item = database.Get(tileItems[0]);
+					EmitSignal("DisplayItem", mousePos.x, mousePos.y, item.name);
+					//int item = tile.Remove(tileItems[0]);
+					//player.Add(item);
+					//GD.Print(String.Format("Obtained {0}!", database.Get(item)));
 				}
 				//GD.Print(FormatItems(tile.GetItems()));
 			}
@@ -74,5 +77,29 @@ public class UI : Node2D {
 		database.Add(new Item(3, "Visited: Amon's Library", "INT", 2));
 		database.Add(new Item(4, "Dreamt: A Better Future", "WIL", 2));
 		database.Add(new Item(5, "Toxic Water Reservoir", "NON", 0));
+	}
+}
+
+
+public class Interactor { 
+	public Interactor() { 
+	}
+}
+
+public interface Interaction {
+
+}
+
+public class ResourceTile { 
+
+	public int GetNextState(int currState) {
+		return 0;
+	}
+
+	public string GetReqName() {
+		return "STR";
+	}
+	public int GetReqAmt() {
+		return 1;
 	}
 }
