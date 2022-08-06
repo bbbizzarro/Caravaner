@@ -1,0 +1,244 @@
+using Godot;
+using System;
+
+public class DragObject : Node2D {
+	static DragObject currDragObj;
+	private bool isDragging = false;
+	private Caravaner.Animation animation;
+	private Caravaner.Animation rotation;
+	private Caravaner.Animation shadowAnim;
+	private Caravaner.Physics2D physics;
+	private Vector2 mouseOffset = Vector2.Zero;
+	private Sprite sprite;
+	private Sprite shadowSprite;
+
+	public override void _Ready() {
+		animation = new Caravaner.Animation();
+		rotation = new Caravaner.Animation();
+		shadowAnim = new Caravaner.Animation();
+		physics = new Caravaner.Physics2D();
+		// Connect mouse enter/exit functions
+		Connect("mouse_entered", this, nameof(OnMouseEntered));
+		Connect("mouse_exited", this, nameof(OnMouseExited));
+		physics.Set(0f, Position.y + 100, Vector2.Zero, Position, 0.5f, 0f);
+		sprite = (Sprite)GetNode("Sprite");
+		shadowSprite = (Sprite)GetNode("Shadow");
+	}
+
+	public override void _Process(float delta) {
+		if (Input.IsActionJustPressed("ui_click")) { 
+			OnDrag();
+			GD.Print(physics.position);
+		}
+		else if (Input.IsActionJustReleased("ui_click")) { 
+			OnDrop();
+		}
+		else { 
+			HandleDrag();
+		}
+		if (animation.IsAnimating()) { 
+			HandleAnimation(delta);
+		}
+		if (rotation.IsAnimating()) {
+			Rotation = rotation.Animate(delta);
+		}
+		if (shadowAnim.IsAnimating()) {
+			//float v = shadowAnim.Animate(delta);
+			//shadowSprite.Scale = new Vector2(v, v);
+		}
+		if (!isDragging) { 
+			if (physics.Update(1.5f * delta)) { 
+				Position = physics.position;
+				//sprite.Scale = new Vector2(1f, Mathf.Clamp((physics.velocity.Length() / 100f), 1f, 1.5f));
+				float v = Mathf.Abs(physics.position.y - physics.yLimit)/ Mathf.Abs(physics.initPosition.y - physics.yLimit);
+				float s = 0.2f * v + (1f - v);
+				float p = 64f * v + (1f - v) * 32f;
+				shadowSprite.Position = new Vector2(shadowSprite.Position.x, p);
+				shadowSprite.Scale = new Vector2(s, s);
+			}
+		}
+	}
+
+	private void OnDrag() { 
+		if (currDragObj == this) {
+			isDragging = true;
+			//animation.Stop();
+			mouseOffset = Position - GetGlobalMousePosition();
+			shadowAnim.Start(1f, 0.5f, 15f, Caravaner.AnimType.Constant, false);
+		}
+	}
+
+	private void OnDrop() { 
+		if (currDragObj == this) {
+			isDragging = false;
+			//animation.Start(Position.y, Position.y - 150f, 1);
+			//physics.Set(900f, Position.y + 50, 100f * Input.GetLastMouseSpeed().Normalized(), Position, 0.5f);
+			Vector2 mSpeed = Input.GetLastMouseSpeed();
+			mSpeed = new Vector2(Mathf.Clamp(mSpeed.x, -200f, 200f), Mathf.Clamp(mSpeed.y, -200f, 200f));
+			physics.Set(900f, Position.y + 50, mSpeed, Position, 0.5f, 2f);
+			//animation.Start(sprite.Scale.x, 1f, 10f);
+			OnMouseExited();
+			shadowAnim.Start(shadowSprite.Scale.x, 1f, 8f, Caravaner.AnimType.Constant, false);
+		}
+	}
+
+	private void HandleAnimation(float delta) {
+		float v = animation.Animate(delta);
+		sprite.Scale = new Vector2(v, v);
+	}
+
+	private void HandleDrag() { 
+		if (currDragObj == this && isDragging) {
+			Position = mouseOffset + GetGlobalMousePosition();
+		}
+	}
+
+	private void OnMouseEntered() { 
+		if (currDragObj == null) {
+			DragObject.currDragObj = this;
+			animation.Start(1f, 1.2f, 15f, Caravaner.AnimType.Constant, false);
+			//animation.Start(1f, 1.15f, 3f, Caravaner.AnimType.Constant, true);
+			rotation.Start(0.05f, 0.05f, 4f, Caravaner.AnimType.Sin, false);
+		}
+	}
+
+	private void OnMouseExited() { 
+		if (currDragObj == this && !isDragging) {
+			DragObject.currDragObj = null;
+			animation.Start(sprite.Scale.y, 1f, 15f, Caravaner.AnimType.Constant, false);
+			rotation.Start(sprite.Rotation, 0f, 7f, Caravaner.AnimType.Constant, false);
+		}
+	}
+}
+
+namespace Caravaner { 
+	public enum AnimType { 
+		Constant,
+		Sin,
+		SinGrowth
+	}
+
+	public class Animation {
+		float time;
+		float start;
+		float end;
+		float speed;
+		AnimType type;
+		bool repeat; 
+
+		public Animation() {
+			time = 1f;
+		}
+
+		public void Start(float start, float end, float speed, AnimType type, bool repeat) {
+			this.start = start;
+			this.end = end;
+			this.speed = speed;
+			this.time = 0f;
+			this.type = type;
+			this.repeat = repeat;
+		}
+
+		public void Stop() {
+			time = 1f;
+		}
+
+		public float Animate(float delta) {
+			Advance(delta);
+			switch (type) {
+				case AnimType.Constant:
+					return Constant();
+				case AnimType.Sin:
+					return Sin();
+				case AnimType.SinGrowth:
+					return SinGrowth();
+				default:
+					return 0f;
+			}
+		}
+
+		public float T() {
+			return time;
+		}
+
+		public float Constant() {
+			return (1f - time) * start + time * end;
+		}
+
+		public float Sin() {
+			float t = Mathf.Sin(2f*Mathf.Pi * time) ;
+			return t* start;
+		}
+
+		public float SinGrowth() {
+			float alpha = 1f;
+			float beta = 2.05f;
+			float gamma = 1f;
+			float t = time * (alpha * Mathf.Sin(beta * Mathf.Pi * time) + gamma);
+			return (1f - t) * start + t * end;
+		}
+
+		public void Advance(float delta) { 
+			time = Mathf.Clamp(time + delta * speed, 0f, 1f);
+			if (!IsAnimating() && repeat) {
+				time = 0f;
+				float temp = start;
+				start = end;
+				end = temp;
+			}
+		}
+
+		public bool IsAnimating() {
+			return time < 1f;
+		}
+	}
+
+	public class Physics2D {
+		public Vector2 initPosition;
+		public Vector2 position;
+		public Vector2 velocity;
+		private Vector2 gravity = Vector2.Down;
+		private float G;
+		public float yLimit;
+		private float drag;
+		private float EPSILON = 0.00001f;
+		private float timer;
+		private float timeLimit;
+
+		public Physics2D() {
+			gravity = new Vector2(0, 1f);
+		}
+
+		public void Set(float G, float yLimit, Vector2 velocity, Vector2 position, float drag, float timeLimit) {
+			initPosition = position;
+			this.position = position;
+			this.G = G;
+			this.yLimit = yLimit;
+			this.drag = drag;
+			this.velocity = velocity;
+			this.timeLimit = timeLimit;
+			timer = 0;
+		}
+
+		public bool Update(float delta) {
+			//if (velocity.Length() < EPSILON) {
+			//	return;
+			//}
+			if (timer >= timeLimit) {
+				return false;
+			}
+			timer += delta;
+			velocity += G * delta * gravity;
+			position += delta * velocity; 
+			Impact(position);
+			return true;
+		}
+
+		private void Impact(Vector2 newPosition) { 
+			if (newPosition.y > yLimit) {
+				position = new Vector2(position.x, yLimit);
+				velocity = new Vector2(drag * velocity.x, -drag * velocity.y);
+			}
+		}
+	}
+}
