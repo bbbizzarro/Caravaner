@@ -8,13 +8,17 @@ public class DragObject : Node2D {
 	private Caravaner.Animation rotation;
 	private Caravaner.Animation shadowAnim;
 	private Caravaner.Physics2D physics;
+	private Caravaner.Animation positionAnim;
 	private Vector2 mouseOffset = Vector2.Zero;
 	private Sprite sprite;
 	private Sprite shadowSprite;
+	private DragDropHandler dragDropHandler;
+	private IconContainer iconContainer;
 
 	public override void _Ready() {
 		animation = new Caravaner.Animation();
 		rotation = new Caravaner.Animation();
+		positionAnim = new Caravaner.Animation();
 		shadowAnim = new Caravaner.Animation();
 		physics = new Caravaner.Physics2D();
 		// Connect mouse enter/exit functions
@@ -23,12 +27,16 @@ public class DragObject : Node2D {
 		physics.Set(0f, Position.y + 100, Vector2.Zero, Position, 0.5f, 0f);
 		sprite = (Sprite)GetNode("Sprite");
 		shadowSprite = (Sprite)GetNode("Shadow");
+		dragDropHandler = (DragDropHandler)GetNode("/root/Main/DragDropHandler");
+	}
+
+	public void SetIconContainer(IconContainer iconContainer) {
+		this.iconContainer = iconContainer;
 	}
 
 	public override void _Process(float delta) {
 		if (Input.IsActionJustPressed("ui_click")) { 
 			OnDrag();
-			GD.Print(physics.position);
 		}
 		else if (Input.IsActionJustReleased("ui_click")) { 
 			OnDrop();
@@ -43,20 +51,34 @@ public class DragObject : Node2D {
 			Rotation = rotation.Animate(delta);
 		}
 		if (shadowAnim.IsAnimating()) {
-			//float v = shadowAnim.Animate(delta);
-			//shadowSprite.Scale = new Vector2(v, v);
+			float v = shadowAnim.Animate(delta);
+			float s = 0.5f * (1f - v) + v;
+			shadowSprite.Scale = new Vector2(s, s);
+			shadowSprite.Position = new Vector2(shadowSprite.Position.x, 32f * v + 64f * (1f - v));
 		}
 		if (!isDragging) { 
 			if (physics.Update(1.5f * delta)) { 
 				Position = physics.position;
 				//sprite.Scale = new Vector2(1f, Mathf.Clamp((physics.velocity.Length() / 100f), 1f, 1.5f));
 				float v = Mathf.Abs(physics.position.y - physics.yLimit)/ Mathf.Abs(physics.initPosition.y - physics.yLimit);
-				float s = 0.2f * v + (1f - v);
+				float s = 0.5f * v + (1f - v);
 				float p = 64f * v + (1f - v) * 32f;
 				shadowSprite.Position = new Vector2(shadowSprite.Position.x, p);
 				shadowSprite.Scale = new Vector2(s, s);
 			}
 		}
+
+		if (positionAnim.IsAnimating()) {
+			float v = positionAnim.Animate(delta);
+		}
+	}
+
+	public void SetPosition(Vector2 position) {
+		Position = position;
+	}
+
+	public void AnimateToPosition(Vector2 position) { 
+
 	}
 
 	private void OnDrag() { 
@@ -64,20 +86,30 @@ public class DragObject : Node2D {
 			isDragging = true;
 			//animation.Stop();
 			mouseOffset = Position - GetGlobalMousePosition();
-			shadowAnim.Start(1f, 0.5f, 15f, Caravaner.AnimType.Constant, false);
+			shadowAnim.Start(1f, 0f, 15f, Caravaner.AnimType.Constant, false);
+			if (iconContainer != null) { 
+				iconContainer.RemoveIcon(this);
+				iconContainer = null;
+			}
 		}
 	}
 
 	private void OnDrop() { 
 		if (currDragObj == this) {
 			isDragging = false;
-			//animation.Start(Position.y, Position.y - 150f, 1);
-			//physics.Set(900f, Position.y + 50, 100f * Input.GetLastMouseSpeed().Normalized(), Position, 0.5f);
+			if (IconContainer.DropIn(this)) {
+				GD.Print("Dropped in a container!");
+				physics.Stop();
+				shadowSprite.Position = new Vector2(0, 32);
+				shadowSprite.Scale = new Vector2(0, 0);
+				animation.Start(sprite.Scale.y, 1f, 15f, Caravaner.AnimType.Constant, false);
+				rotation.Start(sprite.Rotation, 0f, 7f, Caravaner.AnimType.Constant, false);
+				return;
+			}
+			OnMouseExited();
 			Vector2 mSpeed = Input.GetLastMouseSpeed();
 			mSpeed = new Vector2(Mathf.Clamp(mSpeed.x, -200f, 200f), Mathf.Clamp(mSpeed.y, -200f, 200f));
 			physics.Set(900f, Position.y + 50, mSpeed, Position, 0.5f, 2f);
-			//animation.Start(sprite.Scale.x, 1f, 10f);
-			OnMouseExited();
 			shadowAnim.Start(shadowSprite.Scale.x, 1f, 8f, Caravaner.AnimType.Constant, false);
 		}
 	}
@@ -218,6 +250,10 @@ namespace Caravaner {
 			this.velocity = velocity;
 			this.timeLimit = timeLimit;
 			timer = 0;
+		}
+
+		public void Stop() {
+			timer = timeLimit + 1;
 		}
 
 		public bool Update(float delta) {
