@@ -127,5 +127,8 @@ script = ExtResource( 12 )
 [node name="DragObject2" parent="." instance=ExtResource( 10 )]
 position = Vector2( 300, 0 )
 
+[node name="DragObject3" parent="." instance=ExtResource( 10 )]
+position = Vector2( -256, 192 )
+
 [connection signal="DisplayItem" from="UI" to="TileDisplay" method="OnDisplayItem"]
 [connection signal="PlayerContainerUpdated" from="UI" to="UI/CanvasLayer/MarginContainer/PanelContainer/Hotbar" method="OnPlayerContainerUpdated"]

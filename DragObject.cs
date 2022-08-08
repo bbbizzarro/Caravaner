@@ -9,18 +9,37 @@ public class DragObject : Node2D {
 	private Caravaner.Animation shadowAnim;
 	private Caravaner.Physics2D physics;
 	private Caravaner.Animation positionAnim;
+	private Caravaner.Animation positionXAnim;
+	private Caravaner.Animation positionYAnim;
+	private Tween tween;
 	private Vector2 mouseOffset = Vector2.Zero;
 	private Sprite sprite;
 	private Sprite shadowSprite;
 	private DragDropHandler dragDropHandler;
 	private IconContainer iconContainer;
 
+	public static bool HasDragObj() {
+		return currDragObj != null;
+	}
+
+	public static bool IsDragging() { 
+		if (currDragObj == null) {
+			return false;
+		}
+		else {
+			return currDragObj.isDragging;
+		}
+	}
+
 	public override void _Ready() {
 		animation = new Caravaner.Animation();
 		rotation = new Caravaner.Animation();
 		positionAnim = new Caravaner.Animation();
+		positionXAnim = new Caravaner.Animation();
+		positionYAnim = new Caravaner.Animation();
 		shadowAnim = new Caravaner.Animation();
 		physics = new Caravaner.Physics2D();
+		tween = (Tween)GetNode("Tween");
 		// Connect mouse enter/exit functions
 		Connect("mouse_entered", this, nameof(OnMouseEntered));
 		Connect("mouse_exited", this, nameof(OnMouseExited));
@@ -71,26 +90,35 @@ public class DragObject : Node2D {
 		if (positionAnim.IsAnimating()) {
 			float v = positionAnim.Animate(delta);
 		}
+		if (positionXAnim.IsAnimating()) {
+			float v = positionXAnim.Animate(delta);
+			Position = new Vector2(v, Position.y);
+		}
+		if (positionYAnim.IsAnimating()) {
+			float v = positionYAnim.Animate(delta);
+			Position = new Vector2(Position.x, v);
+		}
 	}
 
-	public void SetPosition(Vector2 position) {
-		Position = position;
-	}
-
-	public void AnimateToPosition(Vector2 position) { 
-
+	public void AnimateToPosition(Vector2 from, Vector2 position) {
+		//GD.Print(from, position);
+		//positionXAnim.Start(from.x, position.x, 10, Caravaner.AnimType.Constant, false);
+		//positionYAnim.Start(from.y, position.y, 10, Caravaner.AnimType.Constant, false);
+		tween.InterpolateProperty(this, "position", from, position, 0.2f, Tween.TransitionType.Cubic, Tween.EaseType.Out);
+		tween.Start();
 	}
 
 	private void OnDrag() { 
 		if (currDragObj == this) {
 			isDragging = true;
 			//animation.Stop();
-			mouseOffset = Position - GetGlobalMousePosition();
 			shadowAnim.Start(1f, 0f, 15f, Caravaner.AnimType.Constant, false);
+			rotation.Start(sprite.Rotation, 0f, 7f, Caravaner.AnimType.Constant, false);
 			if (iconContainer != null) { 
 				iconContainer.RemoveIcon(this);
 				iconContainer = null;
 			}
+			mouseOffset = Position - GetGlobalMousePosition();
 		}
 	}
 
@@ -102,8 +130,9 @@ public class DragObject : Node2D {
 				physics.Stop();
 				shadowSprite.Position = new Vector2(0, 32);
 				shadowSprite.Scale = new Vector2(0, 0);
-				animation.Start(sprite.Scale.y, 1f, 15f, Caravaner.AnimType.Constant, false);
-				rotation.Start(sprite.Rotation, 0f, 7f, Caravaner.AnimType.Constant, false);
+				//animation.Start(sprite.Scale.y, 1f, 15f, Caravaner.AnimType.Constant, false);
+				//rotation.Start(sprite.Rotation, 0f, 7f, Caravaner.AnimType.Constant, false);
+				rotation.Start(0.05f, 0.05f, 4f, Caravaner.AnimType.Sin, true);
 				return;
 			}
 			OnMouseExited();
@@ -130,7 +159,7 @@ public class DragObject : Node2D {
 			DragObject.currDragObj = this;
 			animation.Start(1f, 1.2f, 15f, Caravaner.AnimType.Constant, false);
 			//animation.Start(1f, 1.15f, 3f, Caravaner.AnimType.Constant, true);
-			rotation.Start(0.05f, 0.05f, 4f, Caravaner.AnimType.Sin, false);
+			rotation.Start(0.05f, 0.05f, 4f, Caravaner.AnimType.Sin, true);
 		}
 	}
 
