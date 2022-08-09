@@ -17,6 +17,7 @@ public class DragObject : Node2D {
 	private Sprite shadowSprite;
 	private DragDropHandler dragDropHandler;
 	private IconContainer iconContainer;
+	private bool mouseOver;
 
 	public static bool HasDragObj() {
 		return currDragObj != null;
@@ -54,6 +55,7 @@ public class DragObject : Node2D {
 	}
 
 	public override void _Process(float delta) {
+
 		if (Input.IsActionJustPressed("ui_click")) { 
 			OnDrag();
 		}
@@ -62,6 +64,9 @@ public class DragObject : Node2D {
 		}
 		else { 
 			HandleDrag();
+		}
+		if (mouseOver && currDragObj == null) {
+			OnMouseEntered();
 		}
 		if (animation.IsAnimating()) { 
 			HandleAnimation(delta);
@@ -126,7 +131,7 @@ public class DragObject : Node2D {
 		if (currDragObj == this) {
 			isDragging = false;
 			if (IconContainer.DropIn(this)) {
-				GD.Print("Dropped in a container!");
+				//GD.Print("Dropped in a container!");
 				physics.Stop();
 				shadowSprite.Position = new Vector2(0, 32);
 				shadowSprite.Scale = new Vector2(0, 0);
@@ -143,6 +148,11 @@ public class DragObject : Node2D {
 		}
 	}
 
+	public void Initialize(Vector2 startPosition, Vector2 velocity, float yLim) {
+		Position = startPosition;
+		physics.Set(900f, Position.y + yLim, velocity, Position, 0.5f, 2f);
+	}
+
 	private void HandleAnimation(float delta) {
 		float v = animation.Animate(delta);
 		sprite.Scale = new Vector2(v, v);
@@ -154,7 +164,8 @@ public class DragObject : Node2D {
 		}
 	}
 
-	private void OnMouseEntered() { 
+	public void OnMouseEntered() { 
+		mouseOver = true;
 		if (currDragObj == null) {
 			DragObject.currDragObj = this;
 			animation.Start(1f, 1.2f, 15f, Caravaner.AnimType.Constant, false);
@@ -163,7 +174,8 @@ public class DragObject : Node2D {
 		}
 	}
 
-	private void OnMouseExited() { 
+	public void OnMouseExited() { 
+		mouseOver = false;
 		if (currDragObj == this && !isDragging) {
 			DragObject.currDragObj = null;
 			animation.Start(sprite.Scale.y, 1f, 15f, Caravaner.AnimType.Constant, false);

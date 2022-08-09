@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="300mm"
+   height="100mm"
+   viewBox="0 0 300 100"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
+   sodipodi:docname="InventoryBox.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.42063748"
+     inkscape:cx="474.28014"
+     inkscape:cy="432.67662"
+     inkscape:window-width="1312"
+     inkscape:window-height="746"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid824"
+       units="mm"
+       spacingx="99.999999"
+       spacingy="99.999999"
+       empspacing="1" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="back"
+     sodipodi:insensitive="true"
+     style="display:none">
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.59807;stroke-linecap:round;stroke-linejoin:round"
+       id="rect848"
+       width="300"
+       height="100"
+       x="0"
+       y="0" />
+  </g>
+  <g
+     inkscape:label="Objects"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path938"
+       style="fill:none;stroke:#ffffff;stroke-width:15;stroke-linecap:round;stroke-linejoin:round"
+       d="M 87.041669,89.977077 C 64.962939,89.977077 47.064592,72.07873 47.064592,50 c 0,-22.07873 17.898347,-39.977077 39.977077,-39.977077"
+       sodipodi:nodetypes="csc" />
+    <path
+       id="path938-9"
+       style="fill:none;stroke:#ffffff;stroke-width:15;stroke-linecap:round;stroke-linejoin:round"
+       d="m 212.95831,10.022923 c 22.07873,-2e-6 39.97708,17.898346 39.97708,39.977077 0,22.078731 -17.89835,39.977079 -39.97708,39.977077"
+       sodipodi:nodetypes="csc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:15;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 87.041669,10.022923 H 212.95831"
+       id="path3243" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:15;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 87.041669,89.977075 H 212.95831"
+       id="path3245"
+       inkscape:export-filename="/Users/brandon/Caravaner/Sprites/InventoryBox.png"
+       inkscape:export-xdpi="16.256001"
+       inkscape:export-ydpi="16.256001" />
+  </g>
+</svg>

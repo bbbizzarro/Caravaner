@@ -11,6 +11,22 @@ public class IconContainer : Node2D {
 	int maxContainerSize = 5;
 	CollisionShape2D collShape;
 	int scale = 96;
+	bool mouseOver;
+	Tween leftSprite;
+	Tween rightSprite;
+	Tween middleSprite;
+	bool enabled = true;
+
+	public bool IsEnabled() {
+		return enabled;
+	}
+
+	public override void _Process(float delta) {
+		if (mouseOver) { 
+			IconContainer.currIconContainer = this;
+			currIconContainer.Preview(true);
+		}
+	}
 
 	public static bool DropIn(DragObject dragObject) { 
 		if (currIconContainer != null && currIconContainer.IsOpen()) {
@@ -20,6 +36,11 @@ public class IconContainer : Node2D {
 		else {
 			return false;
 		}
+	}
+
+	private void AnimateSprites(int size) { 
+		//middleSprite.InterpolateProperty(this, "scale", from, position, 0.2f, Tween.TransitionType.Cubic, Tween.EaseType.Out);
+		//middleSprite.Start();
 	}
 
 	//private int NumIconsInContainer() {
@@ -37,11 +58,11 @@ public class IconContainer : Node2D {
 	}
 
 	public int MouseToIndex(int offset) {
-		float x = GetGlobalMousePosition().x - Position.x;
+		float x = GetGlobalMousePosition().x - GlobalPosition.x;
 		x = (x/scale) + (float)(Mathf.Max(0, icons.Count -1 + offset)) / 2f;
 		//GD.Print("X=", x);
 		int index = Mathf.Clamp(Mathf.RoundToInt(x), 0, icons.Count + 1);
-		GD.Print("INDEX=", index);
+		//GD.Print("INDEX=", index);
 		return index;
 	}
 
@@ -50,25 +71,26 @@ public class IconContainer : Node2D {
 			//icons.Add(icon);
 			icons.Insert(MouseToIndex(1), icon);
 			icon.SetIconContainer(currIconContainer);
-			Vector2 relPos = icon.Position - Position;
+			Vector2 relPos = icon.Position - GlobalPosition;
 			icon.GetParent().RemoveChild(icon);
 			currIconContainer.AddChild(icon);
 			icon.Position = relPos;
 			RepositionSlots(icons.Count, -1);
 			//icon.AnimateToPosition(relPos, Vector2.Zero);
-			collShape.Scale = new Vector2(icons.Count + 1, collShape.Scale.y);
+			collShape.Scale = new Vector2(icons.Count + 1.5f, collShape.Scale.y);
 		}
 	}
 
 	public void RemoveIcon(DragObject icon) { 
 		if (icons.Contains(icon)) {
-			Vector2 relPos = Position + icon.Position;
+			//Vector2 relPos = Position + icon.Position;
+			Vector2 relPos = GlobalPosition + icon.Position;
 			icon.Position = relPos;
 			icons.Remove(icon);
 			icon.GetParent().RemoveChild(icon);
 			GetNode("/root/Main").AddChild(icon);
 			RepositionSlots(icons.Count, -1);
-			collShape.Scale = new Vector2(icons.Count + 1, collShape.Scale.y);
+			collShape.Scale = new Vector2(icons.Count + 1.5f, collShape.Scale.y);
 		}
 	}
 
@@ -92,7 +114,12 @@ public class IconContainer : Node2D {
 				offset = 1;
 			}
 			else { 
-				icons[i - offset].AnimateToPosition(icons[i - offset].Position, newPositions[i]);
+				if ((icons[i - offset].Position - newPositions[i]).Length() <= 0.01f) {
+					// do nothing
+				}
+				else { 
+					icons[i - offset].AnimateToPosition(icons[i - offset].Position, newPositions[i]);
+				}
 			}
 		}
 	}
@@ -108,7 +135,7 @@ public class IconContainer : Node2D {
 
 	public void Preview(bool preview) { 
 		if (preview) { 
-			if (DragObject.IsDragging()) {
+			if (DragObject.IsDragging() && IsOpen()) {
 				RepositionSlots(icons.Count + 1, MouseToIndex(1));
 			}
 		}
@@ -117,18 +144,31 @@ public class IconContainer : Node2D {
 		}
 	}
 
-	private void OnMouseEntered() { 
+	private void OnMouseEntered() {
 		if (currIconContainer == null) {
-			IconContainer.currIconContainer = this;
-			currIconContainer.Preview(true);
-			GD.Print(currIconContainer.MouseToIndex(0));
+			mouseOver = true;
+			//IconContainer.currIconContainer = this;
+			//currIconContainer.Preview(true);
+			//GD.Print(currIconContainer.MouseToIndex(0));
 		}
 	}
 
 	private void OnMouseExited() { 
 		if (currIconContainer == this) {
+			mouseOver = false;
 			currIconContainer.Preview(false);	
 			IconContainer.currIconContainer = null;
+		}
+	}
+
+	public void Enable(bool enable) { 
+		if (enable) {
+			enabled = true;
+			Position = new Vector2(0, 0);
+		}
+		else {
+			GlobalPosition = new Vector2(-1000, 1000);
+			enabled = false;
 		}
 	}
 }

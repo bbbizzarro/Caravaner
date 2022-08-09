@@ -15,12 +15,14 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 	[Signal] delegate void GridPositionChanged();
 	private event ContainerUpdated ContainerUpdated;
 	World world;
+	IconContainer inventoryUI;
 
 	private float INTERACT_DIST = 80f;
 
 	public void Initialize(World world) {
 		this.world = world;
 		items = new List<int>() { 0, 1, 2, 3, 4, 5 };
+		inventoryUI = (IconContainer)GetNode("IconContainer");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -33,6 +35,16 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 			Interact();
 		}
 		HandlePointerClick();
+		// DEBUGGGGGG
+		if (Input.IsActionJustPressed("inventory_toggle")) {
+			if (inventoryUI.IsEnabled()) {
+				inventoryUI.Enable(false);
+			}
+			else { 
+				inventoryUI.Enable(true);
+			}
+		}
+		// DEBUGGGGGG
 	}
 
 	private void HandlePointerClick() { 
