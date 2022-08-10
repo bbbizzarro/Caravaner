@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://WorldRenderer.cs" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -14,6 +14,8 @@
 [ext_resource path="res://DragDropHandler.cs" type="Script" id=12]
 [ext_resource path="res://Sprites/Gradient.png" type="Texture" id=13]
 [ext_resource path="res://IconSpawner.cs" type="Script" id=14]
+[ext_resource path="res://EntityView.tscn" type="PackedScene" id=15]
+[ext_resource path="res://AI.cs" type="Script" id=16]
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 0.0
@@ -144,6 +146,14 @@ position = Vector2( -256, 192 )
 [node name="IconSpawner" type="Node2D" parent="."]
 position = Vector2( 300, 100 )
 script = ExtResource( 14 )
+
+[node name="AI" type="KinematicBody2D" parent="."]
+position = Vector2( 100, 0 )
+script = ExtResource( 16 )
+
+[node name="EntityView" parent="AI" instance=ExtResource( 15 )]
+
+[node name="Timer" type="Timer" parent="AI"]
 
 [connection signal="DisplayItem" from="UI" to="TileDisplay" method="OnDisplayItem"]
 [connection signal="PlayerContainerUpdated" from="UI" to="UI/CanvasLayer/MarginContainer/PanelContainer/Hotbar" method="OnPlayerContainerUpdated"]

@@ -9,6 +9,7 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 	[SerializeField] private int scale = 64;
 	[SerializeField] private List<int> items;
 
+	[Export] public float testProperty = 0f;
 	private Vector2 direction = Vector2.Zero;
 	private Vector2Int lastPos = Vector2Int.Zero;
 	//private readonly float MAX_FRAME_RATE = 60f;
@@ -16,8 +17,13 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 	private event ContainerUpdated ContainerUpdated;
 	World world;
 	IconContainer inventoryUI;
+	Animator animator;
 
 	private float INTERACT_DIST = 80f;
+
+	public override void _Ready() {
+		animator = (Animator)GetNode("EntityView");
+	}
 
 	public void Initialize(World world) {
 		this.world = world;
@@ -30,6 +36,13 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 		direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 		//MoveAndCollide(MAX_FRAME_RATE * delta * speed * direction);
 		MoveAndSlide(speed * direction);
+		if (direction.Length() > 0) {
+			animator.Walk();
+		}
+		else {
+			animator.Stop();
+		}
+
 		TrackLocation();
 		if (Input.IsActionJustPressed("interact")) {
 			Interact();
