@@ -12,7 +12,7 @@ public class AI : KinematicBody2D {
 	RandomNumberGenerator rng;
 	float stateTime = 2f;
 	float speed = 50f;
-	float SCALE = 64;
+	float SCALE = 2f * 64;
 	Vector2 tile;
 
 	// Integer value timers to time animation with movement stops?
@@ -25,9 +25,13 @@ public class AI : KinematicBody2D {
 		timer.Connect("timeout", this, nameof(UpdateState));
 		UpdateState();
 		timer.Start(stateTime);
+		tile = CalculateLimits();
+	}
+
+	private Vector2 CalculateLimits() {
 		float x = Mathf.Round(GlobalPosition.x / SCALE) * SCALE;
 		float y = Mathf.Round(GlobalPosition.y / SCALE) * SCALE;
-		GD.Print(x, " ", y);
+		return new Vector2(x, y);
 	}
 
 	public override void _Process(float delta) {
@@ -65,18 +69,22 @@ public class AI : KinematicBody2D {
 		animator.Stop();
 		state = State.Idle;
 		direction = Vector2.Zero;
-		stateTime = 2f;
+		//stateTime = 2f;
+		stateTime = rng.RandfRange(1f, 10f);
 	}
 	private void SetMovingState() { 
 		animator.Walk();
 		state = State.Moving;
 		direction = new Vector2(rng.RandfRange(-1, 1), rng.RandfRange(-1, 1));
 		direction = direction.Normalized();
-		//Vector2 target = GlobalPosition + SCALE * direction;
-		//float x = Mathf.Round(target.x / SCALE) * SCALE;
-		//float y = Mathf.Round(target.y / SCALE) * SCALE;
-		//target = new Vector2(x, y);
-		//GD.Print(target);
+		stateTime = 1.9f;
+
+		Vector2 target = new Vector2(
+			rng.RandfRange(tile.x - SCALE * 0.5f, tile.x + SCALE * 0.5f),
+			rng.RandfRange(tile.y - SCALE * 0.5f, tile.y + SCALE * 0.5f));
+		direction = (target - GlobalPosition);
+		stateTime = direction.Length() / speed;
+		direction = direction.Normalized();
 		//stateTime = target.Length() / speed;
 	}
 
@@ -85,6 +93,9 @@ public class AI : KinematicBody2D {
 
 	private void HandleMovingState() {
 		MoveAndSlide(speed * direction);
+	}
+
+	private void GetNextPosition() { 
 	}
 
 

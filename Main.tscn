@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://WorldRenderer.cs" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -14,13 +14,34 @@
 [ext_resource path="res://DragDropHandler.cs" type="Script" id=12]
 [ext_resource path="res://Sprites/Gradient.png" type="Texture" id=13]
 [ext_resource path="res://IconSpawner.cs" type="Script" id=14]
-[ext_resource path="res://EntityView.tscn" type="PackedScene" id=15]
-[ext_resource path="res://AI.cs" type="Script" id=16]
+[ext_resource path="res://AI.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Sprites/House.png" type="Texture" id=16]
+[ext_resource path="res://Sprites/HouseOnly.png" type="Texture" id=17]
+[ext_resource path="res://Sprites/TileGround.png" type="Texture" id=18]
+[ext_resource path="res://Sprites/HousesSmall.png" type="Texture" id=19]
+[ext_resource path="res://Sprites/QuarryRock.png" type="Texture" id=20]
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 0.0
 
 [sub_resource type="Theme" id=3]
+
+[sub_resource type="Shader" id=4]
+code = "shader_type canvas_item;
+uniform float deformationAmount;
+uniform float xScale;
+uniform float yScale;
+
+void vertex() {
+	VERTEX.x += xScale * (2.0 * UV.x - 1.0) * 64.0 * deformationAmount;
+	VERTEX.y += yScale * deformationAmount * 64.0 * (1.0 - UV.y);
+}"
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+shader_param/deformationAmount = 0.084
+shader_param/xScale = 0.3
+shader_param/yScale = 1.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
@@ -139,6 +160,7 @@ script = ExtResource( 12 )
 
 [node name="DragObject2" parent="." instance=ExtResource( 10 )]
 position = Vector2( 300, 0 )
+isTileIcon = true
 
 [node name="DragObject3" parent="." instance=ExtResource( 10 )]
 position = Vector2( -256, 192 )
@@ -147,13 +169,41 @@ position = Vector2( -256, 192 )
 position = Vector2( 300, 100 )
 script = ExtResource( 14 )
 
-[node name="AI" type="KinematicBody2D" parent="."]
+[node name="AI" parent="." instance=ExtResource( 15 )]
 position = Vector2( 100, 0 )
-script = ExtResource( 16 )
 
-[node name="EntityView" parent="AI" instance=ExtResource( 15 )]
+[node name="AI2" parent="." instance=ExtResource( 15 )]
+position = Vector2( 128, -64 )
 
-[node name="Timer" type="Timer" parent="AI"]
+[node name="TileDec" type="Node2D" parent="."]
+position = Vector2( 160, 64 )
+
+[node name="Sprite" type="Sprite" parent="TileDec"]
+texture = ExtResource( 16 )
+
+[node name="AI3" parent="." instance=ExtResource( 15 )]
+position = Vector2( 96, -160 )
+
+[node name="TileGroup" type="Node2D" parent="."]
+position = Vector2( 467, 64 )
+
+[node name="Ground" type="Sprite" parent="TileGroup"]
+texture = ExtResource( 18 )
+
+[node name="Building" type="Sprite" parent="TileGroup"]
+position = Vector2( 0, -13 )
+texture = ExtResource( 17 )
+
+[node name="HousesSmall" type="Sprite" parent="."]
+position = Vector2( 332, 192 )
+texture = ExtResource( 19 )
+
+[node name="Quarry" type="Node2D" parent="."]
+position = Vector2( -143, -32 )
+
+[node name="Sprite" type="Sprite" parent="Quarry"]
+material = SubResource( 5 )
+texture = ExtResource( 20 )
 
 [connection signal="DisplayItem" from="UI" to="TileDisplay" method="OnDisplayItem"]
 [connection signal="PlayerContainerUpdated" from="UI" to="UI/CanvasLayer/MarginContainer/PanelContainer/Hotbar" method="OnPlayerContainerUpdated"]

@@ -18,6 +18,7 @@ public class DragObject : Node2D {
 	private DragDropHandler dragDropHandler;
 	private IconContainer iconContainer;
 	private bool mouseOver;
+	[Export] public bool isTileIcon = false;
 
 	public static bool HasDragObj() {
 		return currDragObj != null;
@@ -138,6 +139,11 @@ public class DragObject : Node2D {
 				//animation.Start(sprite.Scale.y, 1f, 15f, Caravaner.AnimType.Constant, false);
 				//rotation.Start(sprite.Rotation, 0f, 7f, Caravaner.AnimType.Constant, false);
 				rotation.Start(0.05f, 0.05f, 4f, Caravaner.AnimType.Sin, true);
+				return;
+			}
+			if (isTileIcon) {
+				OnMouseExited();
+				QueueFree();
 				return;
 			}
 			OnMouseExited();

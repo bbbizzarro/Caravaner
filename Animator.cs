@@ -5,6 +5,7 @@ public class Animator : Node2D {
 
 	AnimationPlayer animationPlayer;
 	string nextAnimation = "Idle";
+	float speed;
 
 	// We might want to dynamically generate tweens instead
 	public override void _Ready() {
@@ -15,6 +16,7 @@ public class Animator : Node2D {
 	}
 
 	public void SetSpeed(float speed) {
+		this.speed = speed;
 		animationPlayer.PlaybackSpeed = speed;
 	}
 
@@ -27,6 +29,7 @@ public class Animator : Node2D {
 	public void Walk() {
 		if (animationPlayer.IsPlaying()) {
 			nextAnimation = "Walk";
+			animationPlayer.Play("Walk");
 		}
 		else { 
 			animationPlayer.Play("Walk");
