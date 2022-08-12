@@ -16,7 +16,7 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 	[Signal] delegate void GridPositionChanged();
 	private event ContainerUpdated ContainerUpdated;
 	World world;
-	IconContainer inventoryUI;
+	InventoryUI inventoryUI;
 	Animator animator;
 
 	private float INTERACT_DIST = 80f;
@@ -28,7 +28,7 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 	public void Initialize(World world) {
 		this.world = world;
 		items = new List<int>() { 0, 1, 2, 3, 4, 5 };
-		inventoryUI = (IconContainer)GetNode("IconContainer");
+		inventoryUI = (InventoryUI)GetNode("IconContainer");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

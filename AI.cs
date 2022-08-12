@@ -27,6 +27,10 @@ public class AI : KinematicBody2D {
 		timer.Start(stateTime);
 		tile = CalculateLimits();
 	}
+	
+	public void SetLimits() {
+		tile = CalculateLimits();
+	}
 
 	private Vector2 CalculateLimits() {
 		float x = Mathf.Round(GlobalPosition.x / SCALE) * SCALE;

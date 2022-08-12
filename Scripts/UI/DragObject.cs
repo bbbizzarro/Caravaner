@@ -8,17 +8,13 @@ public class DragObject : Node2D {
 	private Caravaner.Animation rotation;
 	private Caravaner.Animation shadowAnim;
 	private Caravaner.Physics2D physics;
-	private Caravaner.Animation positionAnim;
-	private Caravaner.Animation positionXAnim;
-	private Caravaner.Animation positionYAnim;
 	private Tween tween;
 	private Vector2 mouseOffset = Vector2.Zero;
 	private Sprite sprite;
 	private Sprite shadowSprite;
 	private DragDropHandler dragDropHandler;
-	private IconContainer iconContainer;
+	private DropPoint iconContainer;
 	private bool mouseOver;
-	[Export] public bool isTileIcon = false;
 
 	public static bool HasDragObj() {
 		return currDragObj != null;
@@ -36,9 +32,6 @@ public class DragObject : Node2D {
 	public override void _Ready() {
 		animation = new Caravaner.Animation();
 		rotation = new Caravaner.Animation();
-		positionAnim = new Caravaner.Animation();
-		positionXAnim = new Caravaner.Animation();
-		positionYAnim = new Caravaner.Animation();
 		shadowAnim = new Caravaner.Animation();
 		physics = new Caravaner.Physics2D();
 		tween = (Tween)GetNode("Tween");
@@ -51,7 +44,7 @@ public class DragObject : Node2D {
 		dragDropHandler = (DragDropHandler)GetNode("/root/Main/DragDropHandler");
 	}
 
-	public void SetIconContainer(IconContainer iconContainer) {
+	public void SetIconContainer(DropPoint iconContainer) {
 		this.iconContainer = iconContainer;
 	}
 
@@ -92,24 +85,9 @@ public class DragObject : Node2D {
 				shadowSprite.Scale = new Vector2(s, s);
 			}
 		}
-
-		if (positionAnim.IsAnimating()) {
-			float v = positionAnim.Animate(delta);
-		}
-		if (positionXAnim.IsAnimating()) {
-			float v = positionXAnim.Animate(delta);
-			Position = new Vector2(v, Position.y);
-		}
-		if (positionYAnim.IsAnimating()) {
-			float v = positionYAnim.Animate(delta);
-			Position = new Vector2(Position.x, v);
-		}
 	}
 
 	public void AnimateToPosition(Vector2 from, Vector2 position) {
-		//GD.Print(from, position);
-		//positionXAnim.Start(from.x, position.x, 10, Caravaner.AnimType.Constant, false);
-		//positionYAnim.Start(from.y, position.y, 10, Caravaner.AnimType.Constant, false);
 		tween.InterpolateProperty(this, "position", from, position, 0.2f, Tween.TransitionType.Cubic, Tween.EaseType.Out);
 		tween.Start();
 	}
@@ -121,7 +99,7 @@ public class DragObject : Node2D {
 			shadowAnim.Start(1f, 0f, 15f, Caravaner.AnimType.Constant, false);
 			rotation.Start(sprite.Rotation, 0f, 7f, Caravaner.AnimType.Constant, false);
 			if (iconContainer != null) { 
-				iconContainer.RemoveIcon(this);
+				iconContainer.Remove(this);
 				iconContainer = null;
 			}
 			mouseOffset = Position - GetGlobalMousePosition();
@@ -131,7 +109,7 @@ public class DragObject : Node2D {
 	private void OnDrop() { 
 		if (currDragObj == this) {
 			isDragging = false;
-			if (IconContainer.DropIn(this)) {
+			if (DropPoint.DropIn(this)) {
 				//GD.Print("Dropped in a container!");
 				physics.Stop();
 				shadowSprite.Position = new Vector2(0, 32);
@@ -139,11 +117,6 @@ public class DragObject : Node2D {
 				//animation.Start(sprite.Scale.y, 1f, 15f, Caravaner.AnimType.Constant, false);
 				//rotation.Start(sprite.Rotation, 0f, 7f, Caravaner.AnimType.Constant, false);
 				rotation.Start(0.05f, 0.05f, 4f, Caravaner.AnimType.Sin, true);
-				return;
-			}
-			if (isTileIcon) {
-				OnMouseExited();
-				QueueFree();
 				return;
 			}
 			OnMouseExited();
@@ -187,6 +160,11 @@ public class DragObject : Node2D {
 			animation.Start(sprite.Scale.y, 1f, 15f, Caravaner.AnimType.Constant, false);
 			rotation.Start(sprite.Rotation, 0f, 7f, Caravaner.AnimType.Constant, false);
 		}
+	}
+
+	public void Destroy() {
+		OnMouseExited();
+		QueueFree();
 	}
 }
 

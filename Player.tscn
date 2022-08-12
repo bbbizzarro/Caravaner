@@ -6,7 +6,7 @@
 [ext_resource path="res://IconContainer.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 31.0
+radius = 9.05539
 
 [node name="Player" type="KinematicBody2D" groups=["Persist"]]
 script = ExtResource( 1 )
