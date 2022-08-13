@@ -17,10 +17,10 @@
 [ext_resource path="res://AI.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Sprites/House.png" type="Texture" id=16]
 [ext_resource path="res://Sprites/HouseOnly.png" type="Texture" id=17]
-[ext_resource path="res://TileGroup.tscn" type="PackedScene" id=18]
 [ext_resource path="res://Sprites/HousesSmall.png" type="Texture" id=19]
 [ext_resource path="res://Shaders/Squish.gdshader" type="Shader" id=20]
 [ext_resource path="res://Scripts/UI/Exchange.cs" type="Script" id=21]
+[ext_resource path="res://Services.cs" type="Script" id=22]
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 0.0
@@ -226,8 +226,6 @@ texture = ExtResource( 16 )
 [node name="AI3" parent="." instance=ExtResource( 15 )]
 position = Vector2( 96, -160 )
 
-[node name="TileGroup" parent="." instance=ExtResource( 18 )]
-
 [node name="HousesSmall" type="Sprite" parent="."]
 position = Vector2( 332, 192 )
 texture = ExtResource( 19 )
@@ -254,6 +252,9 @@ script = ExtResource( 14 )
 
 [node name="Selector" type="Sprite" parent="WorldTiles"]
 texture = ExtResource( 6 )
+
+[node name="Services" type="Node" parent="."]
+script = ExtResource( 22 )
 
 [connection signal="DisplayItem" from="UI" to="TileDisplay" method="OnDisplayItem"]
 [connection signal="PlayerContainerUpdated" from="UI" to="UI/CanvasLayer/MarginContainer/PanelContainer/Hotbar" method="OnPlayerContainerUpdated"]

@@ -3,30 +3,37 @@ using System;
 
 public class DragObject : Node2D {
 	static DragObject currDragObj;
+	static Vector2 mouseOffset = Vector2.Zero;
+
 	private bool isDragging = false;
 	private Caravaner.Animation animation;
 	private Caravaner.Animation rotation;
 	private Caravaner.Animation shadowAnim;
 	private Caravaner.Physics2D physics;
 	private Tween tween;
-	private Vector2 mouseOffset = Vector2.Zero;
 	private Sprite sprite;
 	private Sprite shadowSprite;
-	private DragDropHandler dragDropHandler;
 	private DropPoint iconContainer;
 	private bool mouseOver;
+
+	[Export] private int itemType;
+	[Export] private string itemName;
 
 	public static bool HasDragObj() {
 		return currDragObj != null;
 	}
 
 	public static bool IsDragging() { 
-		if (currDragObj == null) {
-			return false;
-		}
-		else {
-			return currDragObj.isDragging;
-		}
+		if (currDragObj == null) return false;
+		else return currDragObj.isDragging;
+	}
+
+	public static bool IsDraggingTypeOf(int type) {
+		return IsDragging() && currDragObj.itemType == type;
+	}
+
+	public static void SetMouseOffset(Vector2 offset) {
+		mouseOffset = offset;
 	}
 
 	public override void _Ready() {
@@ -41,7 +48,24 @@ public class DragObject : Node2D {
 		physics.Set(0f, Position.y + 100, Vector2.Zero, Position, 0.5f, 0f);
 		sprite = (Sprite)GetNode("Sprite");
 		shadowSprite = (Sprite)GetNode("Shadow");
-		dragDropHandler = (DragDropHandler)GetNode("/root/Main/DragDropHandler");
+	}
+
+	public void Set(string name, int type, Texture texture) {
+		this.itemName = name;
+		this.itemType = type;
+		sprite.Texture = texture;
+	}
+
+	public void SetSpriteTexture(Texture texture) {
+		sprite.Texture = texture;
+	}
+
+	public string GetItemName() {
+		return itemName;
+	}
+
+	public int GetItemType() {
+		return itemType;
 	}
 
 	public void SetIconContainer(DropPoint iconContainer) {
@@ -114,8 +138,6 @@ public class DragObject : Node2D {
 				physics.Stop();
 				shadowSprite.Position = new Vector2(0, 32);
 				shadowSprite.Scale = new Vector2(0, 0);
-				//animation.Start(sprite.Scale.y, 1f, 15f, Caravaner.AnimType.Constant, false);
-				//rotation.Start(sprite.Rotation, 0f, 7f, Caravaner.AnimType.Constant, false);
 				rotation.Start(0.05f, 0.05f, 4f, Caravaner.AnimType.Sin, true);
 				return;
 			}
@@ -148,7 +170,6 @@ public class DragObject : Node2D {
 		if (currDragObj == null) {
 			DragObject.currDragObj = this;
 			animation.Start(1f, 1.2f, 15f, Caravaner.AnimType.Constant, false);
-			//animation.Start(1f, 1.15f, 3f, Caravaner.AnimType.Constant, true);
 			rotation.Start(0.05f, 0.05f, 4f, Caravaner.AnimType.Sin, true);
 		}
 	}

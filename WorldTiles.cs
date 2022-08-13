@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Caravaner;
 
 public class WorldTiles : DropPoint {
-	PackedScene tileGroupScene = (PackedScene)ResourceLoader.Load("res://TileGroup.tscn");
+	//PackedScene tileGroupScene = (PackedScene)ResourceLoader.Load("res://TileGroup.tscn");
 	Dictionary<Vector2Int, int> map;
 	float scale = 64f;
 	Sprite selector;
@@ -30,8 +30,7 @@ public class WorldTiles : DropPoint {
 
 	public override void _Process(float delta) {
 		base._Process(delta);
-		if (IsOpen() && IsActive(null) && DragObject.IsDragging()) {
-			GD.Print("ENTER!");
+		if (IsOpen() && IsActive(null) && DragObject.IsDraggingTypeOf(1)) {
 			OnMouseEntered();
 		}
 		else if (!IsOpen() && IsActive(this)) {
@@ -43,11 +42,14 @@ public class WorldTiles : DropPoint {
 		if (!IsOpen()) return false;
 		Vector2Int gridPos = WorldToGrid(GetMouseTarget());
 		dragObject.Destroy();
-		Node2D tileGroup = (Node2D)tileGroupScene.Instance();
-		GetParent().AddChild(tileGroup);
+		//Node2D tileGroup = (Node2D)tileGroupScene.Instance();
+		//GetParent().AddChild(tileGroup);
+		//tileGroup.Position = GridToWorld(gridPos);
+		//((AI)tileGroup.GetNode("AI")).SetLimits();
+		Node2D node = Services.Instance.TileInstancer.Create(GridToWorld(gridPos), dragObject.GetItemName());
 		map.Add(gridPos, 1);
-		tileGroup.Position = GridToWorld(gridPos);
-		((AI)tileGroup.GetNode("AI")).SetLimits();
+		//if (node != null) 
+		//	((AI)node.GetNode("AI")).SetLimits();
 		return true;
 	}
 

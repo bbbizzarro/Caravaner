@@ -14,7 +14,7 @@ public class Exchange : DropPoint {
 
 	public override bool Add(DragObject dragObject) {
 		dragObject.Destroy();
-		iconSpawner.SpawnGroup(GetParent(), 3, GlobalPosition);
+		iconSpawner.SpawnGroup(3, GlobalPosition);
 		return true;
 	}
 
@@ -29,9 +29,11 @@ public class Exchange : DropPoint {
 	protected override void Preview(bool preview) {
 		if (preview) { 
 			animationPlayer.Play("Squish");
+			DragObject.SetMouseOffset(new Vector2(0, -64f));
 		}
 		else { 
 			animationPlayer.Play("StaticIdle");
+			DragObject.SetMouseOffset(Vector2.Zero);
 		}
 	}
 }
