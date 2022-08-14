@@ -9,9 +9,11 @@
 [ext_resource path="res://Hotbar.cs" type="Script" id=7]
 [ext_resource path="res://ItemUI.tscn" type="PackedScene" id=8]
 [ext_resource path="res://TileInspector.cs" type="Script" id=9]
-[ext_resource path="res://DragObject.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Animations/StaticIdle.tres" type="Animation" id=11]
+[ext_resource path="res://Animations/Squish.tres" type="Animation" id=12]
 [ext_resource path="res://Sprites/Gradient.png" type="Texture" id=13]
 [ext_resource path="res://WorldTiles.cs" type="Script" id=14]
+[ext_resource path="res://Scenes/ResourcePoint.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Sprites/House.png" type="Texture" id=16]
 [ext_resource path="res://Sprites/HouseOnly.png" type="Texture" id=17]
 [ext_resource path="res://Sprites/HousesSmall.png" type="Texture" id=19]
@@ -32,60 +34,6 @@ shader = ExtResource( 20 )
 shader_param/deformationAmount = 0.16
 shader_param/xScale = 0.3
 shader_param/yScale = 1.0
-
-[sub_resource type="Animation" id=7]
-resource_name = "Squish"
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 1.05, 0.9 ), Vector2( 1, 1 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, 6 ), Vector2( 0, 0 ) ]
-}
-
-[sub_resource type="Animation" id=8]
-resource_name = "StaticIdle"
-tracks/0/type = "value"
-tracks/0/path = NodePath("../TestCollision/Sprite:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ) ]
-}
 
 [node name="Main" type="YSort"]
 script = ExtResource( 3 )
@@ -191,14 +139,6 @@ theme = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Test"
 
-[node name="DragObject" parent="." instance=ExtResource( 10 )]
-
-[node name="DragObject2" parent="." instance=ExtResource( 10 )]
-position = Vector2( 300, 0 )
-
-[node name="DragObject3" parent="." instance=ExtResource( 10 )]
-position = Vector2( -256, 192 )
-
 [node name="Exchange" type="Area2D" parent="."]
 position = Vector2( -143, -32 )
 script = ExtResource( 21 )
@@ -212,8 +152,8 @@ texture = ExtResource( 17 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Exchange"]
 playback_speed = 2.0
-anims/Squish = SubResource( 7 )
-anims/StaticIdle = SubResource( 8 )
+anims/Squish = ExtResource( 12 )
+anims/StaticIdle = ExtResource( 11 )
 
 [node name="WorldTiles" type="Node2D" parent="."]
 position = Vector2( -351, -29 )
@@ -238,6 +178,9 @@ texture = ExtResource( 16 )
 visible = false
 position = Vector2( 332, 192 )
 texture = ExtResource( 19 )
+
+[node name="ResourcePoint" parent="." instance=ExtResource( 15 )]
+position = Vector2( 42, 272 )
 
 [connection signal="DisplayItem" from="UI" to="TileDisplay" method="OnDisplayItem"]
 [connection signal="PlayerContainerUpdated" from="UI" to="UI/CanvasLayer/MarginContainer/PanelContainer/Hotbar" method="OnPlayerContainerUpdated"]

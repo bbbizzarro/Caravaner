@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Caravaner;
 
 public class WorldTiles : DropPoint {
-	//PackedScene tileGroupScene = (PackedScene)ResourceLoader.Load("res://TileGroup.tscn");
 	Dictionary<Vector2Int, int> map;
 	float scale = 64f;
 	Sprite selector;
@@ -36,21 +35,34 @@ public class WorldTiles : DropPoint {
 		else if (!IsOpen() && IsActive(this)) {
 			OnMouseExited();
 		}
+
+		if (Input.IsActionJustPressed("interact")) {
+			NewWorld();
+		}
+	}
+
+	public void NewWorld() {
+		RegionGenerator regionGenerator = new RegionGenerator();
+		foreach (WorldTile worldTile in regionGenerator.Generate(-5, -5, 5, 5)) {
+			CreateTile(worldTile.position, worldTile.tileName);
+		}
 	}
 
 	public override bool Add(DragObject dragObject) {
 		if (!IsOpen()) return false;
 		Vector2Int gridPos = WorldToGrid(GetMouseTarget());
 		dragObject.Destroy();
-		//Node2D tileGroup = (Node2D)tileGroupScene.Instance();
-		//GetParent().AddChild(tileGroup);
-		//tileGroup.Position = GridToWorld(gridPos);
-		//((AI)tileGroup.GetNode("AI")).SetLimits();
-		Node2D node = Services.Instance.TileInstancer.Create(GridToWorld(gridPos), dragObject.GetItemName());
-		map.Add(gridPos, 1);
-		//if (node != null) 
-		//	((AI)node.GetNode("AI")).SetLimits();
+		CreateTile(gridPos, dragObject.GetItemName());
 		return true;
+	}
+
+	public void CreateTile(Vector2Int gridPos, string type) {
+		if (map.ContainsKey(gridPos)) {
+			GD.PrintErr("Cannot create a tile at that location.");
+			return;
+		}
+		Node2D node = Services.Instance.TileInstancer.Create(GridToWorld(gridPos), type);
+		map.Add(gridPos, 1);
 	}
 
 	public override bool IsOpen() {

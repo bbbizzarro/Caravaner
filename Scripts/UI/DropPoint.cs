@@ -30,6 +30,7 @@ public abstract class DropPoint : Node2D {
 	// Godot Engine functions ===============================
 	public override void _Process(float delta) {
 		OnMouseStay();
+		HandleMousePressEvent();
 	}
 
 	public override void _Ready() {
@@ -39,12 +40,13 @@ public abstract class DropPoint : Node2D {
 	}
 
 	// Abstract Interface ===================================
-	public abstract bool IsOpen();
-	public abstract bool Add(DragObject dragObject);
-	public abstract bool Remove(DragObject dragObject);
-	protected abstract void Preview(bool preview);
+	public virtual bool IsOpen() { return false; }
+	public virtual bool Add(DragObject dragObject) { return false; }
+	public virtual bool Remove(DragObject dragObject) { return true; }
+	protected virtual void Preview(bool preview) {}
 	protected virtual void OnSet() {}
 	protected virtual void OnRelease() {}
+	protected virtual void OnMousePress() {}
 
 	// Handle Mouse Interaction =============================
 	public static bool DropIn(DragObject dragObject) { 
@@ -72,6 +74,19 @@ public abstract class DropPoint : Node2D {
 			currDropPoint.Preview(false);
 			ReleaseCurrDropPoint(this);
 		}
+	}
+
+	private void HandleMousePressEvent() { 
+		if (IsActive(this)
+			&& !DragObject.HasDragObj()
+			&& Input.IsActionJustPressed("ui_click")) {
+			OnMousePress();
+		}
+	}
+
+	public void Destroy() {
+		OnMouseExited();
+		QueueFree();
 	}
 
 	// Entity Enable/Disable ================================
