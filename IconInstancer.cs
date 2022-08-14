@@ -11,9 +11,9 @@ public class IconInstancer {
 		rng.Randomize();
 		this.parent = parent;
 		db = new Dictionary<string, IconData>() {
-			{"Building",  new IconData("Building", "IconBuilding", 1)},
-			{"Land",  new IconData("Land", "IconLand", 1)},
-			{"Item",  new IconData("Item", "IconItem", 0)}
+			{"Building",  new IconData("Building", "Icon0", 1)},
+			{"Land",  new IconData("Land", "Icon1", 1)},
+			{"Item",  new IconData("Item", "Icon2", 0)}
 		};
 	}
 
@@ -26,10 +26,8 @@ public class IconInstancer {
 		if (db.ContainsKey(name)) {
 			var icon = (DragObject)iconScene.Instance();
 			parent.AddChild(icon);
-			icon.Set(
-				name,
-				db[name].type,
-				Services.Instance.SpriteDB.Get(db[name].sprite));
+			icon.Set(name, db[name].type);
+			Services.Instance.SpriteDB.SetTexture(db[name].sprite, icon.GetSprite());
 			icon.GlobalPosition = globalPosition;
 			return icon;
 		}

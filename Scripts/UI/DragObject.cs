@@ -56,6 +56,15 @@ public class DragObject : Node2D {
 		sprite.Texture = texture;
 	}
 
+	public void Set(string name, int type) {
+		this.itemName = name;
+		this.itemType = type;
+	}
+
+	public Sprite GetSprite() {
+		return sprite;
+	}
+
 	public void SetSpriteTexture(Texture texture) {
 		sprite.Texture = texture;
 	}

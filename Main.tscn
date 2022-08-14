@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://WorldRenderer.cs" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -10,11 +10,8 @@
 [ext_resource path="res://ItemUI.tscn" type="PackedScene" id=8]
 [ext_resource path="res://TileInspector.cs" type="Script" id=9]
 [ext_resource path="res://DragObject.tscn" type="PackedScene" id=10]
-[ext_resource path="res://IconContainer.tscn" type="PackedScene" id=11]
-[ext_resource path="res://DragDropHandler.cs" type="Script" id=12]
 [ext_resource path="res://Sprites/Gradient.png" type="Texture" id=13]
 [ext_resource path="res://WorldTiles.cs" type="Script" id=14]
-[ext_resource path="res://AI.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Sprites/House.png" type="Texture" id=16]
 [ext_resource path="res://Sprites/HouseOnly.png" type="Texture" id=17]
 [ext_resource path="res://Sprites/HousesSmall.png" type="Texture" id=19]
@@ -196,39 +193,11 @@ text = "Test"
 
 [node name="DragObject" parent="." instance=ExtResource( 10 )]
 
-[node name="IconCont2" parent="." instance=ExtResource( 11 )]
-position = Vector2( 100, 256 )
-
-[node name="IconContainer" parent="." instance=ExtResource( 11 )]
-position = Vector2( 0, 128 )
-
-[node name="DragDropHandler" type="Node2D" parent="."]
-script = ExtResource( 12 )
-
 [node name="DragObject2" parent="." instance=ExtResource( 10 )]
 position = Vector2( 300, 0 )
 
 [node name="DragObject3" parent="." instance=ExtResource( 10 )]
 position = Vector2( -256, 192 )
-
-[node name="AI" parent="." instance=ExtResource( 15 )]
-position = Vector2( 100, 0 )
-
-[node name="AI2" parent="." instance=ExtResource( 15 )]
-position = Vector2( 128, -64 )
-
-[node name="TileDec" type="Node2D" parent="."]
-position = Vector2( 160, 64 )
-
-[node name="Sprite" type="Sprite" parent="TileDec"]
-texture = ExtResource( 16 )
-
-[node name="AI3" parent="." instance=ExtResource( 15 )]
-position = Vector2( 96, -160 )
-
-[node name="HousesSmall" type="Sprite" parent="."]
-position = Vector2( 332, 192 )
-texture = ExtResource( 19 )
 
 [node name="Exchange" type="Area2D" parent="."]
 position = Vector2( -143, -32 )
@@ -255,6 +224,20 @@ texture = ExtResource( 6 )
 
 [node name="Services" type="Node" parent="."]
 script = ExtResource( 22 )
+
+[node name="Debug" type="Node" parent="."]
+
+[node name="HousesLarge" type="Node2D" parent="Debug"]
+visible = false
+position = Vector2( 160, 64 )
+
+[node name="Sprite" type="Sprite" parent="Debug/HousesLarge"]
+texture = ExtResource( 16 )
+
+[node name="HousesSmall" type="Sprite" parent="Debug"]
+visible = false
+position = Vector2( 332, 192 )
+texture = ExtResource( 19 )
 
 [connection signal="DisplayItem" from="UI" to="TileDisplay" method="OnDisplayItem"]
 [connection signal="PlayerContainerUpdated" from="UI" to="UI/CanvasLayer/MarginContainer/PanelContainer/Hotbar" method="OnPlayerContainerUpdated"]
