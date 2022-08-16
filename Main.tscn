@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://WorldRenderer.cs" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Hotbar.cs" type="Script" id=7]
 [ext_resource path="res://ItemUI.tscn" type="PackedScene" id=8]
 [ext_resource path="res://TileInspector.cs" type="Script" id=9]
+[ext_resource path="res://Scenes/TextLabel.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Animations/StaticIdle.tres" type="Animation" id=11]
 [ext_resource path="res://Animations/Squish.tres" type="Animation" id=12]
 [ext_resource path="res://Sprites/Gradient.png" type="Texture" id=13]
@@ -16,6 +17,7 @@
 [ext_resource path="res://Scenes/ResourcePoint.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Sprites/House.png" type="Texture" id=16]
 [ext_resource path="res://Sprites/HouseOnly.png" type="Texture" id=17]
+[ext_resource path="res://Scenes/TileBase.tscn" type="PackedScene" id=18]
 [ext_resource path="res://Sprites/HousesSmall.png" type="Texture" id=19]
 [ext_resource path="res://Shaders/Squish.gdshader" type="Shader" id=20]
 [ext_resource path="res://Scripts/UI/Exchange.cs" type="Script" id=21]
@@ -150,6 +152,8 @@ shape = SubResource( 6 )
 material = SubResource( 5 )
 texture = ExtResource( 17 )
 
+[node name="Label" parent="Exchange/Sprite" instance=ExtResource( 10 )]
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Exchange"]
 playback_speed = 2.0
 anims/Squish = ExtResource( 12 )
@@ -181,6 +185,9 @@ texture = ExtResource( 19 )
 
 [node name="ResourcePoint" parent="." instance=ExtResource( 15 )]
 position = Vector2( 42, 272 )
+
+[node name="TileBase" parent="." instance=ExtResource( 18 )]
+position = Vector2( 64, 128 )
 
 [connection signal="DisplayItem" from="UI" to="TileDisplay" method="OnDisplayItem"]
 [connection signal="PlayerContainerUpdated" from="UI" to="UI/CanvasLayer/MarginContainer/PanelContainer/Hotbar" method="OnPlayerContainerUpdated"]

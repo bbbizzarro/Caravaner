@@ -51,18 +51,21 @@ public class WorldTiles : DropPoint {
 	public override bool Add(DragObject dragObject) {
 		if (!IsOpen()) return false;
 		Vector2Int gridPos = WorldToGrid(GetMouseTarget());
-		dragObject.Destroy();
-		CreateTile(gridPos, dragObject.GetItemName());
-		return true;
+		Node2D newNode = CreateTile(gridPos, dragObject.GetItemName());
+		if (newNode != null) { 
+			dragObject.Destroy();
+			return true;
+		}
+		return false;
 	}
 
-	public void CreateTile(Vector2Int gridPos, string type) {
+	public Node2D CreateTile(Vector2Int gridPos, string type) {
 		if (map.ContainsKey(gridPos)) {
 			GD.PrintErr("Cannot create a tile at that location.");
-			return;
+			return null;
 		}
-		Node2D node = Services.Instance.TileInstancer.Create(GridToWorld(gridPos), type);
 		map.Add(gridPos, 1);
+		return Services.Instance.TileInstancer.Create(GridToWorld(gridPos), type);
 	}
 
 	public override bool IsOpen() {

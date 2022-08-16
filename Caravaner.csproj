@@ -4,5 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
+    <Folder Include="Scripts\Tiles\" />
   </ItemGroup>
 </Project>

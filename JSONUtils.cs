@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Godot;
 using Godot.Collections;
@@ -53,7 +53,7 @@ public class JSONUtils {
 
 	}
 
-    public static Godot.Collections.Dictionary<string, object> SerializeNode(object obj) {
+	public static Godot.Collections.Dictionary<string, object> SerializeNode(object obj) {
 		var data = Serialize(obj);
 		// Add node header
 		data["Filename"] = ((Node)obj).Filename;
@@ -61,7 +61,7 @@ public class JSONUtils {
 		return data;
 	}
 
-    public static Godot.Collections.Dictionary<string, object> Serialize(object obj) { 
+	public static Godot.Collections.Dictionary<string, object> Serialize(object obj) { 
 		var data = new Godot.Collections.Dictionary<string, object>();
 		var fields = obj.GetType()
 			.GetFields(System.Reflection.BindingFlags.Public 

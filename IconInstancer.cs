@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using Godot;
+using System.Linq;
 public class IconInstancer {
 	private readonly PackedScene iconScene = (PackedScene)ResourceLoader.Load("res://DragObject.tscn");
 	private readonly Dictionary<string, IconData> db;
@@ -10,16 +11,66 @@ public class IconInstancer {
 	public IconInstancer(Node parent) {
 		rng.Randomize();
 		this.parent = parent;
-		db = new Dictionary<string, IconData>() {
-			{"Building",  new IconData("Building", "Icon0", 1)},
-			{"Land",  new IconData("Land", "Icon1", 1)},
-			{"Item",  new IconData("Item", "Icon2", 0)}
-		};
+		//db = new Dictionary<string, IconData>() {
+		//	{"Building",  new IconData("Building", "Icon0", 1)},
+		//	{"Land",  new IconData("Land", "Icon1", 1)},
+		//	{"Item",  new IconData("Item", "Icon2", 0)}
+		//};
+		db = LoadFromFile("res://caravaner_icon_db.json");
+	}
+
+	public Dictionary<string, IconData> LoadFromFile(string filePath) {
+		var file = new File();
+		var db = new Dictionary<string, IconData>();
+		if (!file.FileExists(filePath)) { 
+			GD.Print(String.Format("No save file at '{0}'!", filePath));
+			return db; // Error! We don't have a save to load.
+		}
+		file.Open(filePath, File.ModeFlags.Read);
+
+		while (file.GetPosition() < file.GetLen()) {
+			var data = new Godot.Collections.Dictionary<string, object>(
+				(Godot.Collections.Dictionary)JSON.Parse(file.GetLine()).Result);
+			var iconData = new IconData("", "", 0);
+			iconData.Load(data);
+			db.Add(iconData.name, iconData);
+		}
+
+		file.Close();
+		return db;
+	}
+
+	public DragObject CreateFromCategory(Vector2 globalPosition, string majorCategory, string minorCategory) {
+		int randValue = rng.RandiRange(0, 100);
+		List<IconData> options;
+		if (majorCategory != "") { 
+			if (minorCategory != "") 
+				options = db.Values.Where(a => a.majorCategory == majorCategory &&
+										 a.rarity <= randValue).ToList();
+			else 
+				options = db.Values.Where(a => a.majorCategory == majorCategory &&
+										 a.minorCategory == minorCategory &&
+										 a.rarity <= randValue).ToList();
+		}
+		else { 
+			options = db.Values.Where(a => a.rarity <= randValue).ToList();
+		}
+
+		if (options.Count != 0) { 
+			return Create(globalPosition,
+				options[rng.RandiRange(0, options.Count - 1)].name);
+		}
+		else return null;
 	}
 
 	public DragObject CreateRandom(Vector2 globalPosition) {
-		List<string> keys = new List<string>(db.Keys);
-		return Create(globalPosition, keys[rng.RandiRange(0, keys.Count-1)]);
+		int randValue = rng.RandiRange(0, 100);
+		List<IconData> options = db.Values.Where(a => a.rarity <= randValue).ToList();
+		if (options.Count != 0) { 
+			return Create(globalPosition,
+				options[rng.RandiRange(0, options.Count - 1)].name);
+		}
+		else return null;
 	}
 
 	public DragObject Create(Vector2 globalPosition, string name) { 
@@ -38,13 +89,25 @@ public class IconInstancer {
 	}
 }
 
-public struct IconData {
-	public string name;
-	public string sprite;
-	public int type;
+public class IconData : ISavable {
+	[SerializeField] public string name;
+	[SerializeField] public string sprite;
+	[SerializeField] public int type;
+	[SerializeField] public string majorCategory;
+	[SerializeField] public string minorCategory;
+	[SerializeField] public int rarity; // Rarer than RARITY% of items
+
 	public IconData(string name, string sprite, int type) {
 		this.name = name;
 		this.sprite = sprite;
 		this.type = type;
+	}
+
+	public void Load(Godot.Collections.Dictionary<string, object> data) {
+		JSONUtils.Deserialize(this, data);
+	}
+
+	public Godot.Collections.Dictionary<string, object> Save() {
+		return JSONUtils.Serialize(this);
 	}
 }

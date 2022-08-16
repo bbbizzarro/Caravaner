@@ -1,0 +1,7 @@
+name,sprite,type,majorCategory,minorCategory,rarity
+Building,Icon0,1,any,any,90
+Land,Icon1,1,any,any,90
+Item,Icon2,0,any,any,90
+Rusty Bone,Rusty Bone,0,any,any,90
+Scrap Metal,Scrap Metal,0,any,any,30
+Green Mulk,Green Mulk,0,any,any,10

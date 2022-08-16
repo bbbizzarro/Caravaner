@@ -6,6 +6,7 @@ public class SpriteDB {
     private string path;
     Dictionary<string, SpriteData> db;
     Dictionary<string, AtlasData> atlases;
+	private readonly PackedScene textLabel = (PackedScene)ResourceLoader.Load("res://Scenes/TextLabel.tscn");
 
     public SpriteDB() {
         path = "res://Sprites/";
@@ -22,21 +23,27 @@ public class SpriteDB {
 		}
 	}
 
+    public void SetTextLabel(string name, Sprite sprite) {
+        sprite.Texture = null;
+        Label label = (Label)textLabel.Instance();
+        label.Text = name;
+        sprite.AddChild(label);
+	}
+
     public void SetTexture(string name, Sprite sprite) {
-        var texture = Get(name);
-        if (texture == null) { 
-            GD.PrintErr(String.Format("Could not find sprite {0} in database.", name));
-		}
+        SetTextLabel(name, sprite);
+        return;
 
         if (atlases.ContainsKey(db[name].atlas)) {
-            LoadAtlasSprite(name, texture, sprite);
+            LoadAtlasSprite(name, sprite);
 		}
         else {
+            var texture = Get(name);
             sprite.Texture = texture;
 		}
 
 	}
-    private void LoadAtlasSprite(string name, StreamTexture texture, Sprite sprite) { 
+    private void LoadAtlasSprite(string name, Sprite sprite) { 
         AtlasData atlas = atlases[db[name].atlas];
         sprite.Texture = atlas.texture;
         sprite.Hframes = atlas.hframes;
