@@ -1,0 +1,7 @@
+name,scene
+Building,Building
+Land,Land
+Market,Exchange
+Mountain,Land
+Road,Land
+Old Cars,ResourcePoint

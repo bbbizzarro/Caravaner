@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Animations/StaticIdle.tres" type="Animation" id=1]
 [ext_resource path="res://Animations/Squish.tres" type="Animation" id=2]
 [ext_resource path="res://Scripts/UI/ResourcePoint.cs" type="Script" id=3]
-[ext_resource path="res://Sprites/HouseOnly.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/DebugAtlas.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/TextLabel.tscn" type="PackedScene" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 30, 38 )
@@ -45,6 +46,12 @@ shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 4 )
+hframes = 10
+vframes = 10
+frame = 4
+
+[node name="Label" parent="Sprite" instance=ExtResource( 5 )]
+visible = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_speed = 2.0

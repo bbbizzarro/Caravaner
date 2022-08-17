@@ -1,0 +1,6 @@
+{"name":"Building","scene":"Building"}
+{"name":"Land","scene":"Land"}
+{"name":"Market","scene":"Exchange"}
+{"name":"Mountain","scene":"Land"}
+{"name":"Road","scene":"Land"}
+{"name":"Old Cars","scene":"ResourcePoint"}

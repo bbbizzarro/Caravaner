@@ -3,27 +3,63 @@ using System;
 using Godot;
 
 public class TileInstancer {
-	private readonly Dictionary<string, string> db;
+	private readonly Dictionary<string, string> sceneDB;
+    private readonly Dictionary<string, TileData> tileDB;
 	private readonly Node parent;
-    private readonly string path;
+    private readonly string scenePath;
+    private readonly string tilePath;
 
     public TileInstancer(Node parent) {
 		this.parent = parent;
-        path = "res://Scenes/";
-        db = IndexSceneFiles(path);
+        scenePath = "res://Scenes/";
+        sceneDB = IndexSceneFiles(scenePath);
+        tilePath = "res://caravaner_tile_db.json";
+        var csv = new CSV<TileData>();
+        tileDB = csv.LoadFromFile(tilePath);
     }
 
-    public Node2D Create(Vector2 globalPosition, string name) { 
-        if (db.ContainsKey(name)) { 
-	        PackedScene packedScene = (PackedScene)ResourceLoader.Load(path + db[name]);
+    public IEnumerable<string> GetTileDB() {
+        return tileDB.Keys;
+	}
+
+    public Node2D Create(Vector2 globalPosition, string name) {
+        TileData tileData = GetTileData(name);
+        if (tileData != null && sceneDB.ContainsKey(tileData.scene)) { 
+	        PackedScene packedScene = (PackedScene)ResourceLoader.Load(scenePath + sceneDB[tileData.scene]);
             Node2D node = (Node2D) packedScene.Instance();
             parent.AddChild(node);
             node.GlobalPosition = globalPosition;
+            SetLabel(node, tileData.name);
             return node;
 		}
         else { 
-			GD.PrintErr(String.Format("Tried to instance tile scene {0} but it doesn't exist.", name));
+			GD.PrintErr(String.Format("Tried to instance tile scene {0} but it doesn't exist.", tileData.scene));
             return null;
+		}
+	}
+
+    private TileData GetTileData(string name) { 
+        if (tileDB.ContainsKey(name)) {
+            return tileDB[name];
+		}
+        else { 
+			GD.PrintErr(String.Format("Tried to get TileData with name {0} but it doesn't exist.", name));
+            return null;
+		}
+	}
+
+    private void SetLabel(Node2D node, string name) {
+        try {
+            var label = (Label)node.GetNode("Sprite/Label");
+            if (name == "Land") { 
+                label.Text = "";
+			}
+            else { 
+                label.Text = name;
+			}
+        }
+        catch {
+            GD.PrintErr(String.Format("Could not find label on node {0}", node.Name));
 		}
 	}
 
@@ -44,4 +80,21 @@ public class TileInstancer {
         directory.ListDirEnd();
         return db;
 	}
+}
+
+public class TileData : ISavable, IRecord<string> {
+    [SerializeField] public string name;
+    [SerializeField] public string scene;
+
+    public string GetKey() {
+        return name;
+    }
+
+    public void Load(Godot.Collections.Dictionary<string, object> data) {
+        JSONUtils.Deserialize(this, data);
+    }
+
+    public Godot.Collections.Dictionary<string, object> Save() {
+        return JSONUtils.Serialize(this);
+    }
 }

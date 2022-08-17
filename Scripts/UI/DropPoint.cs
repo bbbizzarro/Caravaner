@@ -40,7 +40,7 @@ public abstract class DropPoint : Node2D {
 	}
 
 	// Abstract Interface ===================================
-	public virtual bool IsOpen() { return false; }
+	public virtual bool IsOpen() { return true; }
 	public virtual bool Add(DragObject dragObject) { return false; }
 	public virtual bool Remove(DragObject dragObject) { return true; }
 	protected virtual void Preview(bool preview) {}

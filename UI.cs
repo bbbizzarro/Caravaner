@@ -21,9 +21,9 @@ public class UI : Node2D {
 
 	public override void _Process(float delta) {
 		//base._Process(delta);
-		if (Input.IsActionJustPressed("interact")) {
-			GD.Print(FormatItems(player.GetItems()));
-		}
+		//if (Input.IsActionJustPressed("interact")) {
+		//	GD.Print(FormatItems(player.GetItems()));
+		//}
 		HandlePointerClick();
 	}
 

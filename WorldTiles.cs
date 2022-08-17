@@ -43,7 +43,8 @@ public class WorldTiles : DropPoint {
 
 	public void NewWorld() {
 		RegionGenerator regionGenerator = new RegionGenerator();
-		foreach (WorldTile worldTile in regionGenerator.Generate(-5, -5, 5, 5)) {
+		
+		foreach (WorldTile worldTile in regionGenerator.Generate(-5, -5, 5, 5, Services.Instance.TileInstancer.GetTileDB())) {
 			CreateTile(worldTile.position, worldTile.tileName);
 		}
 	}

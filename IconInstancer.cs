@@ -11,33 +11,18 @@ public class IconInstancer {
 	public IconInstancer(Node parent) {
 		rng.Randomize();
 		this.parent = parent;
-		//db = new Dictionary<string, IconData>() {
-		//	{"Building",  new IconData("Building", "Icon0", 1)},
-		//	{"Land",  new IconData("Land", "Icon1", 1)},
-		//	{"Item",  new IconData("Item", "Icon2", 0)}
-		//};
-		db = LoadFromFile("res://caravaner_icon_db.json");
+		var csv = new CSV<IconData>();
+		db = csv.LoadFromFile("res://caravaner_icon_db.json");
 	}
 
-	public Dictionary<string, IconData> LoadFromFile(string filePath) {
-		var file = new File();
-		var db = new Dictionary<string, IconData>();
-		if (!file.FileExists(filePath)) { 
-			GD.Print(String.Format("No save file at '{0}'!", filePath));
-			return db; // Error! We don't have a save to load.
+	public IconData GetData(string name) { 
+		if (db.ContainsKey(name)) {
+			return db[name];
 		}
-		file.Open(filePath, File.ModeFlags.Read);
-
-		while (file.GetPosition() < file.GetLen()) {
-			var data = new Godot.Collections.Dictionary<string, object>(
-				(Godot.Collections.Dictionary)JSON.Parse(file.GetLine()).Result);
-			var iconData = new IconData("", "", 0);
-			iconData.Load(data);
-			db.Add(iconData.name, iconData);
+		else {
+			GD.PrintErr("Icon with name {0} not in database.", name);
+			return null;
 		}
-
-		file.Close();
-		return db;
 	}
 
 	public DragObject CreateFromCategory(Vector2 globalPosition, string majorCategory, string minorCategory) {
@@ -89,7 +74,7 @@ public class IconInstancer {
 	}
 }
 
-public class IconData : ISavable {
+public class IconData : ISavable, IRecord<string> {
 	[SerializeField] public string name;
 	[SerializeField] public string sprite;
 	[SerializeField] public int type;
@@ -97,10 +82,10 @@ public class IconData : ISavable {
 	[SerializeField] public string minorCategory;
 	[SerializeField] public int rarity; // Rarer than RARITY% of items
 
-	public IconData(string name, string sprite, int type) {
-		this.name = name;
-		this.sprite = sprite;
-		this.type = type;
+	public IconData() {}
+
+	public string GetKey() {
+		return name;
 	}
 
 	public void Load(Godot.Collections.Dictionary<string, object> data) {

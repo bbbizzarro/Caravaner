@@ -1,6 +1,8 @@
-{"name":"Building","sprite":"Icon0","type":1,"majorCategory":"any","minorCategory":"any","rarity":90}
-{"name":"Land","sprite":"Icon1","type":1,"majorCategory":"any","minorCategory":"any","rarity":90}
-{"name":"Item","sprite":"Icon2","type":0,"majorCategory":"any","minorCategory":"any","rarity":90}
-{"name":"Rusty Bone","sprite":"Rusty Bone","type":0,"majorCategory":"any","minorCategory":"any","rarity":90}
-{"name":"Scrap Metal","sprite":"Scrap Metal","type":0,"majorCategory":"any","minorCategory":"any","rarity":30}
-{"name":"Green Mulk","sprite":"Green Mulk","type":0,"majorCategory":"any","minorCategory":"any","rarity":10}
+{"name":"Building","sprite":"Icon0","type":1,"majorCategory":"any","minorCategory":"any","rarity":101}
+{"name":"Land","sprite":"Icon1","type":1,"majorCategory":"any","minorCategory":"any","rarity":101}
+{"name":"Item","sprite":"Icon2","type":0,"majorCategory":"any","minorCategory":"any","rarity":101}
+{"name":"Bloody Bone","sprite":"Bloody Bone","type":0,"majorCategory":"Scrap","minorCategory":"Organic","rarity":90}
+{"name":"Scrap Metal","sprite":"Scrap Metal","type":0,"majorCategory":"Scrap","minorCategory":"Metal","rarity":0}
+{"name":"Green Mulk","sprite":"Green Mulk","type":0,"majorCategory":"Food","minorCategory":"Dairy","rarity":90}
+{"name":"Old Newspaper","sprite":"Old Newspaper","type":0,"majorCategory":"Scrap","minorCategory":"Paper","rarity":0}
+{"name":"Powdered Mulk","sprite":"Powdered Mulk","type":0,"majorCategory":"Raw Food","minorCategory":"Dairy","rarity":20}

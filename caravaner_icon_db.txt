@@ -1,7 +1,9 @@
 name,sprite,type,majorCategory,minorCategory,rarity
-Building,Icon0,1,any,any,90
-Land,Icon1,1,any,any,90
-Item,Icon2,0,any,any,90
-Rusty Bone,Rusty Bone,0,any,any,90
-Scrap Metal,Scrap Metal,0,any,any,30
-Green Mulk,Green Mulk,0,any,any,10
+Building,Icon0,1,any,any,101
+Land,Icon1,1,any,any,101
+Item,Icon2,0,any,any,101
+Bloody Bone,Bloody Bone,0,Scrap,Organic,90
+Scrap Metal,Scrap Metal,0,Scrap,Metal,0
+Green Mulk,Green Mulk,0,Food,Dairy,90
+Old Newspaper,Old Newspaper,0,Scrap,Paper,0
+Powdered Mulk,Powdered Mulk,0,Raw Food,Dairy,20

@@ -1,41 +1,23 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://WorldRenderer.cs" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Building.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Game.cs" type="Script" id=3]
 [ext_resource path="res://UI.cs" type="Script" id=4]
 [ext_resource path="res://Selector.cs" type="Script" id=5]
 [ext_resource path="res://Sprites/reticle.png" type="Texture" id=6]
 [ext_resource path="res://Hotbar.cs" type="Script" id=7]
 [ext_resource path="res://ItemUI.tscn" type="PackedScene" id=8]
-[ext_resource path="res://TileInspector.cs" type="Script" id=9]
-[ext_resource path="res://Scenes/TextLabel.tscn" type="PackedScene" id=10]
-[ext_resource path="res://Animations/StaticIdle.tres" type="Animation" id=11]
-[ext_resource path="res://Animations/Squish.tres" type="Animation" id=12]
+[ext_resource path="res://Scenes/Block.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Exchange.tscn" type="PackedScene" id=10]
+[ext_resource path="res://AI.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/CampSite.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Sprites/Gradient.png" type="Texture" id=13]
 [ext_resource path="res://WorldTiles.cs" type="Script" id=14]
 [ext_resource path="res://Scenes/ResourcePoint.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Sprites/House.png" type="Texture" id=16]
-[ext_resource path="res://Sprites/HouseOnly.png" type="Texture" id=17]
-[ext_resource path="res://Scenes/TileBase.tscn" type="PackedScene" id=18]
 [ext_resource path="res://Sprites/HousesSmall.png" type="Texture" id=19]
-[ext_resource path="res://Shaders/Squish.gdshader" type="Shader" id=20]
-[ext_resource path="res://Scripts/UI/Exchange.cs" type="Script" id=21]
 [ext_resource path="res://Services.cs" type="Script" id=22]
-
-[sub_resource type="CircleShape2D" id=2]
-radius = 0.0
-
-[sub_resource type="Theme" id=3]
-
-[sub_resource type="RectangleShape2D" id=6]
-extents = Vector2( 38, 42 )
-
-[sub_resource type="ShaderMaterial" id=5]
-shader = ExtResource( 20 )
-shader_param/deformationAmount = 0.16
-shader_param/xScale = 0.3
-shader_param/yScale = 1.0
 
 [node name="Main" type="YSort"]
 script = ExtResource( 3 )
@@ -108,56 +90,12 @@ visible = false
 margin_left = 272.0
 margin_right = 336.0
 
-[node name="TestCollision" type="StaticBody2D" parent="."]
-visible = false
-position = Vector2( 128, 0 )
-
-[node name="Sprite" type="Sprite" parent="TestCollision"]
-texture = ExtResource( 2 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TestCollision"]
-shape = SubResource( 2 )
-
 [node name="Selector" type="Node2D" parent="."]
 visible = false
 script = ExtResource( 5 )
 
 [node name="Sprite" type="Sprite" parent="Selector"]
 texture = ExtResource( 6 )
-
-[node name="TileDisplay" type="Node2D" parent="."]
-visible = false
-script = ExtResource( 9 )
-
-[node name="Sprite" type="Sprite" parent="TileDisplay"]
-texture = ExtResource( 2 )
-
-[node name="Label" type="Label" parent="TileDisplay"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = 27.0
-margin_bottom = 14.0
-theme = SubResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Test"
-
-[node name="Exchange" type="Area2D" parent="."]
-position = Vector2( -143, -32 )
-script = ExtResource( 21 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Exchange"]
-shape = SubResource( 6 )
-
-[node name="Sprite" type="Sprite" parent="Exchange"]
-material = SubResource( 5 )
-texture = ExtResource( 17 )
-
-[node name="Label" parent="Exchange/Sprite" instance=ExtResource( 10 )]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Exchange"]
-playback_speed = 2.0
-anims/Squish = ExtResource( 12 )
-anims/StaticIdle = ExtResource( 11 )
 
 [node name="WorldTiles" type="Node2D" parent="."]
 position = Vector2( -351, -29 )
@@ -183,11 +121,168 @@ visible = false
 position = Vector2( 332, 192 )
 texture = ExtResource( 19 )
 
+[node name="HandCrafted" type="Node" parent="."]
+
+[node name="Block" parent="." instance=ExtResource( 9 )]
+position = Vector2( -320, 448 )
+
+[node name="Block2" parent="." instance=ExtResource( 9 )]
+position = Vector2( -320, 384 )
+
+[node name="Block3" parent="." instance=ExtResource( 9 )]
+position = Vector2( -128, 448 )
+
+[node name="Block4" parent="." instance=ExtResource( 9 )]
+position = Vector2( -256, 320 )
+
+[node name="Block5" parent="." instance=ExtResource( 9 )]
+position = Vector2( -192, 256 )
+
+[node name="Block6" parent="." instance=ExtResource( 9 )]
+position = Vector2( -320, 320 )
+
+[node name="Block7" parent="." instance=ExtResource( 9 )]
+position = Vector2( -256, 256 )
+
+[node name="Block8" parent="." instance=ExtResource( 9 )]
+position = Vector2( -192, 192 )
+
+[node name="Block9" parent="." instance=ExtResource( 9 )]
+position = Vector2( -64, 448 )
+
+[node name="Block10" parent="." instance=ExtResource( 9 )]
+position = Vector2( 0, 384 )
+
+[node name="Block11" parent="." instance=ExtResource( 9 )]
+position = Vector2( 0, 320 )
+
+[node name="Block12" parent="." instance=ExtResource( 9 )]
+position = Vector2( -192, 128 )
+
+[node name="Block13" parent="." instance=ExtResource( 9 )]
+position = Vector2( -128, 128 )
+
+[node name="Block14" parent="." instance=ExtResource( 9 )]
+position = Vector2( -64, 64 )
+
+[node name="Block15" parent="." instance=ExtResource( 9 )]
+position = Vector2( -128, 0 )
+
+[node name="Block16" parent="." instance=ExtResource( 9 )]
+position = Vector2( -128, -64 )
+
+[node name="Block17" parent="." instance=ExtResource( 9 )]
+position = Vector2( -64, -128 )
+
+[node name="Block18" parent="." instance=ExtResource( 9 )]
+position = Vector2( 0, -128 )
+
+[node name="Block19" parent="." instance=ExtResource( 9 )]
+position = Vector2( 64, -128 )
+
+[node name="Block20" parent="." instance=ExtResource( 9 )]
+position = Vector2( 128, -64 )
+
+[node name="Block21" parent="." instance=ExtResource( 9 )]
+position = Vector2( 128, 0 )
+
+[node name="Block22" parent="." instance=ExtResource( 9 )]
+position = Vector2( 128, 64 )
+
+[node name="Block23" parent="." instance=ExtResource( 9 )]
+position = Vector2( 128, 128 )
+
+[node name="Block24" parent="." instance=ExtResource( 9 )]
+position = Vector2( 192, 192 )
+
+[node name="Block25" parent="." instance=ExtResource( 9 )]
+position = Vector2( 64, 320 )
+
+[node name="Block26" parent="." instance=ExtResource( 9 )]
+position = Vector2( 128, 384 )
+
+[node name="Block27" parent="." instance=ExtResource( 9 )]
+position = Vector2( 128, 448 )
+
+[node name="Block28" parent="." instance=ExtResource( 9 )]
+position = Vector2( 128, 512 )
+
+[node name="Block29" parent="." instance=ExtResource( 9 )]
+position = Vector2( 192, 512 )
+
+[node name="Block30" parent="." instance=ExtResource( 9 )]
+position = Vector2( 256, 192 )
+
+[node name="Block31" parent="." instance=ExtResource( 9 )]
+position = Vector2( 320, 256 )
+
+[node name="Block32" parent="." instance=ExtResource( 9 )]
+position = Vector2( 384, 320 )
+
+[node name="Block33" parent="." instance=ExtResource( 9 )]
+position = Vector2( 256, 576 )
+
+[node name="Block34" parent="." instance=ExtResource( 9 )]
+position = Vector2( 320, 512 )
+
+[node name="Block35" parent="." instance=ExtResource( 9 )]
+position = Vector2( 384, 448 )
+
+[node name="Block36" parent="." instance=ExtResource( 9 )]
+position = Vector2( 448, 384 )
+
+[node name="Block37" parent="." instance=ExtResource( 9 )]
+position = Vector2( -256, 512 )
+
+[node name="Block38" parent="." instance=ExtResource( 9 )]
+position = Vector2( -192, 512 )
+
+[node name="Exchange2" parent="." instance=ExtResource( 10 )]
+position = Vector2( 256, 384 )
+
+[node name="Exchange" parent="." instance=ExtResource( 10 )]
+position = Vector2( 256, 448 )
+
+[node name="ResourcePoint2" parent="." instance=ExtResource( 15 )]
+position = Vector2( -256, 448 )
+
 [node name="ResourcePoint" parent="." instance=ExtResource( 15 )]
-position = Vector2( 42, 272 )
+position = Vector2( -192, 384 )
 
-[node name="TileBase" parent="." instance=ExtResource( 18 )]
-position = Vector2( 64, 128 )
+[node name="Building" parent="." instance=ExtResource( 2 )]
+position = Vector2( 256, 512 )
 
-[connection signal="DisplayItem" from="UI" to="TileDisplay" method="OnDisplayItem"]
+[node name="Building2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 320, 448 )
+
+[node name="Building3" parent="." instance=ExtResource( 2 )]
+position = Vector2( 320, 384 )
+
+[node name="Building4" parent="." instance=ExtResource( 2 )]
+position = Vector2( 192, 448 )
+
+[node name="Building5" parent="." instance=ExtResource( 2 )]
+position = Vector2( 384, 384 )
+
+[node name="Building6" parent="." instance=ExtResource( 2 )]
+position = Vector2( -192, 448 )
+
+[node name="Building7" parent="." instance=ExtResource( 2 )]
+position = Vector2( -256, 384 )
+
+[node name="Building8" parent="." instance=ExtResource( 2 )]
+position = Vector2( -64, -64 )
+
+[node name="Building9" parent="." instance=ExtResource( 2 )]
+position = Vector2( -64, 0 )
+
+[node name="AI2" parent="." instance=ExtResource( 11 )]
+position = Vector2( 192, 384 )
+
+[node name="AI" parent="." instance=ExtResource( 11 )]
+position = Vector2( 192, 320 )
+
+[node name="Exchange3" parent="." instance=ExtResource( 12 )]
+position = Vector2( 64, 0 )
+
 [connection signal="PlayerContainerUpdated" from="UI" to="UI/CanvasLayer/MarginContainer/PanelContainer/Hotbar" method="OnPlayerContainerUpdated"]
