@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Godot;
 public class StateMachine {
 
-	private State currentState;
+	protected State currentState;
 	private Dictionary<string, State> states;
 
 	// We might not need this! We can just have a list of state 
@@ -20,6 +20,27 @@ public class StateMachine {
 
 	protected IEnumerable<State> GetStates() {
 		return states.Values;
+	}
+
+	public State GetCurrentState() {
+		return currentState;
+	}
+
+	public bool ValidStateChange(IconData data) { 
+		string input = "";
+		if (currentState.IsValidInput(data.name))
+			input = data.name;
+		else { 
+			foreach (string category in data.GetCategories()) { 
+				if (currentState.IsValidInput(category)) { 
+					input = category;
+					break;
+				}
+			}
+		}
+
+		if (input == "") return false;
+		return true;
 	}
 
 	public string ChangeState(IconData data) {
@@ -49,6 +70,23 @@ public class StateMachine {
 			output = data.name;
 		}
 		return output;
+	}
+}
+
+public class CampSiteMachine : StateMachine { 
+	public CampSiteMachine() { 
+		var sOn = new State("On");
+		var sOff = new State("Off");
+
+		sOff.AddTransition("Paper", "Charcoal", sOn, 50, 0);
+		sOff.AddTransition("Paper", "", sOn, 50, 0);
+
+		sOn.AddTransition("Raw Food", "[Cooked]", sOn, 90, 0);
+		sOn.AddTransition("Raw Food", "Charcoal", sOn, 10, 0);
+		sOn.AddTransition("Paper", "Charcoal", sOn, 100, 0);
+		sOn.AddTransition("Food", "*", sOn, 50, 0);
+		sOn.AddTransition("Food", "Charcoal", sOn, 50, 0);
+		currentState = sOff;
 	}
 }
 
