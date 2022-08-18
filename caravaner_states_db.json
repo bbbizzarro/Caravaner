@@ -1,0 +1,7 @@
+{"name":"FireOff","input":"Paper","output":"Charcoal","toState":"FireOn","probability":50,"inputFactor":0,"skill":"Survival"}
+{"name":"FireOff","input":"Paper","output":null,"toState":"FireOn","probability":50,"inputFactor":0,"skill":"Survival"}
+{"name":"FireOn","input":"Raw Food","output":"[Cooked]","toState":"FireOn","probability":90,"inputFactor":1,"skill":"Cooking"}
+{"name":"FireOn","input":"Raw Food","output":"Charcoal","toState":"FireOn","probability":10,"inputFactor":0,"skill":"Cooking"}
+{"name":"FireOn","input":"Paper","output":"Charcoal","toState":"FireOn","probability":100,"inputFactor":0,"skill":"Survival"}
+{"name":"FireOn","input":"Food","output":"*","toState":"FireOn","probability":50,"inputFactor":1,"skill":"Cooking"}
+{"name":"FireOn","input":"Food","output":"Charcoal","toState":"FireOn","probability":50,"inputFactor":0,"skill":"Cooking"}
