@@ -7,6 +7,7 @@ public class Services : Node {
 	public SpriteDB SpriteDB { get; private set; }
 	public IconInstancer IconInstancer { get; private set; }
 	public TileInstancer TileInstancer { get; private set; }
+	public RandomNumberGenerator RNG { get; private set; }
 
 
 	public override void _Ready() {
@@ -16,6 +17,8 @@ public class Services : Node {
 		SpriteDB = new SpriteDB();
 		IconInstancer = new IconInstancer(GetParent());
 		TileInstancer = new TileInstancer(GetParent());
+		RNG = new RandomNumberGenerator();
+		RNG.Randomize();
 	}
 
 	public override void _Process(float delta) {

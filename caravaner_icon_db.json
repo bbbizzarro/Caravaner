@@ -1,8 +1,12 @@
-{"name":"Building","sprite":"Icon0","type":1,"majorCategory":"any","minorCategory":"any","rarity":101}
-{"name":"Land","sprite":"Icon1","type":1,"majorCategory":"any","minorCategory":"any","rarity":101}
-{"name":"Item","sprite":"Icon2","type":0,"majorCategory":"any","minorCategory":"any","rarity":101}
-{"name":"Bloody Bone","sprite":"Bloody Bone","type":0,"majorCategory":"Scrap","minorCategory":"Organic","rarity":90}
-{"name":"Scrap Metal","sprite":"Scrap Metal","type":0,"majorCategory":"Scrap","minorCategory":"Metal","rarity":0}
-{"name":"Green Mulk","sprite":"Green Mulk","type":0,"majorCategory":"Food","minorCategory":"Dairy","rarity":90}
-{"name":"Old Newspaper","sprite":"Old Newspaper","type":0,"majorCategory":"Scrap","minorCategory":"Paper","rarity":0}
-{"name":"Powdered Mulk","sprite":"Powdered Mulk","type":0,"majorCategory":"Raw Food","minorCategory":"Dairy","rarity":20}
+{"name":"Building","sprite":"Icon0","type":1,"categories":"any","rarity":101}
+{"name":"Land","sprite":"Icon1","type":1,"categories":"any","rarity":101}
+{"name":"Item","sprite":"Icon2","type":0,"categories":"any","rarity":101}
+{"name":"Bloody Bone","sprite":"Bloody Bone","type":0,"categories":"Scrap,Organic","rarity":90}
+{"name":"Scrap Metal","sprite":"Scrap Metal","type":0,"categories":"Scrap,Metal","rarity":0}
+{"name":"Green Mulk","sprite":"Green Mulk","type":0,"categories":"Food,Dairy","rarity":90}
+{"name":"Cooked Mulk Powder","sprite":"Cooked Mulk Powder","type":0,"categories":"Food,Dairy","rarity":101}
+{"name":"Old Newspaper","sprite":"Old Newspaper","type":0,"categories":"Scrap,Paper","rarity":0}
+{"name":"Mulk Powder","sprite":"Mulk Powder","type":0,"categories":"Raw Food,Dairy","rarity":20}
+{"name":"Cricket Kidney","sprite":"Cricket Kidney","type":0,"categories":"Raw Food,Meat","rarity":10}
+{"name":"Cooked Cricket Kidney","sprite":"Cooked Cricket Kidney","type":0,"categories":"Food,Meat","rarity":101}
+{"name":"Charcoal","sprite":"Charcoal","type":0,"categories":"Misc","rarity":101}

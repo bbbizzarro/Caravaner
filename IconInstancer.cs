@@ -25,21 +25,14 @@ public class IconInstancer {
 		}
 	}
 
-	public DragObject CreateFromCategory(Vector2 globalPosition, string majorCategory, string minorCategory) {
+	public DragObject CreateFromCategory(Vector2 globalPosition, string category) {
 		int randValue = rng.RandiRange(0, 100);
 		List<IconData> options;
-		if (majorCategory != "") { 
-			if (minorCategory != "") 
-				options = db.Values.Where(a => a.majorCategory == majorCategory &&
-										 a.rarity <= randValue).ToList();
-			else 
-				options = db.Values.Where(a => a.majorCategory == majorCategory &&
-										 a.minorCategory == minorCategory &&
-										 a.rarity <= randValue).ToList();
-		}
-		else { 
+		if (category != "") 
+			options = db.Values.Where(a => a.InCategory(category) &&
+									  a.rarity <= randValue).ToList();
+		else 
 			options = db.Values.Where(a => a.rarity <= randValue).ToList();
-		}
 
 		if (options.Count != 0) { 
 			return Create(globalPosition,
@@ -78,9 +71,8 @@ public class IconData : ISavable, IRecord<string> {
 	[SerializeField] public string name;
 	[SerializeField] public string sprite;
 	[SerializeField] public int type;
-	[SerializeField] public string majorCategory;
-	[SerializeField] public string minorCategory;
 	[SerializeField] public int rarity; // Rarer than RARITY% of items
+	public HashSet<string> categories = new HashSet<string>();
 
 	public IconData() {}
 
@@ -88,11 +80,34 @@ public class IconData : ISavable, IRecord<string> {
 		return name;
 	}
 
+	public IEnumerable<string> GetCategories() {
+		return categories;
+	}
+
+	public bool InCategory(string category) {
+		return categories.Contains(category);
+	}
+
+	private void LoadCategories(Godot.Collections.Dictionary<string, object> data) {
+		categories = new HashSet<string>();
+		if (data.ContainsKey("categories")) {
+			foreach (string category in ((string)data["categories"]).Split(",")) {
+				categories.Add(category);
+			}
+		}
+	}
+
+	private Godot.Collections.Dictionary<string, object> SaveCategories(Godot.Collections.Dictionary<string, object> data) {
+		data["categories"] = String.Join(",", categories);
+		return data;
+	}
+
 	public void Load(Godot.Collections.Dictionary<string, object> data) {
 		JSONUtils.Deserialize(this, data);
+		LoadCategories(data);
 	}
 
 	public Godot.Collections.Dictionary<string, object> Save() {
-		return JSONUtils.Serialize(this);
+		return SaveCategories(JSONUtils.Serialize(this));
 	}
 }

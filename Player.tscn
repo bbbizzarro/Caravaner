@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Player.cs" type="Script" id=1]
 [ext_resource path="res://EntityView.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Camera.tscn" type="PackedScene" id=3]
 [ext_resource path="res://IconContainer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/PlayerDropPoint.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 9.05539
@@ -18,5 +19,7 @@ shape = SubResource( 1 )
 
 [node name="Camera2D" parent="." instance=ExtResource( 3 )]
 position = Vector2( 0, 0 )
+
+[node name="PlayerDropPoint" parent="." instance=ExtResource( 5 )]
 
 [node name="IconContainer" parent="." instance=ExtResource( 4 )]

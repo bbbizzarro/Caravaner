@@ -1,9 +1,13 @@
-name,sprite,type,majorCategory,minorCategory,rarity
-Building,Icon0,1,any,any,101
-Land,Icon1,1,any,any,101
-Item,Icon2,0,any,any,101
-Bloody Bone,Bloody Bone,0,Scrap,Organic,90
-Scrap Metal,Scrap Metal,0,Scrap,Metal,0
-Green Mulk,Green Mulk,0,Food,Dairy,90
-Old Newspaper,Old Newspaper,0,Scrap,Paper,0
-Powdered Mulk,Powdered Mulk,0,Raw Food,Dairy,20
+name,sprite,type,categories,rarity
+Building,Icon0,1,any,101
+Land,Icon1,1,any,101
+Item,Icon2,0,any,101
+Bloody Bone,Bloody Bone,0,"Scrap,Organic",90
+Scrap Metal,Scrap Metal,0,"Scrap,Metal",0
+Green Mulk,Green Mulk,0,"Food,Dairy",90
+Cooked Mulk Powder,Cooked Mulk Powder,0,"Food,Dairy",101
+Old Newspaper,Old Newspaper,0,"Scrap,Paper",0
+Mulk Powder,Mulk Powder,0,"Raw Food,Dairy",20
+Cricket Kidney,Cricket Kidney,0,"Raw Food,Meat",10
+Cooked Cricket Kidney,Cooked Cricket Kidney,0,"Food,Meat",101
+Charcoal,Charcoal,0,Misc,101

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public class DragObject : Node2D {
 	static DragObject currDragObj;
@@ -18,6 +19,7 @@ public class DragObject : Node2D {
 
 	[Export] private int itemType;
 	[Export] private string itemName;
+	private HashSet<string> tags = new HashSet<string>();
 
 	public static bool HasDragObj() {
 		return currDragObj != null;
@@ -48,6 +50,17 @@ public class DragObject : Node2D {
 		physics.Set(0f, Position.y + 100, Vector2.Zero, Position, 0.5f, 0f);
 		sprite = (Sprite)GetNode("Sprite");
 		shadowSprite = (Sprite)GetNode("Shadow");
+	}
+
+	public void AddTag(string tag) {
+		tags.Add(tag);
+	}
+
+	public bool HasTag(string tag) {
+		return tags.Contains(tag);
+	}
+	public IEnumerable<string> GetTags() {
+		return tags;
 	}
 
 	public void Set(string name, int type, Texture texture) {

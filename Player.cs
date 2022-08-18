@@ -17,6 +17,7 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 	private event ContainerUpdated ContainerUpdated;
 	World world;
 	InventoryUI inventoryUI;
+	PlayerDropPoint playerDropPoint;
 	Animator animator;
 
 	private float INTERACT_DIST = 80f;
@@ -29,6 +30,8 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 		this.world = world;
 		items = new List<int>() { 0, 1, 2, 3, 4, 5 };
 		inventoryUI = (InventoryUI)GetNode("IconContainer");
+		playerDropPoint = (PlayerDropPoint)GetNode("PlayerDropPoint");
+		inventoryUI.Enable(false);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -52,9 +55,11 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 		if (Input.IsActionJustPressed("inventory_toggle")) {
 			if (inventoryUI.IsEnabled()) {
 				inventoryUI.Enable(false);
+				playerDropPoint.Enable(true);
 			}
 			else { 
 				inventoryUI.Enable(true);
+				playerDropPoint.Enable(false);
 			}
 		}
 		// DEBUGGGGGG

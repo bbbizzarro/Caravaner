@@ -26,14 +26,24 @@ public class IconSpawner {
 		}
 	}
 
-	public bool Spawn(string name, Vector2 centerPosition) {
-		DragObject dragObject = Services.Instance.IconInstancer.Create(centerPosition, name);
-		if (dragObject == null) return false;
+	public DragObject SpawnFromCategory(string category, Vector2 centerPosition) {
+		DragObject dragObject = Services.Instance.IconInstancer.CreateFromCategory(centerPosition, category);
+		if (dragObject == null) return null;
 		float speed = 200f;
 		Vector2 velocity = new Vector2(0, -rng.RandfRange(0.2f, 1f));
 		velocity = velocity.Normalized();
 		dragObject.Initialize(centerPosition, speed * velocity, rng.RandfRange(0, 128f));
-		return true;
+		return dragObject;
+	}
+
+	public DragObject Spawn(string name, Vector2 centerPosition) {
+		DragObject dragObject = Services.Instance.IconInstancer.Create(centerPosition, name);
+		if (dragObject == null) return null;
+		float speed = 200f;
+		Vector2 velocity = new Vector2(0, -rng.RandfRange(0.2f, 1f));
+		velocity = velocity.Normalized();
+		dragObject.Initialize(centerPosition, speed * velocity, rng.RandfRange(0, 128f));
+		return dragObject;
 	}
 
 	public void Spawn(float x, Vector2 centerPosition) {
