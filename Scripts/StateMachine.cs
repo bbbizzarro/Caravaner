@@ -1,10 +1,36 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Godot;
 public class StateMachine {
 
 	protected State currentState;
 	private Dictionary<string, State> states;
+
+	public StateMachine() {
+		states = new Dictionary<string, State>();
+	}
+
+	public StateMachine(IEnumerable<TransitionData> data) { 
+		states = new Dictionary<string, State>();
+		foreach (TransitionData t in data) { 
+			if (!states.ContainsKey(t.fromState)) {
+				states.Add(t.fromState, new State(t.fromState));
+			}
+			if (!states.ContainsKey(t.toState)) {
+				states.Add(t.toState, new State(t.toState));
+			}
+			states[t.fromState]
+				.AddTransition(t.input, t.output, states[t.toState], t.probability, t.inputFactor);
+		}
+	}
+
+	public void SetCurrentState(string stateName) {
+		if (!states.ContainsKey(stateName)) {
+			GD.PrintErr(String.Format("State Machine has no state called {0}", stateName));
+			return;
+		}
+		currentState = states[stateName];
+	}
 
 	// We might not need this! We can just have a list of state 
 	// machines and do it that way! Have each state machine

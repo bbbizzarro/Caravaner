@@ -44,3 +44,5 @@ theme = SubResource( 2 )
 playback_speed = 2.0
 anims/Squish = ExtResource( 6 )
 anims/StaticIdle = ExtResource( 5 )
+
+[node name="Timer" type="Timer" parent="."]

@@ -25,15 +25,40 @@ public class IconInstancer {
 		}
 	}
 
+	public List<IconData> GetDataFromCategory(string category) {
+		return db.Values.Where(a => a.InCategory(category)).ToList();
+	}
+
+	public IconData GetRandom() { 
+		int randValue = rng.RandiRange(0, 100);
+		List<IconData> options = db.Values.Where(a => a.rarity <= randValue).ToList();
+		if (options.Count != 0) { 
+			return options[rng.RandiRange(0, options.Count - 1)];
+		}
+		else return null;
+	}
+
 	public DragObject CreateFromCategory(Vector2 globalPosition, string category) {
 		int randValue = rng.RandiRange(0, 100);
 		List<IconData> options;
-		if (category != "") 
+		if (category != "all")
 			options = db.Values.Where(a => a.InCategory(category) &&
 									  a.rarity <= randValue).ToList();
-		else 
+		else if (category == "all")
 			options = db.Values.Where(a => a.rarity <= randValue).ToList();
+		else
+			options = new List<IconData>();
 
+		if (options.Count != 0) { 
+			return Create(globalPosition,
+				options[rng.RandiRange(0, options.Count - 1)].name);
+		}
+		else return null;
+	}
+
+	public DragObject CreateRandom(int maxRarity, Vector2 globalPosition) {
+		int randValue = rng.RandiRange(0, maxRarity);
+		List<IconData> options = db.Values.Where(a => a.rarity <= randValue).ToList();
 		if (options.Count != 0) { 
 			return Create(globalPosition,
 				options[rng.RandiRange(0, options.Count - 1)].name);
@@ -72,6 +97,7 @@ public class IconData : ISavable, IRecord<string> {
 	[SerializeField] public string sprite;
 	[SerializeField] public int type;
 	[SerializeField] public int rarity; // Rarer than RARITY% of items
+	[SerializeField] public int value;
 	public HashSet<string> categories = new HashSet<string>();
 
 	public IconData() {}

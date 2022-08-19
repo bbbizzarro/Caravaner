@@ -1,8 +1,8 @@
-name,input,output,toState,probability,inputFactor,skill
-FireOff,Paper,Charcoal,FireOn,50,0,Survival
-FireOff,Paper,null,FireOn,50,0,Survival
-FireOn,Raw Food,[Cooked],FireOn,90,1,Cooking
-FireOn,Raw Food,Charcoal,FireOn,10,0,Cooking
-FireOn,Paper,Charcoal,FireOn,100,0,Survival
-FireOn,Food,*,FireOn,50,1,Cooking
-FireOn,Food,Charcoal,FireOn,50,0,Cooking
+groupName,fromState,input,output,toState,probability,inputFactor,skill
+CampFire,FireOff,Paper,Charcoal,FireOn,50,0,Survival
+CampFire,FireOff,Paper,None,FireOn,50,0,Survival
+CampFire,FireOn,Raw Food,[Cooked],FireOn,90,1,Cooking
+CampFire,FireOn,Raw Food,Charcoal,FireOn,10,0,Cooking
+CampFire,FireOn,Paper,Charcoal,FireOn,100,0,Survival
+CampFire,FireOn,Food,*,FireOn,50,1,Cooking
+CampFire,FireOn,Food,Charcoal,FireOn,50,0,Cooking

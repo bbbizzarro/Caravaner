@@ -42,7 +42,10 @@ public class InventoryUI : DropPoint {
 				offset = 1;
 			}
 			else { 
-				if ((icons[i - offset].Position - newPositions[i]).Length() <= 0.01f) {
+				if (i - offset < 0 || i - offset >= icons.Count || i < 0 || i >= newPositions.Count){
+					
+				}
+				else if ((icons[i - offset].Position - newPositions[i]).Length() <= 0.01f) {
 					// do nothing
 				}
 				else { 
