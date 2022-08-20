@@ -75,8 +75,8 @@ public class CampSite : MousePoint {
 
 		private void CompleteCooking() { 
 			int roll = Services.Instance.RNG.RandiRange(0, 100);
-			if (roll < 50)
-				campSite.Spawn("Makeshift Meal");
+			if (roll < 90)
+				campSite.iconSpawner.SpawnFromCategory("Cooked", campSite.GlobalPosition);
 			else
 				campSite.Spawn("Ash");
 			campSite.ChangeState(campSite.onState);

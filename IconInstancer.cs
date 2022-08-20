@@ -20,13 +20,38 @@ public class IconInstancer {
 			return db[name];
 		}
 		else {
-			GD.PrintErr("Icon with name {0} not in database.", name);
+			GD.PrintErr(String.Format("Icon with name {0} not in database.", name));
 			return null;
 		}
 	}
 
 	public List<IconData> GetDataFromCategory(string category) {
 		return db.Values.Where(a => a.InCategory(category)).ToList();
+	}
+
+	// Change rarities to categories rather than percentages.
+	public IconData GetRandomIconFromCategory(string category, int rarity) {
+		//int randValue = rng.RandiRange(0, Mathf.Max(0, Mathf.Min(rarity, 100)));
+		int randValue = rng.RandiRange(0, 100);
+
+		List<IconData> options = db.Values.Where(a => a.InCategory(category)).ToList();
+		if (options.Count == 0) return null;
+
+		int total = 0;
+		foreach (IconData icon in options) {
+			total += Mathf.Max(0, 100 - icon.rarity);
+		}
+		int[] bins = new int[options.Count];
+		int curr = 0;
+		for (int i = 0; i < options.Count; ++i) {
+			curr += Mathf.RoundToInt(100f * (100f - (float)options[i].rarity) / (float)total);
+			bins[i] = curr;
+		}
+		for (int i =0; i < bins.Length; ++i) {
+			GD.Print(String.Format("BIN: {0} OPTION: {1} RAND: {2}", bins[i], options[i].name, randValue));
+			if (randValue <= bins[i]) return options[i];
+		}
+		return options[rng.RandiRange(0, options.Count - 1)];
 	}
 
 	public IconData GetRandom() { 
@@ -39,21 +64,9 @@ public class IconInstancer {
 	}
 
 	public DragObject CreateFromCategory(Vector2 globalPosition, string category) {
-		int randValue = rng.RandiRange(0, 100);
-		List<IconData> options;
-		if (category != "all")
-			options = db.Values.Where(a => a.InCategory(category) &&
-									  a.rarity <= randValue).ToList();
-		else if (category == "all")
-			options = db.Values.Where(a => a.rarity <= randValue).ToList();
-		else
-			options = new List<IconData>();
-
-		if (options.Count != 0) { 
-			return Create(globalPosition,
-				options[rng.RandiRange(0, options.Count - 1)].name);
-		}
-		else return null;
+		IconData iconData = GetRandomIconFromCategory(category, 100);
+		if (iconData == null) return null;
+		return Create(globalPosition, iconData.name);
 	}
 
 	public DragObject CreateRandom(int maxRarity, Vector2 globalPosition) {

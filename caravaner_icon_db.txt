@@ -11,5 +11,9 @@ Mulk Powder,Mulk Powder,0,"Raw Food,Dairy,Organic",20,3
 Cricket Kidney,Cricket Kidney,0,"Raw Food,Meat,Organic",10,2
 Cooked Cricket Kidney,Cooked Cricket Kidney,0,"Food,Meat,Organic",101,1
 Charcoal,Charcoal,0,Misc,101,1
-Makeshift Meal,Makeshift Meal,0,"Food,Organic",99,4
+Makeshift Meal,Makeshift Meal,0,"Cooked,Food,Organic",50,4
 Ash,Ash,0,Misc,101,0
+Supercold Fusion Engine,Supercold Fusion Engine,0,"Metal,Advanced Mechanics",99,11
+Antimass Carbonator,Antimass Carbonator,0,"Metal,Advanced Mechanics",99,8
+Unnaturally Tasty Meal,Unnaturally Tasty Meal,0,"Cooked,Food,Organic",90,5
+Terrible Meal,Terrible Meal,0,"Cooked,Food,Organic",50,1

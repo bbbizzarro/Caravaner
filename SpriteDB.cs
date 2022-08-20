@@ -31,7 +31,13 @@ public class SpriteDB {
 	}
 
     public void SetTexture(string name, Sprite sprite) {
-        SetTextLabel(name, sprite);
+        IconData iconData = Services.Instance.IconInstancer.GetData(name);
+        if (iconData != null) { 
+            SetTextLabel(String.Format("{0} ({1})",iconData.name, iconData.value), sprite);
+		}
+        else { 
+            SetTextLabel(name, sprite);
+		}
         return;
 
         if (atlases.ContainsKey(db[name].atlas)) {

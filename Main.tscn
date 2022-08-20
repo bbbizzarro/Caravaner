@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://WorldRenderer.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/Building.tscn" type="PackedScene" id=2]
@@ -16,6 +16,8 @@
 [ext_resource path="res://WorldTiles.cs" type="Script" id=14]
 [ext_resource path="res://Scenes/ResourcePoint.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Sprites/House.png" type="Texture" id=16]
+[ext_resource path="res://Scenes/Mechanist.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Scenes/Container.tscn" type="PackedScene" id=18]
 [ext_resource path="res://Sprites/HousesSmall.png" type="Texture" id=19]
 [ext_resource path="res://Services.cs" type="Script" id=22]
 
@@ -284,5 +286,11 @@ position = Vector2( 192, 320 )
 
 [node name="Exchange3" parent="." instance=ExtResource( 12 )]
 position = Vector2( 64, 0 )
+
+[node name="Exchange4" parent="." instance=ExtResource( 17 )]
+position = Vector2( -128, 192 )
+
+[node name="Container" parent="." instance=ExtResource( 18 )]
+position = Vector2( 64, 64 )
 
 [connection signal="PlayerContainerUpdated" from="UI" to="UI/CanvasLayer/MarginContainer/PanelContainer/Hotbar" method="OnPlayerContainerUpdated"]

@@ -6,6 +6,8 @@
 -------------------------
 -------------------------
 
+Might want to change rarity to categories rather than percentages.
+
 - [ ] Add states with timers
 	  We have the ability to keep a lot of the game logic in easy to write
 	  classes!

@@ -7,6 +7,7 @@ public abstract class DropPoint : Node2D {
 	protected bool mouseIsOver;
 	bool enabled = true;
 	protected CollisionShape2D collShape;
+	Vector2 lastLocalPosition = Vector2.Zero;
 
 	protected static void SetCurrDropPoint(DropPoint iconContainer) {
 		if (currDropPoint != null && currDropPoint != iconContainer) {
@@ -97,9 +98,10 @@ public abstract class DropPoint : Node2D {
 	public void Enable(bool enable) { 
 		if (enable) {
 			enabled = true;
-			Position = new Vector2(0, 0);
+			Position = lastLocalPosition;
 		}
 		else {
+			lastLocalPosition = Position;
 			GlobalPosition = new Vector2(-1000, 1000);
 			enabled = false;
 		}

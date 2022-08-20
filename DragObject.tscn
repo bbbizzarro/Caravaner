@@ -8,6 +8,7 @@
 extents = Vector2( 32, 32 )
 
 [node name="DragObject" type="KinematicBody2D"]
+z_index = 1
 collision_layer = 2
 collision_mask = 0
 input_pickable = true

@@ -7,10 +7,37 @@ public class WorldTiles : DropPoint {
 	Dictionary<Vector2Int, int> map;
 	float scale = 64f;
 	Sprite selector;
+	private readonly PackedScene resourceScene = (PackedScene)ResourceLoader.Load("res://Scenes/ResourcePoint.tscn");
 
 	public override void _Ready() {
 		map = new Dictionary<Vector2Int, int>();
 		selector = (Sprite)GetNode("Selector");
+	}
+
+	private void GenerateScene() {
+		var rng = new RandomNumberGenerator();
+		rng.Randomize();
+		List<Vector2Int> locs = GetClosedLocations();
+		Vector2Int v = Vector2Int.Zero;
+		do {
+			v = new Vector2Int(rng.RandiRange(-5, 5), rng.RandiRange(0, -10));
+		} while (locs.Contains(v));
+		Node2D r = (Node2D)resourceScene.Instance();
+		GetParent().AddChild(r);
+		r.GlobalPosition = GridToWorld(v);
+		GD.Print(r.GlobalPosition);
+	}
+
+	private List<Vector2Int> GetClosedLocations() {
+		var validLocations = new List<Vector2Int>();
+		foreach (Node n in GetParent().GetChildren()) { 
+			if (n.Name.Contains("Block") 
+				|| n.Name.Contains("Building")
+				|| n.Name.Contains("Exchange")) {
+				validLocations.Add(WorldToGrid(((Node2D)n).GlobalPosition));
+			}
+		}
+		return validLocations;
 	}
 
 	private Vector2Int WorldToGrid(Vector2 pos) {
@@ -37,7 +64,8 @@ public class WorldTiles : DropPoint {
 		}
 
 		if (Input.IsActionJustPressed("interact")) {
-			NewWorld();
+			//NewWorld();
+			GenerateScene();
 		}
 	}
 

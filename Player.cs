@@ -9,6 +9,8 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 	[SerializeField] private int scale = 64;
 	[SerializeField] private List<int> items;
 
+	private float speedModifier = 1f;
+
 	[Export] public float testProperty = 0f;
 	private Vector2 direction = Vector2.Zero;
 	private Vector2Int lastPos = Vector2Int.Zero;
@@ -37,8 +39,10 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta) {
 		direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+		if (DragObject.IsDragging()) speedModifier = 0.3f;
+		else speedModifier = 1f;
 		//MoveAndCollide(MAX_FRAME_RATE * delta * speed * direction);
-		MoveAndSlide(speed * direction);
+		MoveAndSlide(speedModifier * speed * direction);
 		if (direction.Length() > 0) {
 			animator.Walk();
 		}
@@ -47,9 +51,6 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 		}
 
 		TrackLocation();
-		if (Input.IsActionJustPressed("interact")) {
-			Interact();
-		}
 		HandlePointerClick();
 		// DEBUGGGGGG
 		if (Input.IsActionJustPressed("inventory_toggle")) {
@@ -77,9 +78,6 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 				world.UpdateTile(mousePos);
 			}
 		}
-	}
-
-	private void Interact() {
 	}
 
 	private void TrackLocation() {

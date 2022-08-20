@@ -22,10 +22,4 @@ public class Services : Node {
 		RNG.Randomize();
 		StateMachineDB = new StateMachineDB("res://caravaner_states_db.json");
 	}
-
-	public override void _Process(float delta) {
-		if (Input.IsActionJustPressed("interact")) { 
-			IconInstancer.Create(new Vector2(-64, 64), "Building");
-		}
-	}
 }

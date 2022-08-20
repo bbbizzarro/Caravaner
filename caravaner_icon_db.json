@@ -10,5 +10,9 @@
 {"name":"Cricket Kidney","sprite":"Cricket Kidney","type":0,"categories":"Raw Food,Meat,Organic","rarity":10,"value":2}
 {"name":"Cooked Cricket Kidney","sprite":"Cooked Cricket Kidney","type":0,"categories":"Food,Meat,Organic","rarity":101,"value":1}
 {"name":"Charcoal","sprite":"Charcoal","type":0,"categories":"Misc","rarity":101,"value":1}
-{"name":"Makeshift Meal","sprite":"Makeshift Meal","type":0,"categories":"Food,Organic","rarity":99,"value":4}
+{"name":"Makeshift Meal","sprite":"Makeshift Meal","type":0,"categories":"Cooked,Food,Organic","rarity":50,"value":4}
 {"name":"Ash","sprite":"Ash","type":0,"categories":"Misc","rarity":101,"value":0}
+{"name":"Supercold Fusion Engine","sprite":"Supercold Fusion Engine","type":0,"categories":"Metal,Advanced Mechanics","rarity":99,"value":11}
+{"name":"Antimass Carbonator","sprite":"Antimass Carbonator","type":0,"categories":"Metal,Advanced Mechanics","rarity":99,"value":8}
+{"name":"Unnaturally Tasty Meal","sprite":"Unnaturally Tasty Meal","type":0,"categories":"Cooked,Food,Organic","rarity":90,"value":5}
+{"name":"Terrible Meal","sprite":"Terrible Meal","type":0,"categories":"Cooked,Food,Organic","rarity":50,"value":1}
