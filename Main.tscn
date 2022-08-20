@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://WorldRenderer.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/Building.tscn" type="PackedScene" id=2]
@@ -19,11 +19,42 @@
 [ext_resource path="res://Scenes/Mechanist.tscn" type="PackedScene" id=17]
 [ext_resource path="res://Scenes/Container.tscn" type="PackedScene" id=18]
 [ext_resource path="res://Sprites/HousesSmall.png" type="Texture" id=19]
+[ext_resource path="res://Sprites/Cube.png" type="Texture" id=20]
+[ext_resource path="res://Sprites/ConceptArt/PortraitConcept.png" type="Texture" id=21]
 [ext_resource path="res://Services.cs" type="Script" id=22]
+[ext_resource path="res://Sprites/hud_element_empty.png" type="Texture" id=23]
+[ext_resource path="res://Sprites/hud_element_bar.png" type="Texture" id=24]
+
+[sub_resource type="Animation" id=1]
+resource_name = "RotatingCube"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 20 ]
+}
 
 [node name="Main" type="YSort"]
 script = ExtResource( 3 )
 NEW_GAME = true
+
+[node name="View" type="Node2D" parent="."]
+
+[node name="ViewportContainer" type="ViewportContainer" parent="View"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Viewport" type="Viewport" parent="View/ViewportContainer"]
+size = Vector2( 100, 100 )
+handle_input_locally = false
+render_target_update_mode = 3
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -91,6 +122,39 @@ margin_right = 268.0
 visible = false
 margin_left = 272.0
 margin_right = 336.0
+
+[node name="TextureRect" type="TextureRect" parent="UI/CanvasLayer"]
+margin_left = -63.0
+margin_top = 320.0
+margin_right = 449.0
+margin_bottom = 832.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 21 )
+
+[node name="TextureProgress" type="TextureProgress" parent="UI/CanvasLayer"]
+anchor_left = 0.119792
+anchor_top = 0.798148
+anchor_right = 1.11979
+anchor_bottom = 1.79815
+margin_right = -832.0
+margin_bottom = -412.0
+value = 100.0
+texture_over = ExtResource( 23 )
+texture_progress = ExtResource( 24 )
+fill_mode = 4
+radial_initial_angle = 199.8
+radial_fill_degrees = 323.6
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="TextureRect2" type="TextureRect" parent="UI/CanvasLayer"]
+visible = false
+margin_left = 115.0
+margin_top = 431.0
+margin_right = 243.0
+margin_bottom = 559.0
+texture = ExtResource( 23 )
 
 [node name="Selector" type="Node2D" parent="."]
 visible = false
@@ -292,5 +356,16 @@ position = Vector2( -128, 192 )
 
 [node name="Container" parent="." instance=ExtResource( 18 )]
 position = Vector2( 64, 64 )
+
+[node name="Sprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( 320, 64 )
+texture = ExtResource( 20 )
+hframes = 5
+vframes = 5
+frame = 19
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
+anims/RotatingCube = SubResource( 1 )
 
 [connection signal="PlayerContainerUpdated" from="UI" to="UI/CanvasLayer/MarginContainer/PanelContainer/Hotbar" method="OnPlayerContainerUpdated"]
