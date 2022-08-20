@@ -4,11 +4,10 @@ using System;
 public class Camera : Camera2D {
 	ShaderMaterial postProcMat;
 	[Export] float speed;
-	float amt;
+	float amt = 0f;
 
 	public override void _Ready() {
 		postProcMat = (ShaderMaterial)((CanvasItem)GetNode("CanvasLayer/ColorRect")).Material;
-		amt = 0f;
 	}
 
 	public override void _Process(float delta) {
