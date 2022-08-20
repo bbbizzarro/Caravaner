@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="100mm"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
+   sodipodi:docname="night_palette.svg"
+   inkscape:export-filename="/Users/brandon/Caravaner/Sprites/night_palette.png"
+   inkscape:export-xdpi="32.512001"
+   inkscape:export-ydpi="32.512001"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.54175695"
+     inkscape:cx="227.962"
+     inkscape:cy="443.00309"
+     inkscape:window-width="1312"
+     inkscape:window-height="746"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient6280">
+      <stop
+         style="stop-color:#11132e;stop-opacity:1"
+         offset="0"
+         id="stop6272" />
+      <stop
+         style="stop-color:#293074;stop-opacity:1"
+         offset="0.3247146"
+         id="stop6274" />
+      <stop
+         style="stop-color:#5969ff;stop-opacity:1"
+         offset="0.71721309"
+         id="stop6276" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="1"
+         id="stop6278" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient2058">
+      <stop
+         style="stop-color:#0a0b1b;stop-opacity:1;"
+         offset="0"
+         id="stop2054" />
+      <stop
+         style="stop-color:#293074;stop-opacity:1"
+         offset="0.34016392"
+         id="stop4214" />
+      <stop
+         style="stop-color:#5969ff;stop-opacity:1"
+         offset="0.71721309"
+         id="stop4344" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="1"
+         id="stop2056" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6280"
+       id="linearGradient2060"
+       x1="-0.97675991"
+       y1="51.035725"
+       x2="105.00173"
+       y2="51.035723"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2058"
+       id="linearGradient5997"
+       gradientUnits="userSpaceOnUse"
+       x1="-14.163024"
+       y1="51.035725"
+       x2="105.00173"
+       y2="51.035723"
+       gradientTransform="translate(83.024625,115.01352)" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1730"
+       transform="translate(19.419801,144.65396)"
+       inkscape:export-filename="/Users/brandon/Caravaner/Sprites/night_palette.png"
+       inkscape:export-xdpi="32.512001"
+       inkscape:export-ydpi="32.512001">
+      <rect
+         style="fill:#b64949;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+         id="rect1030"
+         width="142.47876"
+         height="129.2135"
+         x="-30.460976"
+         y="-23.091385"
+         ry="0" />
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+         id="rect1137"
+         width="40.709042"
+         height="129.2135"
+         x="71.308739"
+         y="-23.091385" />
+      <rect
+         style="fill:#5969ff;fill-opacity:1;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+         id="rect1491"
+         width="34.817268"
+         height="129.2135"
+         x="38.673595"
+         y="-23.091385" />
+      <rect
+         style="fill:#293074;fill-opacity:1;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+         id="rect1491-3"
+         width="37.32119"
+         height="129.2135"
+         x="2.3030055"
+         y="-23.091385" />
+      <rect
+         style="fill:#0a0b1b;fill-opacity:1;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+         id="rect1491-3-1"
+         width="37.32119"
+         height="129.2135"
+         x="-33.151157"
+         y="-23.091385" />
+    </g>
+    <rect
+       style="fill:url(#linearGradient2060);fill-opacity:1;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       id="rect2022"
+       width="108.42039"
+       height="107.93201"
+       x="-3.4186609"
+       y="-2.9302807" />
+    <rect
+       style="fill:url(#linearGradient5997);fill-opacity:1;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       id="rect2022-5"
+       width="108.42039"
+       height="107.93201"
+       x="79.605965"
+       y="112.08324" />
+  </g>
+</svg>

@@ -92,7 +92,7 @@ public class InventoryUI : DropPoint {
 			dragObject.Position = relPos;
 			icons.Remove(dragObject);
 			dragObject.GetParent().RemoveChild(dragObject);
-			GetNode("/root/Main").AddChild(dragObject);
+			Services.Instance.Main.AddChild(dragObject);
 			RepositionSlots(icons.Count, -1);
 			collShape.Scale = new Vector2(icons.Count + 1.5f, collShape.Scale.y);
 			return true;
