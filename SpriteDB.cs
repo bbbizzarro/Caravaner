@@ -31,7 +31,7 @@ public class SpriteDB {
 	}
 
     public void SetTexture(string name, Sprite sprite) {
-        IconData iconData = Services.Instance.IconInstancer.GetData(name);
+        IconData iconData = Services.Instance.IconInstancer.Get(name);
         if (iconData != null) { 
             SetTextLabel(String.Format("{0} ({1})",iconData.name, iconData.value), sprite);
 		}

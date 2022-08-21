@@ -17,6 +17,13 @@ public class DragObject : Node2D {
 	private DropPoint iconContainer;
 	private bool mouseOver;
 
+	private const float InitSpeed = 200f;
+	private const float MaxInitYLim = 128f;
+	private const float Gravity = 900f;
+	private const float Drag = 0.5f;
+	private const float PhysicsTimeLimit = 2f;
+	private RandomNumberGenerator rng = new RandomNumberGenerator();
+
 	[Export] private int itemType;
 	[Export] private string itemName;
 	private HashSet<string> tags = new HashSet<string>();
@@ -50,6 +57,7 @@ public class DragObject : Node2D {
 		physics.Set(0f, Position.y + 100, Vector2.Zero, Position, 0.5f, 0f);
 		sprite = (Sprite)GetNode("Sprite");
 		shadowSprite = (Sprite)GetNode("Shadow");
+		rng.Randomize();
 	}
 
 	public void AddTag(string tag) {
@@ -171,9 +179,10 @@ public class DragObject : Node2D {
 		}
 	}
 
-	public void Initialize(Vector2 startPosition, Vector2 velocity, float yLim) {
+	public void Initialize(Vector2 startPosition, Vector2 direction) {
 		Position = startPosition;
-		physics.Set(900f, Position.y + yLim, velocity, Position, 0.5f, 2f);
+		physics.Set(Gravity, Position.y + rng.RandfRange(0, MaxInitYLim),
+					InitSpeed * direction, Position, Drag, PhysicsTimeLimit);
 	}
 
 	private void HandleAnimation(float delta) {

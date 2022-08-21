@@ -6,90 +6,53 @@ public class IconInstancer {
 	private readonly PackedScene iconScene = (PackedScene)ResourceLoader.Load("res://DragObject.tscn");
 	private readonly Dictionary<string, IconData> db;
 	private readonly Node parent;
-	private RandomNumberGenerator rng = new RandomNumberGenerator();
+	private readonly RandomNumberGenerator rng = new RandomNumberGenerator();
+	private readonly Rarity[] rarities = new Rarity[]
+			{Rarity.Common,   Rarity.Uncommon,  Rarity.Rare,
+			 Rarity.Singular, Rarity.Legendary, Rarity.Ludicrous};
 
 	public IconInstancer(Node parent) {
 		rng.Randomize();
 		this.parent = parent;
-		var csv = new CSV<IconData>();
-		db = csv.LoadFromFile("res://caravaner_icon_db.json");
+		db = new CSV<IconData>().LoadFromFile("res://caravaner_icon_db.json");
 	}
 
-	public IconData GetData(string name) { 
-		if (db.ContainsKey(name)) {
-			return db[name];
-		}
-		else {
-			GD.PrintErr(String.Format("Icon with name {0} not in database.", name));
-			return null;
-		}
-	}
-
-	public List<IconData> GetDataFromCategory(string category) {
-		return db.Values.Where(a => a.InCategory(category)).ToList();
-	}
-
-	// Change rarities to categories rather than percentages.
-	public IconData GetRandomIconFromCategory(string category, int rarity) {
-		//int randValue = rng.RandiRange(0, Mathf.Max(0, Mathf.Min(rarity, 100)));
-		int randValue = rng.RandiRange(0, 100);
-
-		List<IconData> options = db.Values.Where(a => a.InCategory(category)).ToList();
-		if (options.Count == 0) return null;
-
-		int total = 0;
-		foreach (IconData icon in options) {
-			total += Mathf.Max(0, 100 - icon.rarity);
-		}
-		int[] bins = new int[options.Count];
+	public Rarity Roll(int modifier) {
+		int roll = Mathf.Clamp(rng.RandiRange(0, 100) + modifier, 0, 100);
 		int curr = 0;
-		for (int i = 0; i < options.Count; ++i) {
-			curr += Mathf.RoundToInt(100f * (100f - (float)options[i].rarity) / (float)total);
-			bins[i] = curr;
+		foreach (Rarity rarity in rarities) { 
+			curr += (int)rarity;
+			if (roll <= curr) {
+				GD.Print(rarity);
+				return rarity;
+			}
 		}
-		for (int i =0; i < bins.Length; ++i) {
-			GD.Print(String.Format("BIN: {0} OPTION: {1} RAND: {2}", bins[i], options[i].name, randValue));
-			if (randValue <= bins[i]) return options[i];
-		}
+		GD.PrintErr("Invalid rarity. rolled");
+		return Rarity.Common;
+	}
+
+	public IconData Get(string name) {
+		if (!db.ContainsKey(name)) return null;
+		return db[name];
+	}
+
+	public IconData Select(string category, string subcategory, 
+							string material, string state, 
+							Rarity rarity, int value) {
+		if (rarity == Rarity.Any) rarity = Roll(0);
+		var options
+			= db.Values.Where(i => InCategory(i.category, category) &&
+								   IsString(i.subcategory, subcategory) &&
+								   IsString(i.material, material) &&
+								   IsString(i.state, state) &&
+								   IsRarity(i.rarity, rarity) &&
+								   IsValue(i.value, value)).ToList();
+
+		if (options.Count == 0) return null;
 		return options[rng.RandiRange(0, options.Count - 1)];
 	}
 
-	public IconData GetRandom() { 
-		int randValue = rng.RandiRange(0, 100);
-		List<IconData> options = db.Values.Where(a => a.rarity <= randValue).ToList();
-		if (options.Count != 0) { 
-			return options[rng.RandiRange(0, options.Count - 1)];
-		}
-		else return null;
-	}
-
-	public DragObject CreateFromCategory(Vector2 globalPosition, string category) {
-		IconData iconData = GetRandomIconFromCategory(category, 100);
-		if (iconData == null) return null;
-		return Create(globalPosition, iconData.name);
-	}
-
-	public DragObject CreateRandom(int maxRarity, Vector2 globalPosition) {
-		int randValue = rng.RandiRange(0, maxRarity);
-		List<IconData> options = db.Values.Where(a => a.rarity <= randValue).ToList();
-		if (options.Count != 0) { 
-			return Create(globalPosition,
-				options[rng.RandiRange(0, options.Count - 1)].name);
-		}
-		else return null;
-	}
-
-	public DragObject CreateRandom(Vector2 globalPosition) {
-		int randValue = rng.RandiRange(0, 100);
-		List<IconData> options = db.Values.Where(a => a.rarity <= randValue).ToList();
-		if (options.Count != 0) { 
-			return Create(globalPosition,
-				options[rng.RandiRange(0, options.Count - 1)].name);
-		}
-		else return null;
-	}
-
-	public DragObject Create(Vector2 globalPosition, string name) { 
+	public DragObject Spawn(string name, Vector2 globalPosition) { 
 		if (db.ContainsKey(name)) {
 			var icon = (DragObject)iconScene.Instance();
 			parent.AddChild(icon);
@@ -103,15 +66,93 @@ public class IconInstancer {
 			return null;
 		}
 	}
+
+	public List<IconData> SelectMany(int count, string category, string subcategory,
+									 string material, string state,
+									 Rarity rarity, int value) {
+		var icons = new List<IconData>();
+		for (int i = 0; i < count; ++i) {
+			var iconData = Select(category, subcategory, material, state, rarity, value);
+			if (iconData != null) {
+				icons.Add(iconData);
+			}
+		}
+		return icons;
+	}
+
+	public void SpawnGroup(Vector2 centerPosition, IEnumerable<IconData> icons) {
+		var iconList = icons.ToList();
+		if (iconList.Count == 0) return;
+		else if (iconList.Count == 1) {
+			Place(rng.RandfRange(-0.5f, 0.5f), iconList[0], centerPosition);
+			return;
+		}
+		else if (iconList.Count == 2) { 
+			Place(rng.RandfRange(-1f, -0.2f), iconList[0], centerPosition);
+			Place(rng.RandfRange(0.2f, 1f), iconList[1], centerPosition);
+			return;
+		}
+
+		float delta = 2f / (iconList.Count - 1f);
+		float start = -1f;
+		for (int i = 0; i < iconList.Count; ++i) { 
+			Place(start, iconList[i], centerPosition);
+			start += delta;
+		}
+	}
+
+	public void Place(float x, IconData iconData, Vector2 centerPosition) {
+		DragObject dragObject = Spawn(iconData.name, centerPosition);
+		if (dragObject == null) return;
+		Vector2 direction = new Vector2(x, -rng.RandfRange(0.2f, 1f)).Normalized();
+		dragObject.Initialize(centerPosition, direction);
+	}
+
+	private bool IsRarity(Rarity candidate, Rarity required) {
+		return required == Rarity.None || candidate >= required;
+	}
+
+	private bool IsString(string candidate, string required) {
+		if (!required.Contains("|")) { 
+			return required == "*" || candidate == required;
+		}
+		foreach (string category in required.Split('|')) { 
+			if (category == candidate) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private bool InCategory(string candidate, string required) {
+		if (!required.Contains("|")) { 
+			return required == "*" || candidate == required;
+		}
+		foreach (string category in required.Split('|')) { 
+			if (category == candidate) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private bool IsValue(int candidate, int required) {
+		return required < 0 || candidate == required;
+	}
+
+
 }
 
 public class IconData : ISavable, IRecord<string> {
 	[SerializeField] public string name;
 	[SerializeField] public string sprite;
 	[SerializeField] public int type;
-	[SerializeField] public int rarity; // Rarer than RARITY% of items
+	[SerializeField] public string category;
+	[SerializeField] public string subcategory;
+	[SerializeField] public string material;
+	[SerializeField] public string state;
+	public Rarity rarity; 
 	[SerializeField] public int value;
-	public HashSet<string> categories = new HashSet<string>();
 
 	public IconData() {}
 
@@ -119,34 +160,30 @@ public class IconData : ISavable, IRecord<string> {
 		return name;
 	}
 
-	public IEnumerable<string> GetCategories() {
-		return categories;
-	}
-
 	public bool InCategory(string category) {
-		return categories.Contains(category);
-	}
-
-	private void LoadCategories(Godot.Collections.Dictionary<string, object> data) {
-		categories = new HashSet<string>();
-		if (data.ContainsKey("categories")) {
-			foreach (string category in ((string)data["categories"]).Split(",")) {
-				categories.Add(category);
-			}
-		}
-	}
-
-	private Godot.Collections.Dictionary<string, object> SaveCategories(Godot.Collections.Dictionary<string, object> data) {
-		data["categories"] = String.Join(",", categories);
-		return data;
+		return this.category == category;
 	}
 
 	public void Load(Godot.Collections.Dictionary<string, object> data) {
+		Enum.TryParse((string)data["rarity"], out rarity);
 		JSONUtils.Deserialize(this, data);
-		LoadCategories(data);
 	}
 
 	public Godot.Collections.Dictionary<string, object> Save() {
-		return SaveCategories(JSONUtils.Serialize(this));
+		var data = JSONUtils.Serialize(this);
+		data["rarity"] = rarity.ToString();
+		return data;
 	}
+}
+
+public enum Rarity { 
+	Common = 50,
+	Uncommon = 30,
+	Rare = 10,
+	Singular = 6,
+	Legendary = 3,
+	Ludicrous = 1,
+	Unique = 0,
+	None = 0,
+	Any = 0
 }

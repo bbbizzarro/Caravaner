@@ -3,27 +3,26 @@ using System;
 using System.Collections.Generic;
 
 public class Exchange : MousePoint {
-	IconSpawner iconSpawner;
 	protected IconData itemBeingSold;
 	protected int total = 0;
 	Label label;
 	Timer timer;
 	RandomNumberGenerator rng;
+	IconInstancer iconInstancer;
 
 	public override void _Ready() {
 		base._Ready();
 		label = (Label)GetNode("Sprite/Label");
 		timer = (Timer)GetNode("Timer");
 		timer.Connect("timeout", this, nameof(ResetClickPreview));
-		iconSpawner = new IconSpawner();
 		rng = new RandomNumberGenerator();
 		rng.Randomize();
 		SetItem();
 	}
 
-	protected virtual void SetItem() { 
+	protected virtual void SetItem() {
 		itemBeingSold = Services.Instance.IconInstancer
-			.GetRandom();
+			.Select("*", "*", "*", "*", Rarity.Any, -1);
 	}
 
 	protected virtual void AddToValue(IconData input) { 
@@ -44,11 +43,12 @@ public class Exchange : MousePoint {
 	public override bool Add(DragObject dragObject) {
 		if (itemBeingSold == null) return false;
 		IconData input = Services.Instance.IconInstancer
-			.GetData(dragObject.GetItemName());
+			.Get(dragObject.GetItemName());
 		dragObject.Destroy();
 		AddToValue(input);
 		if (total >= itemBeingSold.value) { 
-			iconSpawner.Spawn(itemBeingSold.name, GlobalPosition);
+			Services.Instance.IconInstancer
+				.Spawn(itemBeingSold.name, GlobalPosition);
 			total = 0;
 			return true;
 		}

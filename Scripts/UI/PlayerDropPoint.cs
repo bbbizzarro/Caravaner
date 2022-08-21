@@ -4,7 +4,7 @@ using System;
 public class PlayerDropPoint : DropPoint {
 
 	public override bool Add(DragObject dragObject) {
-		IconData iconData = Services.Instance.IconInstancer.GetData(dragObject.GetItemName());
+		IconData iconData = Services.Instance.IconInstancer.Get(dragObject.GetItemName());
 		if (iconData.InCategory("Food")) { 
 			dragObject.Destroy();
 			return true;

@@ -1,18 +1,22 @@
-{"name":"Building","sprite":"Icon0","type":1,"categories":"any","rarity":101,"value":1}
-{"name":"Land","sprite":"Icon1","type":1,"categories":"any","rarity":101,"value":1}
-{"name":"Item","sprite":"Icon2","type":0,"categories":"any","rarity":101,"value":1}
-{"name":"Bloody Bone","sprite":"Bloody Bone","type":0,"categories":"Scrap,Organic","rarity":90,"value":1}
-{"name":"Scrap Metal","sprite":"Scrap Metal","type":0,"categories":"Scrap,Metal","rarity":0,"value":1}
-{"name":"Green Mulk","sprite":"Green Mulk","type":0,"categories":"Food,Dairy,Organic","rarity":90,"value":4}
-{"name":"Cooked Mulk Powder","sprite":"Cooked Mulk Powder","type":0,"categories":"Food,Dairy,Organic","rarity":101,"value":3}
-{"name":"Old Newspaper","sprite":"Old Newspaper","type":0,"categories":"Scrap,Paper,Organic","rarity":0,"value":1}
-{"name":"Mulk Powder","sprite":"Mulk Powder","type":0,"categories":"Raw Food,Dairy,Organic","rarity":20,"value":3}
-{"name":"Cricket Kidney","sprite":"Cricket Kidney","type":0,"categories":"Raw Food,Meat,Organic","rarity":10,"value":2}
-{"name":"Cooked Cricket Kidney","sprite":"Cooked Cricket Kidney","type":0,"categories":"Food,Meat,Organic","rarity":101,"value":1}
-{"name":"Charcoal","sprite":"Charcoal","type":0,"categories":"Misc","rarity":101,"value":1}
-{"name":"Makeshift Meal","sprite":"Makeshift Meal","type":0,"categories":"Cooked,Food,Organic","rarity":50,"value":4}
-{"name":"Ash","sprite":"Ash","type":0,"categories":"Misc","rarity":101,"value":0}
-{"name":"Supercold Fusion Engine","sprite":"Supercold Fusion Engine","type":0,"categories":"Metal,Advanced Mechanics","rarity":99,"value":11}
-{"name":"Antimass Carbonator","sprite":"Antimass Carbonator","type":0,"categories":"Metal,Advanced Mechanics","rarity":99,"value":8}
-{"name":"Unnaturally Tasty Meal","sprite":"Unnaturally Tasty Meal","type":0,"categories":"Cooked,Food,Organic","rarity":90,"value":5}
-{"name":"Terrible Meal","sprite":"Terrible Meal","type":0,"categories":"Cooked,Food,Organic","rarity":50,"value":1}
+{"name":"Building","sprite":"Icon0","type":1,"category":"any","subcategory":"Generic","material":"Material","state":"Original","rarity":"Unique","value":1}
+{"name":"Land","sprite":"Icon1","type":1,"category":"any","subcategory":"Generic","material":"Material","state":"Original","rarity":"Unique","value":1}
+{"name":"Item","sprite":"Icon2","type":0,"category":"any","subcategory":"Generic","material":"Material","state":"Original","rarity":"Unique","value":1}
+{"name":"Bloody Bone","sprite":"Bloody Bone","type":0,"category":"Food","subcategory":"Bone Meal","material":"Bone","state":"Raw","rarity":"Common","value":1}
+{"name":"Grisly Stuffed Marrow","sprite":"Grisly Stuffed Marrow","type":0,"category":"Food","subcategory":"Bone Meal","material":"Bone","state":"Cooked","rarity":"Common","value":2}
+{"name":"Bubbling Green Mulk","sprite":"Bubbling Green Mulk","type":0,"category":"Food","subcategory":"Green Mulk","material":"Dairy","state":"Cooked","rarity":"Uncommon","value":4}
+{"name":"Cooked Mulk Powder","sprite":"Cooked Mulk Powder","type":0,"category":"Food","subcategory":"Green Mulk","material":"Dairy","state":"Cooked","rarity":"Uncommon","value":3}
+{"name":"Mulk Powder","sprite":"Mulk Powder","type":0,"category":"Food","subcategory":"Green Mulk","material":"Dairy","state":"Raw","rarity":"Common","value":3}
+{"name":"Scrap Metal","sprite":"Scrap Metal","type":0,"category":"Scrap","subcategory":"Generic","material":"Metal","state":"Original","rarity":"Common","value":1}
+{"name":"Old Newspaper","sprite":"Old Newspaper","type":0,"category":"Scrap","subcategory":"Generic","material":"Paper","state":"Original","rarity":"Common","value":1}
+{"name":"Cricket Kidney","sprite":"Cricket Kidney","type":0,"category":"Food","subcategory":"Cricket Kidney","material":"Insect","state":"Raw","rarity":"Common","value":2}
+{"name":"Cooked Cricket Kidney","sprite":"Cooked Cricket Kidney","type":0,"category":"Food","subcategory":"Cricket Kidney","material":"Insect","state":"Cooked","rarity":"Common","value":1}
+{"name":"Spent Charcoal","sprite":"Spent Charcoal","type":0,"category":"Waste","subcategory":"Generic","material":"Carbon","state":"Original","rarity":"Common","value":1}
+{"name":"Ash","sprite":"Ash","type":0,"category":"Waste","subcategory":"Generic","material":"Carbon","state":"Original","rarity":"Common","value":0}
+{"name":"Meat Slop","sprite":"Makeshift Meal","type":0,"category":"Food","subcategory":"Generic","material":"Meat","state":"Cooked","rarity":"Uncommon","value":4}
+{"name":"Supercold Fusion Engine","sprite":"Supercold Fusion Engine","type":0,"category":"Advanced Mechanics","subcategory":"Generic","material":"Metal","state":"Original","rarity":"Legendary","value":11}
+{"name":"Antimass Carbonator","sprite":"Antimass Carbonator","type":0,"category":"Advanced Mechanics","subcategory":"Generic","material":"Metal","state":"Original","rarity":"Singular","value":8}
+{"name":"Unnaturally Tasty Meal","sprite":"Unnaturally Tasty Meal","type":0,"category":"Food","subcategory":"Generic","material":"Organic","state":"Cooked","rarity":"Rare","value":5}
+{"name":"Terrible Meal","sprite":"Terrible Meal","type":0,"category":"Food","subcategory":"Generic","material":"Organic","state":"Cooked","rarity":"Common","value":1}
+{"name":"Oily Rags","sprite":"Oily Rags","type":0,"category":"Scrap","subcategory":"Generic","material":"Textile","state":"Original","rarity":"Common","value":1}
+{"name":"19th Century Wood","sprite":"19th Century Wood","type":0,"category":"Relic","subcategory":"Generic","material":"Wood","state":"Original","rarity":"Rare","value":3}
+{"name":"Godkin Knuckle","sprite":"Godkin Knuckle","type":0,"category":"Divine","subcategory":"Generic","material":"Antimatter","state":"Original","rarity":"Ludicrous","value":100}

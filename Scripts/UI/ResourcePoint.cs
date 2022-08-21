@@ -1,21 +1,23 @@
 using System;
 using Godot;
+using System.Collections.Generic;
 
 public class ResourcePoint : DropPoint {
-	private IconSpawner iconSpawner;
 	private AnimationPlayer animationPlayer;
 	private int integrity = 2;
 
 	public override void _Ready() {
 		base._Ready();
-		iconSpawner = new IconSpawner();
 		animationPlayer = (AnimationPlayer)GetNode("AnimationPlayer");
 	}
 
 	protected override void OnMousePress() {
 		animationPlayer.Play("StrongSquish");
-		if (integrity <= 0 ) { 
-			iconSpawner.SpawnGroup(3, GlobalPosition);
+		if (integrity <= 0 ) {
+			List<IconData> icons = Services.Instance.IconInstancer
+				.SelectMany(3, "Scrap", "*", "*", "*", Rarity.Any, -1);
+			Services.Instance.IconInstancer
+				.SpawnGroup(GlobalPosition, icons);
 			Destroy();
 		}
 		else {

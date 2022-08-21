@@ -8,7 +8,6 @@ public class CampSite : MousePoint {
 	[Export] int onFrame;
 	[Export] int offFrame;
 	[Export] float cookingTime = 2f;
-	IconSpawner iconSpawner = new IconSpawner();
 	Timer timer;
 	event HandleEvent timerCompleteEvent;
 
@@ -30,7 +29,8 @@ public class CampSite : MousePoint {
 	}
 
 	public override bool Add(DragObject dragObject) {
-		IconData input = Services.Instance.IconInstancer.GetData(dragObject.GetItemName());
+		IconData input = Services.Instance.IconInstancer.
+			Get(dragObject.GetItemName());
 		if (currentState.Execute(input)) {
 			dragObject.Destroy();
 			return true;
@@ -52,7 +52,8 @@ public class CampSite : MousePoint {
 	}
 
 	private void Spawn(string output) {
-		iconSpawner.Spawn(output, GlobalPosition);
+		Services.Instance.IconInstancer.
+			Spawn(output, GlobalPosition);
 	}
 
 	private void TimerComplete() {
@@ -75,8 +76,11 @@ public class CampSite : MousePoint {
 
 		private void CompleteCooking() { 
 			int roll = Services.Instance.RNG.RandiRange(0, 100);
-			if (roll < 90)
-				campSite.iconSpawner.SpawnFromCategory("Cooked", campSite.GlobalPosition);
+			if (roll < 90) {
+				var icon = Services.Instance.IconInstancer.
+					Select("Food", "*", "*", "Cooked", Rarity.Any, -1);
+				campSite.Spawn(icon.name);
+			}
 			else
 				campSite.Spawn("Ash");
 			campSite.ChangeState(campSite.onState);
@@ -119,7 +123,7 @@ public class CampSite : MousePoint {
 		}
 
 		public override bool Execute(IconData input) {
-			if (!input.InCategory("Paper")) return false;
+			if (!input.InCategory("Combustible")) return false;
 			campSite.ChangeState(campSite.onState);
 			return true;
 		}

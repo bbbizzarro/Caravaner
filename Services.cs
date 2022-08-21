@@ -8,7 +8,6 @@ public class Services : Node {
 	public IconInstancer IconInstancer { get; private set; }
 	public TileInstancer TileInstancer { get; private set; }
 	public RandomNumberGenerator RNG { get; private set; }
-	public StateMachineDB StateMachineDB { get; private set; }
 	public Node Main { get; private set; }
 
 	public override void _Ready() {
@@ -20,7 +19,6 @@ public class Services : Node {
 		TileInstancer = new TileInstancer(GetParent());
 		RNG = new RandomNumberGenerator();
 		RNG.Randomize();
-		StateMachineDB = new StateMachineDB("res://caravaner_states_db.json");
 		Main = GetParent();
 	}
 }
