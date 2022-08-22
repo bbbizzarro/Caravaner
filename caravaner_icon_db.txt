@@ -1,23 +1,23 @@
-name,sprite,type,category,subcategory,material,state,rarity,value
-Building,Icon0,1,any,Generic,Material,Original,Unique,1
-Land,Icon1,1,any,Generic,Material,Original,Unique,1
-Item,Icon2,0,any,Generic,Material,Original,Unique,1
-Bloody Bone,Bloody Bone,0,Food,Bone Meal,Bone,Raw,Common,1
-Grisly Stuffed Marrow,Grisly Stuffed Marrow,0,Food,Bone Meal,Bone,Cooked,Common,2
-Bubbling Green Mulk,Bubbling Green Mulk,0,Food,Green Mulk,Dairy,Cooked,Uncommon,4
-Cooked Mulk Powder,Cooked Mulk Powder,0,Food,Green Mulk,Dairy,Cooked,Uncommon,3
-Mulk Powder,Mulk Powder,0,Food,Green Mulk,Dairy,Raw,Common,3
-Scrap Metal,Scrap Metal,0,Scrap,Generic,Metal,Original,Common,1
-Old Newspaper,Old Newspaper,0,Scrap,Generic,Paper,Original,Common,1
-Cricket Kidney,Cricket Kidney,0,Food,Cricket Kidney,Insect,Raw,Common,2
-Cooked Cricket Kidney,Cooked Cricket Kidney,0,Food,Cricket Kidney,Insect,Cooked,Common,1
-Spent Charcoal,Spent Charcoal,0,Waste,Generic,Carbon,Original,Common,1
-Ash,Ash,0,Waste,Generic,Carbon,Original,Common,0
-Meat Slop,Makeshift Meal,0,Food,Generic,Meat,Cooked,Uncommon,4
-Supercold Fusion Engine,Supercold Fusion Engine,0,Advanced Mechanics,Generic,Metal,Original,Legendary,11
-Antimass Carbonator,Antimass Carbonator,0,Advanced Mechanics,Generic,Metal,Original,Singular,8
-Unnaturally Tasty Meal,Unnaturally Tasty Meal,0,Food,Generic,Organic,Cooked,Rare,5
-Terrible Meal,Terrible Meal,0,Food,Generic,Organic,Cooked,Common,1
-Oily Rags,Oily Rags,0,Scrap,Generic,Textile,Original,Common,1
-19th Century Wood,19th Century Wood,0,Relic,Generic,Wood,Original,Rare,3
-Godkin Knuckle,Godkin Knuckle,0,Divine,Generic,Antimatter,Original,Ludicrous,100
+name,sprite,type,category,subcategory,material,state,location,rarity,value
+Building,Icon0,1,any,Generic,Material,Original,Everywhere,Unique,1
+Land,Icon1,1,any,Generic,Material,Original,Everywhere,Unique,1
+Item,Icon2,0,any,Generic,Material,Original,Everywhere,Unique,1
+Bloody Bone,Bloody Bone,0,Food,Bone Meal,Bone,Raw,Wastes,Common,1
+Grisly Stuffed Marrow,Grisly Stuffed Marrow,0,Food,Bone Meal,Bone,Cooked,Wastes,Common,2
+Bubbling Green Mulk,Bubbling Green Mulk,0,Food,Green Mulk,Dairy,Cooked,Markets,Uncommon,4
+Mulk Broth,Cooked Mulk Powder,0,Food,Green Mulk,Dairy,Cooked,Markets,Uncommon,2
+Mulk Powder,Mulk Powder,0,Food,Green Mulk,Dairy,Raw,Wastes,Common,3
+Scrap Metal,Scrap Metal,0,Scrap,Generic,Metal,Original,Wastes,Common,1
+Old Newspaper,Old Newspaper,0,Scrap,Generic,Paper,Original,Wastes,Common,1
+Cricket Kidney,Cricket Kidney,0,Food,Cricket Kidney,Insect,Raw,Wastes,Common,2
+Sizziling Kidney Lumps,Sizziling Kidney Lumps,0,Food,Cricket Kidney,Insect,Cooked,Markets,Uncommon,1
+Spent Charcoal,Spent Charcoal,0,Waste,Generic,Carbon,Original,Wastes,Common,0
+Ash,Ash,0,Waste,Generic,Carbon,Original,Everywhere,Common,0
+Meat Slop,Meat Slop,0,Food,Generic,Meat,Cooked,Markets,Uncommon,4
+Supercold Fusion Engine,Supercold Fusion Engine,0,Advanced Mechanics,Generic,Metal,Original,Mechanist,Legendary,11
+Antimass Carbonator,Antimass Carbonator,0,Advanced Mechanics,Generic,Metal,Original,Mechanist,Singular,8
+Unnaturally Tasty Meal,Unnaturally Tasty Meal,0,Food,Generic,Organic,Cooked,Markets,Rare,5
+Terrible Meal,Terrible Meal,0,Food,Generic,Organic,Cooked,Markets,Common,1
+Oily Rags,Oily Rags,0,Scrap,Generic,Textile,Original,Wastes,Common,1
+19th Century Wood,19th Century Wood,0,Relic,Generic,Wood,Original,Markets,Rare,3
+Godkin Knuckle,Godkin Knuckle,0,Divine,Generic,Antimatter,Original,Everywhere,Ludicrous,100

@@ -2,6 +2,7 @@ Root,Material
 Root,Category
 Material,Organic
 Material,Inorganic
+Material,Nonmatter
 Inorganic,Bone
 Inorganic,Metal
 Inorganic,Carbon
@@ -12,6 +13,7 @@ Organic,Meat
 Combustible,Textile
 Combustible,Wood
 Combustible,Paper
+Nonmatter,Antimatter
 Category,Scrap
 Category,Relic
 Category,Waste
@@ -19,4 +21,3 @@ Category,Food
 Category,Mechanics
 Mechanics,Advanced Mechanics
 Relic,Divine
-Material,Antimatter

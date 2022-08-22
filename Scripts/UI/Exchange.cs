@@ -22,7 +22,7 @@ public class Exchange : MousePoint {
 
 	protected virtual void SetItem() {
 		itemBeingSold = Services.Instance.IconInstancer
-			.Select("*", "*", "*", "*", Rarity.Any, -1);
+			.Select("*", "*", "*", "*", "Markets", Rarity.Any, -1);
 	}
 
 	protected virtual void AddToValue(IconData input) { 
@@ -48,7 +48,7 @@ public class Exchange : MousePoint {
 		AddToValue(input);
 		if (total >= itemBeingSold.value) { 
 			Services.Instance.IconInstancer
-				.Spawn(itemBeingSold.name, GlobalPosition);
+				.Place(itemBeingSold, GlobalPosition);
 			total = 0;
 			return true;
 		}

@@ -54,7 +54,7 @@ public class CampSite : MousePoint {
 
 	private void Spawn(string output) {
 		Services.Instance.IconInstancer.
-			Spawn(output, GlobalPosition);
+			Place(output, GlobalPosition);
 	}
 
 	private void TimerComplete() {
@@ -80,10 +80,10 @@ public class CampSite : MousePoint {
 			int roll = Services.Instance.RNG.RandiRange(0, 100);
 			if (roll < 90 && campSite.cookingItem != null) {
 				var icon = Services.Instance.IconInstancer.
-					Select("Food", campSite.cookingItem.subcategory, "*", "Cooked", Rarity.Any, -1);
+					Select("Food", campSite.cookingItem.subcategory, "*", "Cooked", "*", Rarity.Any, -1);
 				if (icon == null) { 
 				icon = Services.Instance.IconInstancer.
-					Select("Food", "*", "*", "Cooked", Rarity.Any, -1);
+					Select("Food", "*", "*", "Cooked", "*", Rarity.Any, -1);
 				}
 				campSite.Spawn(icon.name);
 			}

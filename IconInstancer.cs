@@ -44,12 +44,13 @@ public class IconInstancer {
 
 	public IconData Select(string category, string subcategory, 
 							string material, string state, 
-							Rarity rarity, int value) {
+							string location, Rarity rarity, int value) {
 		if (rarity == Rarity.Any) rarity = Roll(0);
 		var options
 			= db.Values.Where(i => IsString(i.subcategory, subcategory) &&
 								   InCategory(i.material, material) &&
 								   IsString(i.state, state) &&
+								   IsString(i.location, location) &&
 								   IsRarity(i.rarity, rarity) &&
 								   IsValue(i.value, value))
 					   .Where(i => InCategory(i.category, category)).ToList();
@@ -75,10 +76,10 @@ public class IconInstancer {
 
 	public List<IconData> SelectMany(int count, string category, string subcategory,
 									 string material, string state,
-									 Rarity rarity, int value) {
+									 string location, Rarity rarity, int value) {
 		var icons = new List<IconData>();
 		for (int i = 0; i < count; ++i) {
-			var iconData = Select(category, subcategory, material, state, rarity, value);
+			var iconData = Select(category, subcategory, material, state, location, rarity, value);
 			if (iconData != null) {
 				icons.Add(iconData);
 			}
@@ -105,6 +106,14 @@ public class IconInstancer {
 			Place(start, iconList[i], centerPosition);
 			start += delta;
 		}
+	}
+
+	public void Place(string name, Vector2 centerPosition) {
+		Place(rng.RandfRange(-0.5f, 0.5f), Get(name), centerPosition);
+	}
+
+	public void Place(IconData iconData, Vector2 centerPosition) {
+		Place(rng.RandfRange(-0.5f, 0.5f), iconData, centerPosition);
 	}
 
 	public void Place(float x, IconData iconData, Vector2 centerPosition) {
@@ -157,6 +166,7 @@ public class IconData : ISavable, IRecord<string> {
 	[SerializeField] public string subcategory;
 	[SerializeField] public string material;
 	[SerializeField] public string state;
+	[SerializeField] public string location;
 	public Rarity rarity; 
 	[SerializeField] public int value;
 
