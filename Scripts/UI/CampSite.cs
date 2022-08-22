@@ -12,6 +12,7 @@ public class CampSite : MousePoint {
 	event HandleEvent timerCompleteEvent;
 
 	StateBase currentState;
+	IconData cookingItem;
 
 	// States
 	OnState onState;
@@ -72,13 +73,18 @@ public class CampSite : MousePoint {
 
 		public override void OnExit() {
 			campSite.timerCompleteEvent -= CompleteCooking;
+			campSite.cookingItem = null;
 		}
 
 		private void CompleteCooking() { 
 			int roll = Services.Instance.RNG.RandiRange(0, 100);
-			if (roll < 90) {
+			if (roll < 90 && campSite.cookingItem != null) {
 				var icon = Services.Instance.IconInstancer.
+					Select("Food", campSite.cookingItem.subcategory, "*", "Cooked", Rarity.Any, -1);
+				if (icon == null) { 
+				icon = Services.Instance.IconInstancer.
 					Select("Food", "*", "*", "Cooked", Rarity.Any, -1);
+				}
 				campSite.Spawn(icon.name);
 			}
 			else
@@ -101,11 +107,12 @@ public class CampSite : MousePoint {
 		}
 
 		public override bool Execute(IconData input) {
-			if (input.InCategory("Raw Food")) {
+			if (input.InCategory("Food") && input.HasState("Raw")) {
+				campSite.cookingItem = input;
 				campSite.ChangeState(campSite.cookingState);
 				return true;
 			}
-			else if (input.InCategory("Organic")) { 
+			else if (input.HasMaterial("Organic")) { 
 				campSite.Spawn("Ash");
 				return true;
 			}
@@ -123,7 +130,7 @@ public class CampSite : MousePoint {
 		}
 
 		public override bool Execute(IconData input) {
-			if (!input.InCategory("Combustible")) return false;
+			if (!input.HasMaterial("Combustible")) return false;
 			campSite.ChangeState(campSite.onState);
 			return true;
 		}

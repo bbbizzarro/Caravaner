@@ -15,7 +15,7 @@ public class ResourcePoint : DropPoint {
 		animationPlayer.Play("StrongSquish");
 		if (integrity <= 0 ) {
 			List<IconData> icons = Services.Instance.IconInstancer
-				.SelectMany(3, "Scrap", "*", "*", "*", Rarity.Any, -1);
+				.SelectMany(3, "Scrap|Food", "*", "*", "*", Rarity.Any, -1);
 			Services.Instance.IconInstancer
 				.SpawnGroup(GlobalPosition, icons);
 			Destroy();

@@ -4,6 +4,7 @@ Material,Organic
 Material,Inorganic
 Inorganic,Bone
 Inorganic,Metal
+Inorganic,Carbon
 Organic,Dairy
 Organic,Insect
 Organic,Combustible
@@ -15,5 +16,7 @@ Category,Scrap
 Category,Relic
 Category,Waste
 Category,Food
+Category,Mechanics
+Mechanics,Advanced Mechanics
 Relic,Divine
 Material,Antimatter

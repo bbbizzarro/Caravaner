@@ -10,11 +10,17 @@ public class IconInstancer {
 	private readonly Rarity[] rarities = new Rarity[]
 			{Rarity.Common,   Rarity.Uncommon,  Rarity.Rare,
 			 Rarity.Singular, Rarity.Legendary, Rarity.Ludicrous};
+	private readonly CategoryTree categoryTree;
 
 	public IconInstancer(Node parent) {
 		rng.Randomize();
 		this.parent = parent;
 		db = new CSV<IconData>().LoadFromFile("res://caravaner_icon_db.json");
+		categoryTree = new CategoryTree("res://category_db.txt");
+	}
+
+	public Rarity Roll(Rarity minimumRarity) {
+		return Roll(100 - (int)minimumRarity);
 	}
 
 	public Rarity Roll(int modifier) {
@@ -41,12 +47,12 @@ public class IconInstancer {
 							Rarity rarity, int value) {
 		if (rarity == Rarity.Any) rarity = Roll(0);
 		var options
-			= db.Values.Where(i => InCategory(i.category, category) &&
-								   IsString(i.subcategory, subcategory) &&
-								   IsString(i.material, material) &&
+			= db.Values.Where(i => IsString(i.subcategory, subcategory) &&
+								   InCategory(i.material, material) &&
 								   IsString(i.state, state) &&
 								   IsRarity(i.rarity, rarity) &&
-								   IsValue(i.value, value)).ToList();
+								   IsValue(i.value, value))
+					   .Where(i => InCategory(i.category, category)).ToList();
 
 		if (options.Count == 0) return null;
 		return options[rng.RandiRange(0, options.Count - 1)];
@@ -124,12 +130,12 @@ public class IconInstancer {
 		return false;
 	}
 
-	private bool InCategory(string candidate, string required) {
-		if (!required.Contains("|")) { 
-			return required == "*" || candidate == required;
+	public bool InCategory(string candidate, string required) {
+		if (!required.Contains("|")) {
+			return required == "*" || categoryTree.InCategory(candidate, required);
 		}
-		foreach (string category in required.Split('|')) { 
-			if (category == candidate) {
+		foreach (string category in required.Split('|')) {
+			if (categoryTree.InCategory(candidate, category)) {
 				return true;
 			}
 		}
@@ -160,8 +166,17 @@ public class IconData : ISavable, IRecord<string> {
 		return name;
 	}
 
+	public bool HasState(string state) {
+		return this.state == state;
+	}
+
 	public bool InCategory(string category) {
-		return this.category == category;
+		return Services.Instance.IconInstancer
+			.InCategory(this.category, category);
+	}
+	public bool HasMaterial(string material) {
+		return Services.Instance.IconInstancer
+			.InCategory(this.material, material);
 	}
 
 	public void Load(Godot.Collections.Dictionary<string, object> data) {
@@ -185,5 +200,5 @@ public enum Rarity {
 	Ludicrous = 1,
 	Unique = 0,
 	None = 0,
-	Any = 0
+	Any = 0,
 }
