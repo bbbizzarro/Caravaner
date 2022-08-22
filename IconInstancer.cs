@@ -12,29 +12,40 @@ public class IconInstancer {
 			 Rarity.Singular, Rarity.Legendary, Rarity.Ludicrous};
 	private readonly CategoryTree categoryTree;
 
+	//!!! Should save
+	private HashSet<string> InstancedUniques;
+
 	public IconInstancer(Node parent) {
 		rng.Randomize();
 		this.parent = parent;
 		db = new CSV<IconData>().LoadFromFile("res://caravaner_icon_db.json");
 		categoryTree = new CategoryTree("res://category_db.txt");
+		InstancedUniques = new HashSet<string>();
 	}
 
 	public Rarity Roll(Rarity minimumRarity) {
-		return Roll(100 - (int)minimumRarity);
+		int rarityModifier = 0;
+		for (int i = 1; i < rarities.Count(); ++i) { 
+			if (minimumRarity == rarities[i - 1])
+				return Roll(rarityModifier);
+			rarityModifier += (int)rarities[i - 1];
+		}
+		return Roll(rarityModifier);
 	}
 
 	public Rarity Roll(int modifier) {
-		int roll = Mathf.Clamp(rng.RandiRange(0, 100) + modifier, 0, 100);
-		int curr = 0;
+		int roll = Mathf.Clamp(rng.RandiRange(modifier, 100), 1, 100);
+		int curr = 1;
 		foreach (Rarity rarity in rarities) { 
 			curr += (int)rarity;
-			if (roll <= curr) {
-				GD.Print(rarity);
+			if (roll < curr) {
+				GD.Print(String.Format("MOD: {0}, ROLL: {1}, RARITY: {2}", modifier, roll, rarity));
 				return rarity;
 			}
 		}
-		GD.PrintErr("Invalid rarity. rolled");
-		return Rarity.Common;
+		//GD.PrintErr("Invalid rarity. rolled");
+		GD.Print(String.Format("MOD: {0}, ROLL: {1}, RARITY: {2}", modifier, roll, Rarity.Ludicrous));
+		return Rarity.Ludicrous;
 	}
 
 	public IconData Get(string name) {
@@ -42,21 +53,37 @@ public class IconInstancer {
 		return db[name];
 	}
 
-	public IconData Select(string category, string subcategory, 
-							string material, string state, 
-							string location, Rarity rarity, int value) {
-		if (rarity == Rarity.Any) rarity = Roll(0);
+	public IconData Select(string category, string material,
+						   string location, Rarity rarity, int value) {
+		if (rarity != Rarity.Any) 
+			rarity = Roll(rarity);
 		var options
-			= db.Values.Where(i => IsString(i.subcategory, subcategory) &&
-								   InCategory(i.material, material) &&
-								   IsString(i.state, state) &&
-								   IsString(i.location, location) &&
-								   IsRarity(i.rarity, rarity) &&
+			= db.Values.Where(i => IsString(i.location, location) &&
 								   IsValue(i.value, value))
-					   .Where(i => InCategory(i.category, category)).ToList();
-
-		if (options.Count == 0) return null;
-		return options[rng.RandiRange(0, options.Count - 1)];
+					   .Where(i => InCategory(i.material, material) && 
+								   InCategory(i.category, category));
+		// Get option at least as rare as
+		List<IconData> optionList;
+		int startingRarity = 0;
+		for (int i = rarities.Length - 1; i >= 0; --i) {
+			if (rarities[i] < rarity) {
+				startingRarity = i;
+			}
+			else if (options.Count(x => IsRarity(x.rarity, rarities[i])) > 0) {
+				optionList = options.Where(x => IsRarity(x.rarity, rarities[i])).ToList();
+				return optionList[rng.RandiRange(0, optionList.Count - 1)];
+			};
+		}
+		// If not such option exists in database get even rarer option
+		for (int i = startingRarity; i < rarities.Length; ++i) {
+			if (options.Count(x => IsRarity(x.rarity, rarities[i])) > 0) {
+				optionList = options.Where(x => IsRarity(x.rarity, rarities[i])).ToList();
+				return optionList[rng.RandiRange(0, optionList.Count - 1)];
+			};
+		}
+		GD.PrintErr(String.Format("No such icon with select parameters: {0} {1} {2} {3} {4}",
+			category, material, location, rarity, value));
+		return null;
 	}
 
 	public DragObject Spawn(string name, Vector2 globalPosition) { 
@@ -74,12 +101,12 @@ public class IconInstancer {
 		}
 	}
 
-	public List<IconData> SelectMany(int count, string category, string subcategory,
-									 string material, string state,
-									 string location, Rarity rarity, int value) {
+	public List<IconData> SelectMany(int count, string category, 
+									 string material, string location, 
+									 Rarity rarity, int value) {
 		var icons = new List<IconData>();
 		for (int i = 0; i < count; ++i) {
-			var iconData = Select(category, subcategory, material, state, location, rarity, value);
+			var iconData = Select(category, material, location, rarity, value);
 			if (iconData != null) {
 				icons.Add(iconData);
 			}
@@ -124,7 +151,7 @@ public class IconInstancer {
 	}
 
 	private bool IsRarity(Rarity candidate, Rarity required) {
-		return required == Rarity.None || candidate >= required;
+		return required == Rarity.Any || candidate == required;
 	}
 
 	private bool IsString(string candidate, string required) {
@@ -163,21 +190,16 @@ public class IconData : ISavable, IRecord<string> {
 	[SerializeField] public string sprite;
 	[SerializeField] public int type;
 	[SerializeField] public string category;
-	[SerializeField] public string subcategory;
 	[SerializeField] public string material;
-	[SerializeField] public string state;
 	[SerializeField] public string location;
 	public Rarity rarity; 
 	[SerializeField] public int value;
+	[SerializeField] public bool isUnique;
 
 	public IconData() {}
 
 	public string GetKey() {
 		return name;
-	}
-
-	public bool HasState(string state) {
-		return this.state == state;
 	}
 
 	public bool InCategory(string category) {
@@ -191,24 +213,25 @@ public class IconData : ISavable, IRecord<string> {
 
 	public void Load(Godot.Collections.Dictionary<string, object> data) {
 		Enum.TryParse((string)data["rarity"], out rarity);
+		//isUnique = (string)data["unique"] == "TRUE";
 		JSONUtils.Deserialize(this, data);
 	}
 
 	public Godot.Collections.Dictionary<string, object> Save() {
 		var data = JSONUtils.Serialize(this);
 		data["rarity"] = rarity.ToString();
+		//data["unique"] = isUnique ? "TRUE" : "FALSE";
 		return data;
 	}
 }
 
 public enum Rarity { 
-	Common = 50,
-	Uncommon = 30,
-	Rare = 10,
-	Singular = 6,
-	Legendary = 3,
-	Ludicrous = 1,
+	Common = 60,   // 1 60
+	Uncommon = 20, // 61 80
+	Rare = 10,     // 81, 90
+	Singular = 6,  // 91, 96
+	Legendary = 3, // 97, 99
+	Ludicrous = 1, // 100
 	Unique = 0,
-	None = 0,
-	Any = 0,
+	Any = 0
 }

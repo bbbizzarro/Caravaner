@@ -30,6 +30,9 @@ position = Vector2( 896, -512 )
 current = true
 zoom = Vector2( 1.5, 1.5 )
 script = ExtResource( 3 )
+transitionTime = 30.0
+lengthOfDayInSeconds = 60.0
+lengthOfNightInSeconds = 60.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -59,3 +62,7 @@ anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="PostProcessingTween" type="Tween" parent="CanvasLayer"]
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Timer" type="Timer" parent="."]

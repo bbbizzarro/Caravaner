@@ -9,6 +9,9 @@ public class Exchange : MousePoint {
 	Timer timer;
 	RandomNumberGenerator rng;
 	IconInstancer iconInstancer;
+	[Export] string Location = "Markets";
+	[Export] string Category = "*";
+	[Export] Rarity Rarity = Rarity.Common;
 
 	public override void _Ready() {
 		base._Ready();
@@ -22,14 +25,27 @@ public class Exchange : MousePoint {
 
 	protected virtual void SetItem() {
 		itemBeingSold = Services.Instance.IconInstancer
-			.Select("*", "*", "*", "*", "Markets", Rarity.Any, -1);
+			.Select(Category, "*", Location, Rarity, -1);
 	}
 
 	protected virtual void AddToValue(IconData input) { 
 		total += input.value;
 	}
 
+	protected override void Preview(bool preview) {
+		base.Preview(preview);
+		if (preview) { 
+			label.Text = 
+				String.Format("{0} ({1}/{2})", itemBeingSold.name, total, itemBeingSold.value);
+		}
+		else { 
+			label.Text = "";
+		}
+	}
+
 	protected override void OnMousePress() {
+		//!!!
+		return;
 		if (itemBeingSold == null) return;
 		timer.Start(2f);
 		label.Text = 

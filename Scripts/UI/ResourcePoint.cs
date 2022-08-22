@@ -3,6 +3,7 @@ using Godot;
 using System.Collections.Generic;
 
 public class ResourcePoint : DropPoint {
+	[Export] private string Location = "Wastes";
 	private AnimationPlayer animationPlayer;
 	private int integrity = 2;
 
@@ -15,7 +16,7 @@ public class ResourcePoint : DropPoint {
 		animationPlayer.Play("StrongSquish");
 		if (integrity <= 0 ) {
 			List<IconData> icons = Services.Instance.IconInstancer
-				.SelectMany(3, "*", "*", "*", "*", "Wastes", Rarity.Any, -1);
+				.SelectMany(3, "*", "*", Location, Rarity.Common, -1);
 			Services.Instance.IconInstancer
 				.SpawnGroup(GlobalPosition, icons);
 			Destroy();

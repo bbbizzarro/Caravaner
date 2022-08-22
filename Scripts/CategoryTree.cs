@@ -11,6 +11,8 @@ public class CategoryTree {
 	}
 
 	public bool InCategory(string candidate, string required) {
+		// i.e. is CANDIDATE equal to or a parent of REQUIRED
+		// Follow candidate's parents until you get to required or beyond root.
 		if (!db.ContainsKey(required)) {
 			//GD.PrintErr(String.Format("No such category {0} in tree!.", required));
 			return false;

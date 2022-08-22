@@ -152,11 +152,15 @@ public class DragObject : Node2D {
 			//animation.Stop();
 			shadowAnim.Start(1f, 0f, 15f, Caravaner.AnimType.Constant, false);
 			rotation.Start(sprite.Rotation, 0f, 7f, Caravaner.AnimType.Constant, false);
-			if (iconContainer != null) { 
-				iconContainer.Remove(this);
-				iconContainer = null;
-			}
+			RemoveFromContainer();
 			mouseOffset = Position - GetGlobalMousePosition();
+		}
+	}
+
+	private void RemoveFromContainer() { 
+		if (iconContainer != null) { 
+			iconContainer.Remove(this);
+			iconContainer = null;
 		}
 	}
 
@@ -215,6 +219,7 @@ public class DragObject : Node2D {
 	}
 
 	public void Destroy() {
+		RemoveFromContainer();
 		OnMouseExited();
 		QueueFree();
 	}

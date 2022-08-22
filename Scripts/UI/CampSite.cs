@@ -8,6 +8,8 @@ public class CampSite : MousePoint {
 	[Export] int onFrame;
 	[Export] int offFrame;
 	[Export] float cookingTime = 2f;
+	[Export] Rarity MinimumRarity = Rarity.Common;
+
 	Timer timer;
 	event HandleEvent timerCompleteEvent;
 
@@ -78,12 +80,15 @@ public class CampSite : MousePoint {
 
 		private void CompleteCooking() { 
 			int roll = Services.Instance.RNG.RandiRange(0, 100);
-			if (roll < 90 && campSite.cookingItem != null) {
+			if (campSite.cookingItem.HasMaterial("Blessed Meat")) {
+				campSite.Spawn("Holy Vapors");
+			}
+			else if (roll < 90 && campSite.cookingItem != null) {
 				var icon = Services.Instance.IconInstancer.
-					Select("Food", campSite.cookingItem.subcategory, "*", "Cooked", "*", Rarity.Any, -1);
+					Select("Cooked", campSite.cookingItem.material, "*", Rarity.Any, -1);
 				if (icon == null) { 
 				icon = Services.Instance.IconInstancer.
-					Select("Food", "*", "*", "Cooked", "*", Rarity.Any, -1);
+					Select("Meal", "*", "*", campSite.MinimumRarity, -1);
 				}
 				campSite.Spawn(icon.name);
 			}
@@ -107,12 +112,17 @@ public class CampSite : MousePoint {
 		}
 
 		public override bool Execute(IconData input) {
-			if (input.InCategory("Food") && input.HasState("Raw")) {
+			if (input.InCategory("Raw")) {
 				campSite.cookingItem = input;
 				campSite.ChangeState(campSite.cookingState);
 				return true;
 			}
-			else if (input.HasMaterial("Organic")) { 
+			else if (input.HasMaterial("Blessed Meat")) { 
+				campSite.Spawn("Holy Vapors");
+				return true;
+			}
+			else if (input.HasMaterial("Organic") && 
+					 !input.InCategory("Food")) { 
 				campSite.Spawn("Ash");
 				return true;
 			}

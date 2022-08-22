@@ -3,13 +3,16 @@ Root,Category
 Material,Organic
 Material,Inorganic
 Material,Nonmatter
-Inorganic,Bone
 Inorganic,Metal
 Inorganic,Carbon
-Organic,Dairy
-Organic,Insect
+Organic,Animal
 Organic,Combustible
-Organic,Meat
+Animal,Dairy
+Animal,Meat
+Meat,Blessed Meat
+Animal,Insect
+Insect,Insect Meat
+Animal,Bone
 Combustible,Textile
 Combustible,Wood
 Combustible,Paper
@@ -21,3 +24,9 @@ Category,Food
 Category,Mechanics
 Mechanics,Advanced Mechanics
 Relic,Divine
+Food,Cooked
+Food,Raw
+Cooked,Meal
+Dairy,Mulk
+Insect,Insect Kidney
+Animal,Gristle

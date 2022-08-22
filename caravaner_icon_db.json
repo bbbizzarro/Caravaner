@@ -1,22 +1,27 @@
-{"name":"Building","sprite":"Icon0","type":1,"category":"any","subcategory":"Generic","material":"Material","state":"Original","location":"Everywhere","rarity":"Unique","value":1}
-{"name":"Land","sprite":"Icon1","type":1,"category":"any","subcategory":"Generic","material":"Material","state":"Original","location":"Everywhere","rarity":"Unique","value":1}
-{"name":"Item","sprite":"Icon2","type":0,"category":"any","subcategory":"Generic","material":"Material","state":"Original","location":"Everywhere","rarity":"Unique","value":1}
-{"name":"Bloody Bone","sprite":"Bloody Bone","type":0,"category":"Food","subcategory":"Bone Meal","material":"Bone","state":"Raw","location":"Wastes","rarity":"Common","value":1}
-{"name":"Grisly Stuffed Marrow","sprite":"Grisly Stuffed Marrow","type":0,"category":"Food","subcategory":"Bone Meal","material":"Bone","state":"Cooked","location":"Wastes","rarity":"Common","value":2}
-{"name":"Bubbling Green Mulk","sprite":"Bubbling Green Mulk","type":0,"category":"Food","subcategory":"Green Mulk","material":"Dairy","state":"Cooked","location":"Markets","rarity":"Uncommon","value":4}
-{"name":"Mulk Broth","sprite":"Cooked Mulk Powder","type":0,"category":"Food","subcategory":"Green Mulk","material":"Dairy","state":"Cooked","location":"Markets","rarity":"Uncommon","value":2}
-{"name":"Mulk Powder","sprite":"Mulk Powder","type":0,"category":"Food","subcategory":"Green Mulk","material":"Dairy","state":"Raw","location":"Wastes","rarity":"Common","value":3}
-{"name":"Scrap Metal","sprite":"Scrap Metal","type":0,"category":"Scrap","subcategory":"Generic","material":"Metal","state":"Original","location":"Wastes","rarity":"Common","value":1}
-{"name":"Old Newspaper","sprite":"Old Newspaper","type":0,"category":"Scrap","subcategory":"Generic","material":"Paper","state":"Original","location":"Wastes","rarity":"Common","value":1}
-{"name":"Cricket Kidney","sprite":"Cricket Kidney","type":0,"category":"Food","subcategory":"Cricket Kidney","material":"Insect","state":"Raw","location":"Wastes","rarity":"Common","value":2}
-{"name":"Sizziling Kidney Lumps","sprite":"Sizziling Kidney Lumps","type":0,"category":"Food","subcategory":"Cricket Kidney","material":"Insect","state":"Cooked","location":"Markets","rarity":"Uncommon","value":1}
-{"name":"Spent Charcoal","sprite":"Spent Charcoal","type":0,"category":"Waste","subcategory":"Generic","material":"Carbon","state":"Original","location":"Wastes","rarity":"Common","value":0}
-{"name":"Ash","sprite":"Ash","type":0,"category":"Waste","subcategory":"Generic","material":"Carbon","state":"Original","location":"Everywhere","rarity":"Common","value":0}
-{"name":"Meat Slop","sprite":"Meat Slop","type":0,"category":"Food","subcategory":"Generic","material":"Meat","state":"Cooked","location":"Markets","rarity":"Uncommon","value":4}
-{"name":"Supercold Fusion Engine","sprite":"Supercold Fusion Engine","type":0,"category":"Advanced Mechanics","subcategory":"Generic","material":"Metal","state":"Original","location":"Mechanist","rarity":"Legendary","value":11}
-{"name":"Antimass Carbonator","sprite":"Antimass Carbonator","type":0,"category":"Advanced Mechanics","subcategory":"Generic","material":"Metal","state":"Original","location":"Mechanist","rarity":"Singular","value":8}
-{"name":"Unnaturally Tasty Meal","sprite":"Unnaturally Tasty Meal","type":0,"category":"Food","subcategory":"Generic","material":"Organic","state":"Cooked","location":"Markets","rarity":"Rare","value":5}
-{"name":"Terrible Meal","sprite":"Terrible Meal","type":0,"category":"Food","subcategory":"Generic","material":"Organic","state":"Cooked","location":"Markets","rarity":"Common","value":1}
-{"name":"Oily Rags","sprite":"Oily Rags","type":0,"category":"Scrap","subcategory":"Generic","material":"Textile","state":"Original","location":"Wastes","rarity":"Common","value":1}
-{"name":"19th Century Wood","sprite":"19th Century Wood","type":0,"category":"Relic","subcategory":"Generic","material":"Wood","state":"Original","location":"Markets","rarity":"Rare","value":3}
-{"name":"Godkin Knuckle","sprite":"Godkin Knuckle","type":0,"category":"Divine","subcategory":"Generic","material":"Antimatter","state":"Original","location":"Everywhere","rarity":"Ludicrous","value":100}
+{"name":"Building","sprite":"Icon0","type":1,"category":"any","material":"Material","location":"Everywhere","rarity":"Unique","value":1,"unique":false}
+{"name":"Land","sprite":"Icon1","type":1,"category":"any","material":"Material","location":"Everywhere","rarity":"Unique","value":1,"unique":false}
+{"name":"Item","sprite":"Icon2","type":0,"category":"any","material":"Material","location":"Everywhere","rarity":"Unique","value":1,"unique":false}
+{"name":"Ash","sprite":"Ash","type":0,"category":"Waste","material":"Carbon","location":"Everywhere","rarity":"Common","value":0,"unique":false}
+{"name":"Godkin Knuckle","sprite":"Godkin Knuckle","type":0,"category":"Divine","material":"Antimatter","location":"Everywhere","rarity":"Ludicrous","value":100,"unique":false}
+{"name":"Sizziling Kidney Lumps","sprite":"Sizziling Kidney Lumps","type":0,"category":"Cooked","material":"Insect Kidney","location":"Markets","rarity":"Uncommon","value":2,"unique":false}
+{"name":"Bubbling Green Mulk","sprite":"Bubbling Green Mulk","type":0,"category":"Cooked","material":"Mulk","location":"Markets","rarity":"Uncommon","value":4,"unique":false}
+{"name":"Mulk Broth","sprite":"Mulk Broth","type":0,"category":"Cooked","material":"Mulk","location":"Markets","rarity":"Uncommon","value":2,"unique":false}
+{"name":"Meat Slop","sprite":"Meat Slop","type":0,"category":"Cooked","material":"Meat","location":"Markets","rarity":"Uncommon","value":4,"unique":false}
+{"name":"Unnaturally Tasty Meal","sprite":"Unnaturally Tasty Meal","type":0,"category":"Meal","material":"Organic","location":"Markets","rarity":"Rare","value":5,"unique":false}
+{"name":"Terrible Meal","sprite":"Terrible Meal","type":0,"category":"Meal","material":"Organic","location":"Markets","rarity":"Common","value":1,"unique":false}
+{"name":"19th Century Wood","sprite":"19th Century Wood","type":0,"category":"Relic","material":"Wood","location":"Markets","rarity":"Rare","value":3,"unique":false}
+{"name":"Supercold Fusion Engine","sprite":"Supercold Fusion Engine","type":0,"category":"Advanced Mechanics","material":"Metal","location":"Mechanist","rarity":"Legendary","value":11,"unique":false}
+{"name":"Antimass Carbonator","sprite":"Antimass Carbonator","type":0,"category":"Advanced Mechanics","material":"Metal","location":"Mechanist","rarity":"Singular","value":8,"unique":false}
+{"name":"Bloody Bone","sprite":"Bloody Bone","type":0,"category":"Raw","material":"Bone","location":"Wastes","rarity":"Uncommon","value":1,"unique":false}
+{"name":"Grisly Stuffed Marrow","sprite":"Grisly Stuffed Marrow","type":0,"category":"Cooked","material":"Bone","location":"Wastes","rarity":"Uncommon","value":2,"unique":false}
+{"name":"Mulk Powder","sprite":"Mulk Powder","type":0,"category":"Raw","material":"Mulk","location":"Wastes","rarity":"Uncommon","value":3,"unique":false}
+{"name":"Scrap Metal","sprite":"Scrap Metal","type":0,"category":"Scrap","material":"Metal","location":"Wastes","rarity":"Common","value":1,"unique":false}
+{"name":"Old Newspaper","sprite":"Old Newspaper","type":0,"category":"Scrap","material":"Paper","location":"Wastes","rarity":"Common","value":1,"unique":false}
+{"name":"Cricket Kidney","sprite":"Cricket Kidney","type":0,"category":"Raw","material":"Insect Kidney","location":"Wastes","rarity":"Uncommon","value":1,"unique":false}
+{"name":"Spent Charcoal","sprite":"Spent Charcoal","type":0,"category":"Waste","material":"Carbon","location":"Wastes","rarity":"Common","value":0,"unique":false}
+{"name":"Oily Rags","sprite":"Oily Rags","type":0,"category":"Scrap","material":"Textile","location":"Wastes","rarity":"Common","value":1,"unique":false}
+{"name":"Petrified Brain Stem","sprite":"Petrified Brain Stem","type":0,"category":"Scrap","material":"Blessed Meat","location":"Wastes","rarity":"Singular","value":6,"unique":false}
+{"name":"Cirulla's Copper Cane","sprite":"Cirulla's Copper Cane","type":0,"category":"Relic","material":"Metal","location":"Wastes","rarity":"Legendary","value":10,"unique":true}
+{"name":"Ruby Finger Bone","sprite":"Ruby Finger Bone","type":0,"category":"Scrap","material":"Inorganic","location":"Wastes","rarity":"Rare","value":4,"unique":false}
+{"name":"Living Eye of Saint Loba","sprite":"Living Eye of Saint Loba","type":0,"category":"Divine","material":"Organic","location":"Wastes","rarity":"Ludicrous","value":40,"unique":true}
+{"name":"Holy Vapors","sprite":"Holy Vapors","type":0,"category":"Divine","material":"Inorganic","location":"Holy Wastes","rarity":"Singular","value":10,"unique":false}

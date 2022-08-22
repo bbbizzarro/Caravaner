@@ -1,24 +1,38 @@
 #!/usr/bin/env python3
 import sys
 
+#https://jimblackler.net/treefun/index.html
+
 class Node:
+	separator = "   |"
 	def __init__(self, name, children, level):
 		self.name = name
 		self.children = children
 		self.level = level
 
 	def print(self, level):
-		print("   |"* level,end="")
+		print(Node.separator* level,end="")
 		print(self.name)
 		for c in self.children:
 			c.print(level + 1)	
 
 def main():
-	if len(sys.argv) < 3:
-		print("Usage: {} [csv.file] [starting node]".format(sys.argv[0]))
+	ERR_MSG = "Usage: {} [csv.file] (starting node) (separator)".format(sys.argv[0])
+	if len(sys.argv) < 2:
+		print(ERR_MSG)
 		return
 	csvFilePath = sys.argv[1]
-	starting_node = sys.argv[2]
+	if len(sys.argv) >= 3:
+		starting_node = sys.argv[2]
+	else:
+		starting_node = "Root"
+	if len(sys.argv) == 4:
+		Node.separator = sys.argv[3]
+	if len(sys.argv) > 4:
+		print(ERR_MSG)
+		return
+
+
 	tree = {"Root":Node("Root",[], 0)}
 	with open(csvFilePath, 'r') as f:
 		for line in f:
