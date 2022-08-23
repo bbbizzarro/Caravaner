@@ -7,6 +7,8 @@ using System.Linq;
 
 public class RegionGenerator {
 
+	// 1d tile groups
+	// [^^^,^^,^],[*,-,|],etc
 	Dictionary<string, Dictionary<string, int>> probs;
 	RandomNumberGenerator rng;
 
