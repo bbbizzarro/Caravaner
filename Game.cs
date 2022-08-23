@@ -23,6 +23,7 @@ public class Game : Node {
 			LoadGame();
 		}
 		Initialize();
+		((Map)GetNode("RegionMap")).Initialize();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -165,7 +166,6 @@ public class Game : Node {
 	private void _on_Player_Test() {
 		GD.Print("Player test is called.");
 	}
-
 }
 
 

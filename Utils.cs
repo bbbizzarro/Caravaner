@@ -14,11 +14,26 @@ namespace Caravaner {
 			this.y = y;
 		}
 
+        public Vector2Int Normalized() {
+            if (x == 0 && y == 0) return Vector2Int.Zero;
+            double length = Math.Sqrt(x * x + y * y);
+            return new Vector2Int((int)Math.Round((double)x / length),
+                                  (int)Math.Round((double)y / length));
+		}
+
         public static bool operator ==(Vector2Int a, Vector2Int b) {
 			return a.x == b.x && a.y == b.y;
 		}
         public static bool operator !=(Vector2Int a, Vector2Int b) {
 			return a.x != b.x || a.y != b.y;
+		}
+
+        public static Vector2Int operator +(Vector2Int a, Vector2Int b) {
+            return new Vector2Int(a.x + b.x, a.y + b.y);
+		}
+
+        public static Vector2Int operator -(Vector2Int a, Vector2Int b) {
+            return new Vector2Int(a.x - b.x, a.y - b.y);
 		}
 
         public override bool Equals(object obj) {
@@ -28,7 +43,7 @@ namespace Caravaner {
         }
 
         public override string ToString() {
-            return String.Format("('{0}', '{1}'", x, y);
+            return String.Format("({0}, {1})", x, y);
         }
 
         public override int GetHashCode() {

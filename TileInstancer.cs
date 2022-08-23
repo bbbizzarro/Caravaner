@@ -22,6 +22,21 @@ public class TileInstancer {
         return tileDB.Keys;
 	}
 
+    public Node2D Spawn(Vector2 globalPosition, string name) {
+        if (sceneDB.ContainsKey(name)) { 
+	        PackedScene packedScene = (PackedScene)ResourceLoader.Load(scenePath + sceneDB[name]);
+            Node2D node = (Node2D) packedScene.Instance();
+            //parent.CallDeferred("add_child", node);/// AddChild(node);
+            parent.AddChild(node);
+            node.GlobalPosition = globalPosition;
+            return node;
+		}
+        else { 
+			GD.PrintErr(String.Format("Tried to instance tile scene {0} but it doesn't exist.", name));
+            return null;
+		}
+	}
+
     public Node2D Create(Vector2 globalPosition, string name) {
         TileData tileData = GetTileData(name);
         if (tileData != null && sceneDB.ContainsKey(tileData.scene)) { 
