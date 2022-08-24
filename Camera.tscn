@@ -3,25 +3,10 @@
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://Sprites/night_palette.png" type="Texture" id=2]
 [ext_resource path="res://Camera.cs" type="Script" id=3]
-
-[sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
-uniform float transition_amount;
-uniform sampler2D palette;
-
-void fragment() {
-	float t = clamp(transition_amount, 0, 1);
-	vec4 bg = texture(SCREEN_TEXTURE, SCREEN_UV);
-	float avg = (bg.r + bg.g + bg.b) /3f;
-	float cmax = max(bg.r, max(bg.g, bg.b));
-	float cmin = min(bg.r, min(bg.g, bg.b));
-	//vec4 c = texture(palette, vec2(cmax, 0.5));
-	vec4 c = texture(palette, vec2(avg, 0.5));
-	COLOR = c * t + bg * (1f - t);
-}"
+[ext_resource path="res://Shaders/Night.gdshader" type="Shader" id=4]
 
 [sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+shader = ExtResource( 4 )
 shader_param/transition_amount = 0.0
 shader_param/palette = ExtResource( 2 )
 

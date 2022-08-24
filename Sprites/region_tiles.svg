@@ -7,9 +7,9 @@
    viewBox="0 0 500 500"
    version="1.1"
    id="svg5"
-   sodipodi:docname="WorldTiles.svg"
+   sodipodi:docname="region_tiles.svg"
    inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
-   inkscape:export-filename="/Users/brandon/Caravaner/Sprites/WorldTiles.png"
+   inkscape:export-filename="/Users/brandon/Caravaner/Sprites/DetailTiles.png"
    inkscape:export-xdpi="16.26"
    inkscape:export-ydpi="16.26"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -27,13 +27,13 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.24132868"
-     inkscape:cx="698.21788"
-     inkscape:cy="1023.5004"
+     inkscape:zoom="0.26029657"
+     inkscape:cx="804.85118"
+     inkscape:cy="806.77206"
      inkscape:window-width="1312"
      inkscape:window-height="746"
-     inkscape:window-x="54"
-     inkscape:window-y="0"
+     inkscape:window-x="45"
+     inkscape:window-y="5"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1">
     <inkscape:grid
@@ -94,16 +94,19 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <path
-       style="fill:#e8bf92;stroke:none;stroke-width:15;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:15, 15;stroke-dashoffset:6.00001;fill-opacity:1"
-       d="m 116.16578,76.293699 14.5531,-40.857858 11.02448,-13.780605 10.23702,-2.756121 7.4809,1.574926 5.77784,7.12971 -2.62799,30.668521 -22.04896,12.205676 z"
-       id="path3485" />
     <rect
        style="fill:#e8bf92;fill-opacity:1;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
        id="rect848"
        width="100"
        height="100"
        x="0"
+       y="0" />
+    <rect
+       style="fill:#e8bf92;fill-opacity:1;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       id="rect3589"
+       width="100"
+       height="100"
+       x="100"
        y="0" />
     <path
        style="fill:#c9a57e;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"

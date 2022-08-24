@@ -61,20 +61,20 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient1088"
-       id="linearGradient947"
+       id="linearGradient2391"
        gradientUnits="userSpaceOnUse"
        x1="50"
        y1="100"
        x2="50"
        y2="0"
-       gradientTransform="translate(-150,-99.999999)" />
+       gradientTransform="translate(-150,-49.999999)" />
   </defs>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#eccead;stroke:none;stroke-width:15;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
+       style="fill:#ffeacf;stroke:none;stroke-width:15;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
        id="rect894"
        width="100"
        height="100"
@@ -84,21 +84,14 @@
        inkscape:export-xdpi="130.05"
        inkscape:export-ydpi="130.05" />
     <rect
-       style="fill:url(#linearGradient947);fill-opacity:1;stroke:none;stroke-width:15;stroke-linecap:round;stroke-linejoin:round"
-       id="rect894-0"
+       style="fill:url(#linearGradient2391);fill-opacity:1;stroke:none;stroke-width:15;stroke-linecap:round;stroke-linejoin:round"
+       id="rect894-3"
        width="100"
        height="100"
        x="-150"
-       y="-100"
+       y="-50"
        inkscape:export-filename="/Users/brandon/Caravaner/Sprites/Gradient.png"
        inkscape:export-xdpi="130.05"
        inkscape:export-ydpi="130.05" />
-    <rect
-       style="fill:#e8bf92;fill-opacity:1;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
-       id="rect848"
-       width="100"
-       height="100"
-       x="-100"
-       y="50" />
   </g>
 </svg>
