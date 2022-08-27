@@ -8,6 +8,10 @@ namespace Caravaner {
         public readonly int x;
 		public readonly int y;
 		public static readonly Vector2Int Zero = new Vector2Int(0, 0);
+        public static readonly Vector2Int N = new Vector2Int(0, 1);
+        public static readonly Vector2Int S = new Vector2Int(0, -1);
+        public static readonly Vector2Int E = new Vector2Int(1, 0);
+        public static readonly Vector2Int W = new Vector2Int(-1, 0);
 
 		public Vector2Int(int x, int y) {
 			this.x = x;
@@ -26,6 +30,10 @@ namespace Caravaner {
 		}
         public static bool operator !=(Vector2Int a, Vector2Int b) {
 			return a.x != b.x || a.y != b.y;
+		}
+
+        public static Vector2Int operator *(int i, Vector2Int v) {
+            return new Vector2Int(i * v.x, i * v.y);
 		}
 
         public static Vector2Int operator +(Vector2Int a, Vector2Int b) {

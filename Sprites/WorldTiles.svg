@@ -27,9 +27,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.24132868"
-     inkscape:cx="698.21788"
-     inkscape:cy="1023.5004"
+     inkscape:zoom="1.2811778"
+     inkscape:cx="984.64084"
+     inkscape:cy="68.686796"
      inkscape:window-width="1312"
      inkscape:window-height="746"
      inkscape:window-x="54"
@@ -91,11 +91,23 @@
        gradientUnits="userSpaceOnUse" />
   </defs>
   <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Background"
+     sodipodi:insensitive="true"
+     style="display:inline">
+    <path
+       style="fill:#e8bf92;fill-opacity:1;stroke:none;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round"
+       d="M 0,0 V 500 H 300 V 399.99999 h 99.99999 V 0 H 300.37674 L 300,100 H 100 V 0 Z"
+       id="path1023" />
+  </g>
+  <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     style="display:inline">
     <path
-       style="fill:#e8bf92;stroke:none;stroke-width:15;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:15, 15;stroke-dashoffset:6.00001;fill-opacity:1"
+       style="fill:#e8bf92;fill-opacity:1;stroke:none;stroke-width:15;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:15, 15;stroke-dashoffset:6.00001"
        d="m 116.16578,76.293699 14.5531,-40.857858 11.02448,-13.780605 10.23702,-2.756121 7.4809,1.574926 5.77784,7.12971 -2.62799,30.668521 -22.04896,12.205676 z"
        id="path3485" />
     <rect
@@ -165,7 +177,7 @@
        id="path1638"
        sodipodi:nodetypes="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
     <rect
-       style="fill:#e8bf92;stroke:none;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
+       style="fill:#e8bf92;fill-opacity:1;stroke:none;stroke-width:20;stroke-linecap:round;stroke-linejoin:round"
        id="rect2453"
        width="100"
        height="100"

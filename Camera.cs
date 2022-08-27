@@ -12,6 +12,7 @@ public class Camera : Camera2D {
 	public float nightAmount;
 	bool isDay;
 	[Export] bool dayNightCycleOn;
+	//[Export] bool pixelSnap;
 
 	public override void _Ready() {
 		postProcMat = (ShaderMaterial)((CanvasItem)GetNode("CanvasLayer/ColorRect")).Material;
@@ -21,6 +22,7 @@ public class Camera : Camera2D {
 		tween = (Tween)GetNode("Tween");
 		isDay = true;
 		timer.Connect("timeout", this, nameof(OnTimerUp));
+		//!!!
 	}
 
 	private void DayToNight() {
@@ -43,6 +45,12 @@ public class Camera : Camera2D {
 			timer.Start(lengthOfDayInSeconds);
 			isDay = true;
 		}
+	}
+
+	private void RoundPositionToNearestInt() {
+		float x = Mathf.Round(Position.x) - Position.x;
+		float y = Mathf.Round(Position.x) - Position.y;
+		Offset = new Vector2(x, y);
 	}
 
 	public override void _Process(float delta) {
