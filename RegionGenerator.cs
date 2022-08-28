@@ -6,6 +6,9 @@ using Caravaner;
 using System.Linq;
 
 public class RegionGenerator : Node2D {
+	// Ought to radomly sort neighbors by desirability according
+	// to an input image (NOT SIMPLE NOISE!)
+	// Will probably need my PQ
 
 	[Export] float WorldScale = 64f;
 	[Export] Color VertexColor = new Color(1, 1, 1, 1);
@@ -24,9 +27,11 @@ public class RegionGenerator : Node2D {
 	HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
 	Timer timer;
 	[Export] bool GenerateOn;
-	[Export] float AnimationDelay = 0.2f;
+	[Export] float AnimationDelay = 0f;
+	[Export] bool GridOn;
 	OpenSimplexNoise noise = new OpenSimplexNoise();
 	List<Color> subregionColors = new List<Color>();
+	bool adjacenciesSet = false;
 
 	Vector2Int[] DirArray = {
 			new Vector2Int(-1, 0),
@@ -54,11 +59,20 @@ public class RegionGenerator : Node2D {
 
 	}
 
+	public int NumbActiveRegions() {
+		int total = 0;
+		foreach (var r in map) {
+			total += (r.type == 0) ? 0 : 1;
+		}
+		return total;
+	}
+
 	private void CreateRegionCenters() {
 		WorldWidth = Width * WorldScale;
 		WorldHeight = Height * WorldScale;
 		offset = new Vector2Int(Width / 2, Height / 2);
 		map = new Region[Width, Height];
+		adjacenciesSet = false;
 		Vector2Int cBuffer = new Vector2Int(1, -1);
 		for (int i = 0; i < Width; ++i) { 
 			for (int j = 0; j < Height; ++j) {
@@ -68,6 +82,15 @@ public class RegionGenerator : Node2D {
 					rng.RandiRange(GridSize * j + cBuffer.x, GridSize * (j + 1) - 1 + cBuffer.y));
 				//center = IndexToGrid(index);
 				map[i, j] = new Region(index, center);
+
+				// Switch region on or off -------
+				if (i == 0 || j == 0 || i == Width - 1 || j == Height - 1) {
+					map[i, j].type = 0;
+				}
+				else { 
+					map[i, j].type = (rng.Randf() > 0.3f) ? 1 : 0;
+				}
+				// -------------------------------
 									   
 				map[i, j].SetDirs((j == Height - 1) ? 0 : 1, 
 								  (j == 0) ? 0 : 1, 
@@ -101,6 +124,12 @@ public class RegionGenerator : Node2D {
 	private void FillRegions() {
 		if (visited.Count >= GridSize * GridSize * Width * Height) {
 			GenerateOn = false;
+			if (!adjacenciesSet) {
+				GD.Print("Setting adjacencies");
+				SetAdjacencies();
+				GD.Print("Done!");
+				adjacenciesSet = true;
+			}
 			return;
 		}
 		for (int i = 0; i < Width; ++i) {
@@ -108,21 +137,6 @@ public class RegionGenerator : Node2D {
 				PickTile(visited, map[i, j]);
 			}
 		}
-
-		/*
-		Stack<Region> nextActive = new Stack<Region>();
-		while (activeRegions.Count > 0) { 
-			while (activeRegions.Count > 0) {
-				Region r = activeRegions.Pop();
-				if (PickTile(visited, r)) {
-					nextActive.Push(r);
-				}
-			}
-			var temp = activeRegions;
-			activeRegions = nextActive;
-			nextActive = temp;
-		}
-		*/
 	}
 
 	private void AddNeighbors(HashSet<Vector2Int> visited, Region region, Vector2Int pos) { 
@@ -132,6 +146,9 @@ public class RegionGenerator : Node2D {
 				n.x >= 0 && n.y >= 0 && 
 				n.x < GridSize * Width && n.y < GridSize * Height) {
 				region.Neighbors.Add(n);
+			}
+			else if (visited.Contains(n)){
+				region.Adjtiles.Add(n);
 			}
 		}
 	}
@@ -150,6 +167,28 @@ public class RegionGenerator : Node2D {
 		return true;
 	}
 
+	private Region GetParentRegion(Vector2Int v) { 
+		foreach (Region r in map) { 
+			if (r.tiles.Contains(v)) {
+				return r;
+			}
+		}
+		return null;
+	}
+
+	private void SetAdjacencies() { 
+		foreach (Region r in map) { 
+			foreach (Vector2Int v in r.Adjtiles) {
+				Region adj = GetParentRegion(v);
+				if (adj != null) {
+					r.adjacent.Add(adj);
+				}
+			}
+		}
+		EnsureConnectedGraph();
+		GenerateRoads();
+	}
+
 	private void ClearRegionTiles() {
 		for (int i = 0; i < Width; ++i) {
 			for (int j = 0; j < Height; ++j) {
@@ -159,17 +198,188 @@ public class RegionGenerator : Node2D {
 		}
 	}
 
-	private void CreateMST(int startX, int startY) {
-		HashSet<Region> visited = new HashSet<Region>();
-		Queue<Region> candidates = new Queue<Region>();
-		candidates.Enqueue(map[startX, startY]);
-		while (candidates.Count > 0) {
-			Region r = candidates.Dequeue();
-			foreach (Region n in GetNeighbors(r.index.x, r.index.y)) { 
-				if (!visited.Contains(n)) {
-					candidates.Enqueue(n);
+	private void EnsureConnectedGraph() {
+		GD.Print("Ensuring connected graph");
+		// Kruskals
+		// Generate edges
+		var subgraphs = new HashSet<HashSet<Region>>();
+		// Build subgraph sets
+		foreach (var r in map) {
+			if (r.type != 0)
+				subgraphs.Add(new HashSet<Region>() { r });
+		}
+		// Build edge set
+		var edgeSet = new HashSet<MapEdge>();
+		var edges = new List<MapEdge>();
+		foreach (var r in map) { 
+			foreach (var adj in r.adjacent) {
+				if (adj.type == 0 || r.type == 0) continue;
+				float dist = (r.center - adj.center).Magnitude();
+				// Set "on" region dist values to the minimum cost 
+				// so they're added first
+				if (adj.type != 0 && r.type != 0) dist = 0;
+				var candidate = new MapEdge(r, adj, dist);
+				if (!edgeSet.Contains(candidate)) {
+					edgeSet.Add(candidate);
 				}
 			}
+		}
+		// Sort edge set
+		edges = new List<MapEdge>(edgeSet);
+		edges.Sort((x1, x2) => x1.value.CompareTo(x2.value));
+		List<MapEdge> newEdges = new List<MapEdge>();
+		foreach (var e in edges) {
+			// Check if we're done
+			if (subgraphs.Count == 1) {
+				GD.Print("Success!");
+				break;
+			}
+			HashSet<Region> a = null;
+			HashSet<Region> b = null;
+			foreach (var g in subgraphs) { 
+				if (g.Contains(e.a)) {
+					a = g;
+				}
+				if (g.Contains(e.b)) {
+					b = g;
+				}
+				if (a != null && b != null) {
+					break;
+				}
+			}
+			if (a == null && b == null) {
+				subgraphs.Add(new HashSet<Region>() { e.a, e.b });
+			}
+			else if (a == null) {
+				b.Add(e.a);
+			}
+			else if (b == null) { 
+				a.Add(e.b);
+			}
+
+			if (a != b) {
+				subgraphs.Remove(b);
+				a.UnionWith(b);
+				newEdges.Add(e);
+			}
+		}
+		List<HashSet<Region>> graphs = new List<HashSet<Region>>(subgraphs);
+		graphs.Sort((x1, x2) => x1.Count.CompareTo(x2.Count));
+		HashSet<Region> mGraph = graphs[graphs.Count - 1];
+
+		//Stack<HashSet<Region>> toResolve = new Stack<HashSet<Region>>(graphs);
+		//var curr = toResolve.Pop();
+		//HashSet<Region> rem;
+		//while (toResolve.Count > 0) {
+		//	rem = toResolve.Pop();
+		//	var candidates = new List<(Region, Region, float)>();
+		//	// Find nearest
+		//	foreach (var va in curr) { 
+		//		foreach (var vb in rem) {
+		//			candidates.Add((va, vb, (va.center - vb.center).Magnitude()));
+		//		}
+		//	}
+		//	candidates.Sort((x1, x2) => x1.Item3.CompareTo(x2.Item3));
+		//}
+
+		// Turn regions on if needed
+		foreach (var r in map) { 
+			if (!mGraph.Contains(r)) {
+				r.type = 0;
+			}
+		}
+		//foreach (var e in newEdges) { 
+		//	if (e.a.type == 0) {
+		//		e.a.type = 1;
+		//	}
+		//	if (e.b.type == 0) {
+		//		e.b.type = 1;
+		//	}
+		//}
+	}
+
+	public void GenerateRoads() {
+		GD.Print("Generating roads");
+		var edgeList = new HashSet<MapEdge>();
+		var visited = new HashSet<MapEdge>();
+		foreach (var r in map) {
+			if (r.type == 0) continue;
+			foreach (var adj in r.adjacent) { 
+				if (adj.type == 0) continue;
+				var candidate = new MapEdge(r, adj, 0);
+				if (!edgeList.Contains(candidate)) {
+					edgeList.Add(candidate);
+				}
+			}
+		}
+
+		foreach (var edge in edgeList) {
+			SetRoad(edge);
+		}
+	}
+
+	// Maybe use A* and a noise map to modify cost function
+	// Also create a 2d array for the grid tiles from region tiles
+	// Regions can reference this 2d array to get the Tile struct data
+	private void SetRoad(MapEdge edge) {
+		Vector2Int curr = edge.a.center;
+		Vector2Int next;
+		Vector2Int dir;
+		bool rand = false;
+
+		while (curr != edge.b.center) {
+			dir = (edge.b.center - curr).Normalized();
+			if (rand) { 
+				Vector2 randDir = new Vector2(dir.x, dir.y).Rotated((Mathf.Pi /2f* rng.Randf()) - Mathf.Pi/2f);
+				dir = new Vector2Int(Mathf.RoundToInt(randDir.x),
+									 Mathf.RoundToInt(randDir.y));
+			}
+			rand = !rand;
+			next = curr + dir;
+			if (edge.b.roadTiles.Contains(next)) return;
+			edge.a.roads.Add((curr, next));
+			edge.a.roadTiles.Add(next);
+			curr = next;
+		}
+	}
+
+	private struct MapEdge {
+		public Region a;
+		public Region b;
+		public float value;
+		public MapEdge(Region a, Region b, float value) {
+			this.a = a;
+			this.b = b;
+			this.value = value;
+		}
+
+		public override bool Equals(object obj) {
+			return obj is MapEdge edge && (MapEdge)obj == this;
+		}
+
+		public override int GetHashCode() {
+			int hashCode = 2118541809;
+			hashCode = hashCode * -1521134295 + (EqualityComparer<Region>.Default.GetHashCode(a) + 
+												 EqualityComparer<Region>.Default.GetHashCode(b));
+			return hashCode;
+		}
+
+		public static bool operator==(MapEdge u, MapEdge v) {
+			return (u.a == v.a && u.b == v.b) || (u.a == v.b && u.b == v.a);
+		}
+		public static bool operator!=(MapEdge u, MapEdge v) {
+			return (u.a != v.a || u.b != v.b) && (u.a != v.b || u.b != v.a);
+		}
+	}
+
+	private struct Edge<T, V> {
+		public T a;
+		public T b;
+		public V value;
+		public Edge(T a, T b, V value) {
+			this.a = a;
+			this.b = b;
+			this.value = value;
 		}
 	}
 
@@ -242,6 +452,14 @@ public class RegionGenerator : Node2D {
 				DrawRegion(map[i, j]);
 			}
 		}
+		if (ShowConnections) { 
+			foreach (Region r in map) { 
+				DrawConnections(r);
+			}
+		}
+		foreach (Region r in map) {
+			DrawRoads(r);
+		}
 	}
 
 	private void DrawGrid() {
@@ -258,37 +476,52 @@ public class RegionGenerator : Node2D {
 		}
 	}
 
+	private void DrawRoads(Region r) { 
+		foreach (var road in r.roads) {
+			DrawLine(GridToWorld(road.Item1),
+					 GridToWorld(road.Item2),
+					 new Color(0, 0, 0));
+		}
+	}
 
 	private void DrawRegion(Region r) {
 		if (drawn.Contains(r)) return;
 		//Color randColor = new Color(rng.Randf(), rng.Randf(), rng.Randf());
+		Color c = (r.type == 0) ? new Color(0, 0, 0) : r.color;
 		foreach (Vector2Int tile in r.tiles) { 
-			Vector2 pos = GridToWorld(tile);
-			Color c = r.color;
-			float a = noise.GetNoise2d(tile.x, tile.y);
+			// Noise coloring
+			//float a = noise.GetNoise2d(tile.x, tile.y);
 			//c = new Color(a, a, a);
+			Vector2 pos = GridToWorld(tile);
 			DrawRect(new Rect2(new Vector2(pos.x - WorldScale/2f, pos.y - WorldScale/2f), 
 							   new Vector2(WorldScale, WorldScale)), 
 							   c);
-		}
-		if (ShowConnections) { 
-			DrawConnections(r);
 		}
 	}
 
 	private void DrawConnections(Region r) {
 		Color white = new Color(1, 1, 1);
 		Color black = new Color(0, 0, 0);
-		foreach (Direction dir in dirs.Keys) {
-			Vector2Int vDir = dirs[dir];
-			Vector2Int pos = new Vector2Int(r.index.x + vDir.x, 
-											r.index.y + vDir.y);
-			if (pos.x >= 0 && pos.y >= 0 && 
-				pos.x < Width && pos.y < Height) {
-				DrawLine(GridToWorld(r.center), 
-						 GridToWorld(map[pos.x, pos.y].center), 
-						 (r.IsConnected(dir) > 0) ? white : black);
-			}
+		Color gray = new Color(1f, 1f, 1f, 0.1f);
+		//if (r.type == 0) return;
+
+		//foreach (Direction dir in dirs.Keys) {
+		//	Vector2Int vDir = dirs[dir];
+		//	Vector2Int pos = new Vector2Int(r.index.x + vDir.x, 
+		//									r.index.y + vDir.y);
+		//	if (pos.x >= 0 && pos.y >= 0 && 
+		//		pos.x < Width && pos.y < Height) {
+		//		if (map[pos.x, pos.y].type == 0) continue;
+		//		DrawLine(GridToWorld(r.center), 
+		//				 GridToWorld(map[pos.x, pos.y].center), 
+		//				 (r.IsConnected(dir) > 0) ? white : black);
+		//	}
+		//}
+		foreach (Region adj in r.adjacent) {
+			DrawLine(GridToWorld(r.center),
+					 GridToWorld(adj.center),
+					 (adj.type == 0 || r.type == 0) ? gray : white);
+
 		}
 	}
 }
@@ -372,8 +605,13 @@ public class Region {
 	public int E;
 	public int W;
 	public RandList<Vector2Int> Neighbors = new RandList<Vector2Int>();
+	public HashSet<Vector2Int> Adjtiles = new HashSet<Vector2Int>();
 	public Color color;
 	public float growthSlow;
+	public int type;
+	public HashSet<Region> adjacent = new HashSet<Region>();
+	public List<(Vector2Int, Vector2Int)> roads = new List<(Vector2Int, Vector2Int)>();
+	public HashSet<Vector2Int> roadTiles = new HashSet<Vector2Int>();
 
 	public Region() { 
 	}

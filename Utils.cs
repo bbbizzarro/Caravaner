@@ -25,6 +25,10 @@ namespace Caravaner {
                                   (int)Math.Round((double)y / length));
 		}
 
+        public float Magnitude() {
+            return (float)Math.Sqrt(x * x + y * y);
+		}
+
         public static bool operator ==(Vector2Int a, Vector2Int b) {
 			return a.x == b.x && a.y == b.y;
 		}
