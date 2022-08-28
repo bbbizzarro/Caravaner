@@ -32,6 +32,8 @@ public class RegionGenerator : Node2D {
 	OpenSimplexNoise noise = new OpenSimplexNoise();
 	List<Color> subregionColors = new List<Color>();
 	bool adjacenciesSet = false;
+	GridMap gridMap;
+	PathFinder pathFinder;
 
 	Vector2Int[] DirArray = {
 			new Vector2Int(-1, 0),
@@ -67,11 +69,14 @@ public class RegionGenerator : Node2D {
 		return total;
 	}
 
+	// Generation entry point
 	private void CreateRegionCenters() {
 		WorldWidth = Width * WorldScale;
 		WorldHeight = Height * WorldScale;
 		offset = new Vector2Int(Width / 2, Height / 2);
 		map = new Region[Width, Height];
+		gridMap = new GridMap(Width * GridSize, Height * GridSize);
+		pathFinder = new PathFinder(100, gridMap);
 		adjacenciesSet = false;
 		Vector2Int cBuffer = new Vector2Int(1, -1);
 		for (int i = 0; i < Width; ++i) { 
@@ -322,24 +327,13 @@ public class RegionGenerator : Node2D {
 	// Also create a 2d array for the grid tiles from region tiles
 	// Regions can reference this 2d array to get the Tile struct data
 	private void SetRoad(MapEdge edge) {
-		Vector2Int curr = edge.a.center;
-		Vector2Int next;
-		Vector2Int dir;
-		bool rand = false;
-
-		while (curr != edge.b.center) {
-			dir = (edge.b.center - curr).Normalized();
-			if (rand) { 
-				Vector2 randDir = new Vector2(dir.x, dir.y).Rotated((Mathf.Pi /2f* rng.Randf()) - Mathf.Pi/2f);
-				dir = new Vector2Int(Mathf.RoundToInt(randDir.x),
-									 Mathf.RoundToInt(randDir.y));
-			}
-			rand = !rand;
-			next = curr + dir;
-			if (edge.b.roadTiles.Contains(next)) return;
-			edge.a.roads.Add((curr, next));
-			edge.a.roadTiles.Add(next);
-			curr = next;
+		Vector2Int start = edge.a.center;
+		Vector2Int end = edge.b.center;
+		gridMap.SetActiveRegions(edge.a, edge.b);
+		var road = pathFinder.FindPath(start, end);
+		if (road.Count == 0) GD.Print("Failed to find road.");
+		if (road.Count > 0) {
+			edge.a.roadPaths.Add(road);
 		}
 	}
 
@@ -477,11 +471,22 @@ public class RegionGenerator : Node2D {
 	}
 
 	private void DrawRoads(Region r) { 
+		foreach (var road in r.roadPaths) {
+			if (road.Count < 2) continue;
+			for (int i = 0; i < road.Count - 1; ++i) {
+				DrawLine(GridToWorld(road[i]),
+						 GridToWorld(road[i + 1]),
+						 new Color(0, 0, 0));
+			}
+		}
+
+		/*
 		foreach (var road in r.roads) {
 			DrawLine(GridToWorld(road.Item1),
 					 GridToWorld(road.Item2),
 					 new Color(0, 0, 0));
 		}
+		*/
 	}
 
 	private void DrawRegion(Region r) {
@@ -612,6 +617,7 @@ public class Region {
 	public HashSet<Region> adjacent = new HashSet<Region>();
 	public List<(Vector2Int, Vector2Int)> roads = new List<(Vector2Int, Vector2Int)>();
 	public HashSet<Vector2Int> roadTiles = new HashSet<Vector2Int>();
+	public List<List<Vector2Int>> roadPaths = new List<List<Vector2Int>>();
 
 	public Region() { 
 	}

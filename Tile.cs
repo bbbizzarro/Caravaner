@@ -7,6 +7,7 @@ public class Tile : ISavable, IContainer<int> {
 	[SerializeField] public float debugValue;
 	[SerializeField] public List<int> items;
 	[SerializeField] public int state;
+	[SerializeField] public bool open;
 
 	public Tile(int type, bool visible) {
 		this.visible = visible;

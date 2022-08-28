@@ -25,6 +25,10 @@ namespace Caravaner {
                                   (int)Math.Round((double)y / length));
 		}
 
+        public int Manhattan(Vector2Int v) {
+            return  Math.Abs(x - v.x) + Math.Abs(y - v.y);
+        }
+
         public float Magnitude() {
             return (float)Math.Sqrt(x * x + y * y);
 		}

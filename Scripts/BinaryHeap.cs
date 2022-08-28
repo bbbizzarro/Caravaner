@@ -63,14 +63,12 @@ public class BinaryHeap<T> : IHeap<T>{
 		}
         int l = 2 * k;
         int r = 2 * k + 1;
-        T left = items[l];
-        T right = items[r];
 
         int s = k;
-        if (l <= head && comparer.Compare(left, items[s]) < 0) {
+        if (l <= head && comparer.Compare(items[l], items[s]) < 0) {
             s = l;
 		}
-        if (r <= head && comparer.Compare(right, items[s]) < 0) {
+        if (r <= head && comparer.Compare(items[r], items[s]) < 0) {
             s = r;
 		}
         if (s == k) {
