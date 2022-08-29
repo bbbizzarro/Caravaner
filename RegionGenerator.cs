@@ -11,8 +11,6 @@ public class RegionGenerator {
 	public int Width = 10;
 	public int Height = 10;
 	public float WorldScale = 64f;
-	public float WorldWidth;
-	public float WorldHeight;
 	public GridMap gridMap;
 
 	Vector2Int offset;
@@ -61,10 +59,8 @@ public class RegionGenerator {
 
 	// Generation entry point
 	private void CreateRegionCenters() {
-		WorldWidth = Width * WorldScale;
-		WorldHeight = Height * WorldScale;
 		offset = new Vector2Int(Width / 2, Height / 2);
-		gridMap = new GridMap(Width * GridSize, Height * GridSize);
+		gridMap = new GridMap(Width * GridSize, Height * GridSize, WorldScale);
 		pathFinder = new PathFinder(100, gridMap);
 		adjacenciesSet = false;
 		Vector2Int cBuffer = new Vector2Int(1, -1);
@@ -367,6 +363,7 @@ public class Region {
 	public List<(Vector2Int, Vector2Int)> roads = new List<(Vector2Int, Vector2Int)>();
 	public HashSet<Vector2Int> roadTiles = new HashSet<Vector2Int>();
 	public List<List<Vector2Int>> roadPaths = new List<List<Vector2Int>>();
+	public bool visible;
 
 	public Region() { 
 	}

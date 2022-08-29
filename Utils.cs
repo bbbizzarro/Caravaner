@@ -53,6 +53,13 @@ namespace Caravaner {
     		rng.Randomize();
     	}
 
+        public RandList(IEnumerable<T> items) {
+            rng.Randomize();
+            foreach (var i in items) {
+                Add(i);
+            }
+        }
+
     	public T Pop() {
     		int randIndex = rng.RandiRange(0, Count - 1);
     		T result = this[randIndex];

@@ -15,6 +15,9 @@ public class Map : Node {
 	HashSet<Vector2Int> visited;
 	const float Scale = 64f;
 	List<Region> regions = new List<Region>();
+	GridMap gridMap;
+	HashSet<Region> rendered = new HashSet<Region>();
+	Player player;
 
 	private enum Dir { 
 		Up = 0,
@@ -23,20 +26,59 @@ public class Map : Node {
 		Right = 3
 	}
 
-	public void Initialize() { 
+	public override void _Process(float delta) {
+		if (Input.IsActionJustPressed("interact")) {
+			Vector2Int currTile = gridMap.WorldToGrid(player.GlobalPosition);
+			Region r = gridMap.GetRegionWithTile(currTile.x, currTile.y);
+			foreach (var adj in r.adjacent) {
+				adj.visible = true;
+				RenderRegion(adj);
+			}
+		}
+	}
+
+	public void Initialize(GridMap gridMap, Player player) { 
+		this.player = player;
 		maps = (TileMapManager)GetNode("TileMapManager");
 		rng = new RandomNumberGenerator();
 		rng.Randomize();
-		//PrintOctave(GenerateOctave(10), 10, 2);
-		Vector2Int p1 = new Vector2Int(0, 0);
-		Vector2Int p2 = new Vector2Int(-7, 0);
-		Vector2Int p3 = new Vector2Int(-3, -7);
-		PlaceScenes(GenerateFromPoint(p1.x, p1.y, rng.RandiRange(40, 140)));
-		PlaceResources(GenerateFromPoint(p2.x, p2.y, rng.RandiRange(40, 140)));
-		PlaceScenes(GenerateFromPoint(p3.x, p3.y, rng.RandiRange(40, 140)));
-		DrawPath(p1, p2);
-		DrawPath(p2, p3);
-		//GenerateNodes(5, 10);
+		this.gridMap = gridMap;
+		//for (int x = 0; x < gridMap.Width; ++x) {
+		//	for (int y =0; y < gridMap.Height; ++y) {
+		//	}
+		//}
+		RenderVisible();
+	}
+
+	public void RenderVisible() {
+		foreach (var r in gridMap.GetRegions()) {
+			if (r.visible) {
+				RenderRegion(r);
+			}
+		}
+	}
+	
+	public void RenderTile(int x, int y) {
+		if (gridMap.GetRegionWithTile(x, y).type == 0) return;
+		if (!gridMap.IsOpen(x, y)) {
+			maps[MapType.Static].SetCell(x, -y, 5);
+		}
+		if (gridMap.Get(x, y).hasRoad == true) {
+			maps[MapType.Floor].SetCell(x, -y, 6);
+		}
+		else {
+			maps[MapType.Floor].SetCell(x, -y, 4);
+		}
+	}
+
+	public void RenderRegion(Region r) {
+		if (rendered.Contains(r)) return;
+
+		foreach (var v in r.tiles) {
+			RenderTile(v.x, v.y);
+		}
+		rendered.Add(r);
+		maps[MapType.Floor].UpdateBitmaskRegion();
 	}
 	public void GenerateRegions(int n, int size) {
 		// Create bounding box over current region

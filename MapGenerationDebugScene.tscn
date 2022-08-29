@@ -7,8 +7,10 @@
 
 [node name="RegionRenderer" type="Node2D" parent="."]
 script = ExtResource( 3 )
+RegionGridSize = 8
 
 [node name="Timer" type="Timer" parent="RegionRenderer"]
 
 [node name="CameraTransform" parent="." instance=ExtResource( 2 )]
-DefaultPosition = Vector2( 4300, -4300 )
+DefaultZoom = 10
+DefaultPosition = Vector2( 2000, -2000 )

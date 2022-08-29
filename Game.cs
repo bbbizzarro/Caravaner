@@ -23,7 +23,6 @@ public class Game : Node {
 			LoadGame();
 		}
 		Initialize();
-		((Map)GetNode("RegionMap")).Initialize();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -62,6 +61,17 @@ public class Game : Node {
 		player.Connect("GridPositionChanged", this, "OnPlayerGridPositionChanged");
 		player.Initialize(world);
 		OnPlayerGridPositionChanged();
+
+		RegionGenerator rg = new RegionGenerator(10, 10, 8, 64);
+		GridMap gm = rg.Generate();
+		Map regionMap = (Map)GetNode("RegionMap");
+		RandList<Region> regions = new RandList<Region>(gm.GetOpenRegions());
+		Region startingRegion = regions.Pop();
+		startingRegion.visible = true;
+		Vector2 startingPosition = gm.GridToWorld(startingRegion.center);
+		GD.Print(startingPosition, startingRegion.center);
+		player.GlobalPosition = startingPosition;
+		regionMap.Initialize(gm, player);
 
 		// Initialize simulator.
 		simulator = new Simulator();

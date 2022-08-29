@@ -6,7 +6,7 @@ public class DebugCamera2D : KinematicBody2D {
 	Camera2D camera;
 	[Export] float ZoomSpeed;
 	float CurrSpeed;
-	int DefaultZoom = 18;
+	[Export] int DefaultZoom = 18;
 	[Export] Vector2 DefaultPosition;
 
 	public override void _Ready() {

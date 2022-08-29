@@ -7,15 +7,21 @@ public class RegionRenderer : Node2D {
     private Timer timer;
     public bool ShowConnections { private set; get; }
     public bool GenerateOn {private set; get; }
-    [Export] public float AnimationDelay = 0f;
     private Dictionary<Region, Color> regionColors;
     private RandomNumberGenerator rng = new RandomNumberGenerator();
+
+    [Export] public int RegionGridWidth = 10;
+    [Export] public int RegionGridHeight = 10;
+    [Export] public int RegionGridSize = 15;
+    [Export] public int TileScale = 64;
+    [Export] public float AnimationDelay = 0f;
 
     public override void _Ready() {
         rng.Randomize();
         string hashString = "CreepsInThisPettyPace";
         ulong h =LongHash.GetHashCodeInt64(hashString);
-        rg = new RegionGenerator(10, 10, 15, 64);
+        rg = new RegionGenerator(RegionGridWidth, RegionGridHeight, 
+                                 RegionGridSize, TileScale);
         timer = (Timer)GetNode("Timer");
 		timer.Connect("timeout", this, nameof(AnimateBuildRegions));
         Reset();

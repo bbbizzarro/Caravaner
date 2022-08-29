@@ -2,11 +2,13 @@ using Caravaner;
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class GridMap : IPathGrid {
     public int Height { private set; get; }
     public int Width {private set; get; }
     public int NumActiveRegions { private set; get;}
+    public float Scale { private set; get; }
 
     private readonly Tile[,] map;
     private readonly HashSet<Region> activeRegions = new HashSet<Region>();
@@ -15,10 +17,11 @@ public class GridMap : IPathGrid {
 	Vector2Int[] dirs = {new Vector2Int(-1, 0),  new Vector2Int(0, -1),
                          new Vector2Int( 1, 0),  new Vector2Int(0,  1)};
 
-    public GridMap(int width, int height) {
+    public GridMap(int width, int height, float scale) {
         Height = height;
         Width = width;
         map = InitializeMap(width, height);
+        Scale = scale;
     }
 
     public void AddRegion(Region region) {
@@ -93,6 +96,9 @@ public class GridMap : IPathGrid {
     public IEnumerable<Region> GetRegions() {
         return regions;
     }
+    public IEnumerable<Region> GetOpenRegions() {
+        return regions.Where(r => r.type != 0);
+    }
 
     public Region GetRegionWithTile(int x, int y) {
         var pos = new Vector2Int(x, y);
@@ -123,5 +129,14 @@ public class GridMap : IPathGrid {
             }
         }
         return map;
+    }
+
+	public Vector2 GridToWorld(Vector2Int pos) {
+		return new Vector2(Scale * pos.x, -Scale * pos.y);
+	}
+
+    public Vector2Int WorldToGrid(Vector2 pos) {
+        return new Vector2Int(Mathf.RoundToInt(pos.x / Scale),
+                              Mathf.RoundToInt(Mathf.Abs(pos.y) / Scale));
     }
 }
