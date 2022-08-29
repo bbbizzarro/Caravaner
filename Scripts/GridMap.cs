@@ -11,6 +11,7 @@ public class GridMap : IPathGrid {
     private readonly Tile[,] map;
     private readonly HashSet<Region> activeRegions = new HashSet<Region>();
     private readonly HashSet<Region> regions = new HashSet<Region>();
+    //private readonly List<Region> regions = new List<Region>();
 	Vector2Int[] dirs = {new Vector2Int(-1, 0),  new Vector2Int(0, -1),
                          new Vector2Int( 1, 0),  new Vector2Int(0,  1)};
 
@@ -18,6 +19,11 @@ public class GridMap : IPathGrid {
         Height = height;
         Width = width;
         map = InitializeMap(width, height);
+    }
+
+    public void AddRegion(Region region) {
+        regions.Add(region);
+        if (region.type != 0) NumActiveRegions += 1;
     }
 
     public void SetRegions(IEnumerable<Region> regions) {
@@ -82,6 +88,10 @@ public class GridMap : IPathGrid {
 
     public bool IsOpen(int x, int y) {
         return IsValidTile(x, y) && InActiveRegions(x, y) && map[x,y].open;
+    }
+
+    public IEnumerable<Region> GetRegions() {
+        return regions;
     }
 
     public Region GetRegionWithTile(int x, int y) {
