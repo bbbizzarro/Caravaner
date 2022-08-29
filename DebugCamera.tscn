@@ -13,4 +13,5 @@ current = true
 zoom = Vector2( 2, 2 )
 
 [node name="Icon" type="Sprite" parent="."]
+visible = false
 texture = ExtResource( 2 )

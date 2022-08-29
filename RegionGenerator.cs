@@ -378,6 +378,7 @@ public class RegionGenerator : Node2D {
 	}
 
 	public override void _Ready() {
+		rng.Randomize();
 		timer = (Timer)GetNode("Timer");
 		timer.Connect("timeout", this, nameof(AnimateBuildRegions));
 
@@ -388,7 +389,6 @@ public class RegionGenerator : Node2D {
 		CreateRegionCenters();
 		SetupFill();
 		FillRegions();
-		rng.Randomize();
 	}
 
 	public void AnimateBuildRegions() { 
