@@ -8,6 +8,11 @@ public class Tile : ISavable, IContainer<int> {
 	[SerializeField] public List<int> items;
 	[SerializeField] public int state;
 	[SerializeField] public bool open;
+	[SerializeField] public bool hasRoad;
+
+	public Tile() {
+		open = true;
+	}
 
 	public Tile(int type, bool visible) {
 		this.visible = visible;

@@ -79,6 +79,9 @@ public class RegionGenerator : Node2D {
 		pathFinder = new PathFinder(100, gridMap);
 		adjacenciesSet = false;
 		Vector2Int cBuffer = new Vector2Int(1, -1);
+		GD.Print(String.Format("Creating new map:"));
+		GD.Print(String.Format("Grid Width: {0} Grid Height: {1}", 
+			Width * GridSize, Height * GridSize));
 		for (int i = 0; i < Width; ++i) { 
 			for (int j = 0; j < Height; ++j) {
 				Vector2Int index = new Vector2Int(i, j);
@@ -107,6 +110,7 @@ public class RegionGenerator : Node2D {
 				map[i, j].growthSlow = rng.RandfRange(0, 0.8f);
 			}
 		}
+		gridMap.SetRegions(map.Cast<Region>());
 	}
 
 	private void SetupFill() { 
@@ -130,10 +134,25 @@ public class RegionGenerator : Node2D {
 		if (visited.Count >= GridSize * GridSize * Width * Height) {
 			GenerateOn = false;
 			if (!adjacenciesSet) {
-				GD.Print("Setting adjacencies");
+				GD.Print("Recording adjacent tiles");
 				SetAdjacencies();
-				GD.Print("Done!");
 				adjacenciesSet = true;
+				GD.Print("........................Done!");
+
+				GD.Print("Ensuring connected landmass");
+				EnsureConnectedGraph();
+				GD.Print("........................Done!");
+
+				GD.Print("Building Roads...");
+				GenerateRoads();
+				GD.Print("........................Done!");
+
+				GD.Print("Generating border tiles");
+				GenerateBorders();
+				GD.Print("........................Done!");
+
+				GD.Print("MAP GENERATION COMPLETE:");
+				GD.Print(String.Format("Num. Regions: {0}", gridMap.NumActiveRegions));
 			}
 			return;
 		}
@@ -152,7 +171,7 @@ public class RegionGenerator : Node2D {
 				n.x < GridSize * Width && n.y < GridSize * Height) {
 				region.Neighbors.Add(n);
 			}
-			else if (visited.Contains(n)){
+			else if (visited.Contains(n) && !region.tiles.Contains(n)){
 				region.Adjtiles.Add(n);
 			}
 		}
@@ -163,6 +182,8 @@ public class RegionGenerator : Node2D {
 		if (region.Neighbors.IsEmpty()) return false;
 		Vector2Int pos = region.Neighbors.Pop();
 		while (!region.Neighbors.IsEmpty() && visited.Contains(pos)) {
+			if (!region.Adjtiles.Contains(pos) && !region.tiles.Contains(pos))
+				region.Adjtiles.Add(pos);
 			pos = region.Neighbors.Pop();
 		}
 		if (region.Neighbors.IsEmpty()) return false;
@@ -190,8 +211,8 @@ public class RegionGenerator : Node2D {
 				}
 			}
 		}
-		EnsureConnectedGraph();
-		GenerateRoads();
+		//!!!!!!!
+		//GenerateRoads();
 	}
 
 	private void ClearRegionTiles() {
@@ -204,7 +225,6 @@ public class RegionGenerator : Node2D {
 	}
 
 	private void EnsureConnectedGraph() {
-		GD.Print("Ensuring connected graph");
 		// Kruskals
 		// Generate edges
 		var subgraphs = new HashSet<HashSet<Region>>();
@@ -303,8 +323,27 @@ public class RegionGenerator : Node2D {
 		//}
 	}
 
+	public void GenerateBorders() {
+		gridMap.ActivateAllRegions();
+		foreach (var r in map) {
+			foreach (var t in r.Adjtiles) {
+				if (!gridMap.Get(t.x, t.y).hasRoad) {
+					gridMap.Get(t.x, t.y).open = false;
+				}
+			}
+		}
+		// Ensure edges of map are closed.
+		for (int x = 0; x < Width * GridSize; ++x) {
+			gridMap.Get(x, 0).open = false;
+			gridMap.Get(x, (Height * GridSize) - 1).open = false;
+		}
+		for (int y = 0; y < Height * GridSize; ++y) {
+			gridMap.Get(0, y).open = false;
+			gridMap.Get((Width * GridSize) - 1, y).open = false;
+		}
+	}
+
 	public void GenerateRoads() {
-		GD.Print("Generating roads");
 		var edgeList = new HashSet<MapEdge>();
 		var visited = new HashSet<MapEdge>();
 		foreach (var r in map) {
@@ -331,6 +370,9 @@ public class RegionGenerator : Node2D {
 		Vector2Int end = edge.b.center;
 		gridMap.SetActiveRegions(edge.a, edge.b);
 		var road = pathFinder.FindPath(start, end);
+		foreach (var t in road) {
+			gridMap.Get(t.x, t.y).hasRoad = true;
+		}
 		if (road.Count == 0) GD.Print("Failed to find road.");
 		if (road.Count > 0) {
 			edge.a.roadPaths.Add(road);
@@ -454,6 +496,12 @@ public class RegionGenerator : Node2D {
 		foreach (Region r in map) {
 			DrawRoads(r);
 		}
+		if (adjacenciesSet) {
+			gridMap.ActivateAllRegions();
+			foreach (Region r in map) {
+				DrawBorders(r);
+			}
+		}
 	}
 
 	private void DrawGrid() {
@@ -467,6 +515,18 @@ public class RegionGenerator : Node2D {
 			DrawLine(IndexToWorld(new Vector2Int(-1, i)),
 					 IndexToWorld(new Vector2Int(Width, i)),
 					 gray);
+		}
+	}
+
+	private void DrawBorders(Region r) {
+		Color c = (r.type == 0) ? new Color(0, 0, 0) : r.color;
+		foreach (var t in r.tiles) {
+			if (!gridMap.IsOpen(t.x, t.y)) {
+				Vector2 pos = GridToWorld(t);
+				DrawRect(new Rect2(new Vector2(pos.x - WorldScale/2f, pos.y - WorldScale/2f), 
+								   new Vector2(WorldScale, WorldScale)), 
+								   c * 0.5f);
+			}
 		}
 	}
 
@@ -494,13 +554,17 @@ public class RegionGenerator : Node2D {
 		//Color randColor = new Color(rng.Randf(), rng.Randf(), rng.Randf());
 		Color c = (r.type == 0) ? new Color(0, 0, 0) : r.color;
 		foreach (Vector2Int tile in r.tiles) { 
+			Color dc = c;
 			// Noise coloring
 			//float a = noise.GetNoise2d(tile.x, tile.y);
 			//c = new Color(a, a, a);
 			Vector2 pos = GridToWorld(tile);
+			//if (!gridMap.IsOpen(tile.x, tile.y)) {
+			//	dc *= 0.5f;
+			//}
 			DrawRect(new Rect2(new Vector2(pos.x - WorldScale/2f, pos.y - WorldScale/2f), 
 							   new Vector2(WorldScale, WorldScale)), 
-							   c);
+							   dc);
 		}
 	}
 
