@@ -48,6 +48,10 @@ public class GridMap : IPathGrid {
         return x >= 0 && y >= 0 && x < Width && y < Height;
     }
 
+    public bool TileIsInRegion(Region r, int x, int y) {
+        return r == GetRegionWithTile(x, y);
+    }
+
     public void SetActiveRegions(IEnumerable<Region> regions) {
         activeRegions.Clear();
         foreach (var r in regions) activeRegions.Add(r);

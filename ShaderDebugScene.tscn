@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://DebugCamera.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Water.tscn" type="PackedScene" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="CameraTransform" parent="." instance=ExtResource( 1 )]
+DefaultZoom = 0
+
+[node name="Icon" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="Water" parent="." instance=ExtResource( 2 )]

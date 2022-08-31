@@ -37,16 +37,29 @@ public class Map : Node {
 		}
 	}
 
+	private void DrawBorderOutline(Region r) {
+		if (r.type == 0) return;
+		Line2D line = (Line2D)Services.Instance.TileInstancer.Spawn(Vector2.Zero, "RegionBorder");
+		Vector2 startf;
+		Vector2 endf = Vector2.Zero;
+		foreach (var edge in r.borders) {
+			var start = gridMap.GridToWorld(edge.Item1);
+			var end =  gridMap.GridToWorld(edge.Item2);
+			startf = new Vector2(start.x - 0.5f* gridMap.Scale, start.y -0.5f * gridMap.Scale);
+			endf = new Vector2(end.x - 0.5f*gridMap.Scale, end.y - 0.5f * gridMap.Scale);
+			//DrawLine(startf, endf, new Color(1, 1, 1, 1), 32);
+			line.AddPoint(startf);
+		}
+		line.AddPoint(endf);
+	}
+
 	public void Initialize(GridMap gridMap, Player player) { 
 		this.player = player;
 		maps = (TileMapManager)GetNode("TileMapManager");
 		rng = new RandomNumberGenerator();
 		rng.Randomize();
 		this.gridMap = gridMap;
-		//for (int x = 0; x < gridMap.Width; ++x) {
-		//	for (int y =0; y < gridMap.Height; ++y) {
-		//	}
-		//}
+		Services.Instance.TileInstancer.Spawn(player.GlobalPosition, "Water");
 		RenderVisible();
 	}
 
@@ -79,6 +92,7 @@ public class Map : Node {
 		}
 		rendered.Add(r);
 		maps[MapType.Floor].UpdateBitmaskRegion();
+		DrawBorderOutline(r);
 	}
 	public void GenerateRegions(int n, int size) {
 		// Create bounding box over current region

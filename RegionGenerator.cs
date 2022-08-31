@@ -164,14 +164,16 @@ public class RegionGenerator {
 			}
 		}
 	}
+	// ^
 
 	private bool PickTile(HashSet<Vector2Int> visited, Region region) {
 		if (rng.Randf() < randData[region].growthSlow) return true;
 		if (region.Neighbors.IsEmpty()) return false;
 		Vector2Int pos = region.Neighbors.Pop();
 		while (!region.Neighbors.IsEmpty() && visited.Contains(pos)) {
-			if (!region.Adjtiles.Contains(pos) && !region.tiles.Contains(pos))
+			if (!region.Adjtiles.Contains(pos) && !region.tiles.Contains(pos)) {
 				region.Adjtiles.Add(pos);
+			}
 			pos = region.Neighbors.Pop();
 		}
 		if (region.Neighbors.IsEmpty()) return false;
@@ -268,6 +270,34 @@ public class RegionGenerator {
 		}
 	}
 
+	public void GenerateBorderOutline(Region r) {
+		var pb = new PathBuilder();
+		foreach (var t in r.tiles) {
+			var left = new Vector2Int(t.x - 1, t.y); // left
+			var right = new Vector2Int(t.x + 1, t.y);
+			var up = new Vector2Int(t.x, t.y + 1);
+			var down = new Vector2Int(t.x, t.y - 1);
+			/*
+			+*+    +   +   +
+			*x* -> +  [lu][ru] -> convert to float offset to render
+			+*+    +  [ld][rd]
+			*/
+			var lu = new Vector2Int(t.x, t.y); // left
+			var ru = new Vector2Int(t.x + 1, t.y);
+			var rd = new Vector2Int(t.x + 1, t.y - 1);
+			var ld = new Vector2Int(t.x, t.y - 1);
+			if (!gridMap.TileIsInRegion(r, left.x, left.y)) 
+				pb.Add(ld, lu);
+			if (!gridMap.TileIsInRegion(r, right.x, right.y)) 
+				pb.Add(ru, rd);
+			if (!gridMap.TileIsInRegion(r, up.x, up.y)) 
+				pb.Add(lu, ru);
+			if (!gridMap.TileIsInRegion(r, down.x, down.y)) 
+				pb.Add(rd, ld);
+		}
+		r.borders = new List<(Vector2Int, Vector2Int)>(pb.BuildPath());
+	}
+
 	public void GenerateBorders() {
 		gridMap.ActivateAllRegions();
 		foreach (var r in gridMap.GetRegions()) {
@@ -275,7 +305,9 @@ public class RegionGenerator {
 				if (!gridMap.Get(t.x, t.y).hasRoad) {
 					gridMap.Get(t.x, t.y).open = false;
 				}
+				//if (!gridMap.TileIsInRegion(t.x + 1))
 			}
+			GenerateBorderOutline(r);
 		}
 		// Ensure edges of map are closed.
 		for (int x = 0; x < Width * GridSize; ++x) {
@@ -346,14 +378,8 @@ public class RegionGenerator {
 }
 
 public class Region {
-	public int lowerX;
-	public int lowerY;
-	public int upperX;
-	public int upperY;
 	public Vector2Int position;
 	public HashSet<Vector2Int> tiles = new HashSet<Vector2Int>();
-	protected HashSet<Region> connections = new HashSet<Region>();
-	public int subregion;
 	public Vector2Int center;
 	public Vector2Int index;
 	public RandList<Vector2Int> Neighbors = new RandList<Vector2Int>();
@@ -363,7 +389,9 @@ public class Region {
 	public List<(Vector2Int, Vector2Int)> roads = new List<(Vector2Int, Vector2Int)>();
 	public HashSet<Vector2Int> roadTiles = new HashSet<Vector2Int>();
 	public List<List<Vector2Int>> roadPaths = new List<List<Vector2Int>>();
+	public HashSet<Vector2Int> borderTiles = new HashSet<Vector2Int>();
 	public bool visible;
+	public List<(Vector2Int, Vector2Int)> borders; 
 
 	public Region() { 
 	}

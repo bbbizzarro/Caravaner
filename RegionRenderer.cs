@@ -39,7 +39,8 @@ public class RegionRenderer : Node2D {
 
         regionColors = new Dictionary<Region, Color>();
         foreach (var r in rg.GetRegions()) {
-		    regionColors.Add(r, new Color(rng.Randf(), rng.Randf(), rng.Randf()));
+		    //regionColors.Add(r, new Color(rng.Randf(), rng.Randf(), rng.Randf()));
+		    regionColors.Add(r, new Color(0.5f, 0.5f, 0.5f));
         }
     }
 
@@ -85,6 +86,7 @@ public class RegionRenderer : Node2D {
             DrawRegion(r);
 			DrawConnections(r);
 			DrawBorders(r);
+			DrawBorderOutline(r);
 		}
 		foreach (Region r in rg.GetRegions()) {
 			DrawRoads(r);
@@ -103,6 +105,17 @@ public class RegionRenderer : Node2D {
 		//			 rg.IndexToWorld(new Vector2Int(rg.Width, i)),
 		//			 gray);
 		//}
+	}
+
+	private void DrawBorderOutline(Region r) {
+		if (r.type == 0) return;
+		foreach (var edge in r.borders) {
+			var start = rg.GridToWorld(edge.Item1);
+			var end =  rg.GridToWorld(edge.Item2);
+			var startf = new Vector2(start.x - 0.5f* rg.WorldScale, start.y -0.5f * rg.WorldScale);
+			var endf = new Vector2(end.x - 0.5f*rg.WorldScale, end.y - 0.5f * rg.WorldScale);
+			DrawLine(startf, endf, new Color(1, 1, 1, 1), 32);
+		}
 	}
 
 	private void DrawBorders(Region r) {
