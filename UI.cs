@@ -9,6 +9,7 @@ public class UI : Node2D {
 	[Signal] delegate void PlayerContainerUpdated(IEnumerable<Item> items);
 	private Hotbar hotbar;
 	[Signal] delegate void DisplayItem(int x, int y, string title);
+	Label clock;
 
 	public void Initialize(World world, IContainer<int> player) {
 		this.world = world;
@@ -16,6 +17,7 @@ public class UI : Node2D {
 		DEBUGInitDB();
 		player.SubscribeToUpdate(UpdatePlayerUI);
 		hotbar = (Hotbar)GetNode("CanvasLayer/MarginContainer/PanelContainer/Hotbar");
+		clock = (Label)GetNode("CanvasLayer/Clock/Label");
 		UpdatePlayerUI();
 	}
 
@@ -25,6 +27,9 @@ public class UI : Node2D {
 		//	GD.Print(FormatItems(player.GetItems()));
 		//}
 		HandlePointerClick();
+		if (Services.Instance != null) {
+			clock.Text = Services.Instance.WorldState.TimeToString();
+		}
 	}
 
 	private void HandlePointerClick() { 

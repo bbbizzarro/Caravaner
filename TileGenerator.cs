@@ -45,7 +45,12 @@ public class TileGenerator {
         while (next.Count > 0 && citySize > 0) {
             var n = next.Dequeue();
             if (!gridMap.Get(n.x, n.y).hasRoad && rng.Randf() > 0.1f) {
-                gridMap.Get(n.x, n.y).SetScene(false, "CityBlock");
+                if (rng.Randf() > 0.5f){
+                    gridMap.Get(n.x, n.y).SetScene(false, "CityBlock");
+                }
+                else {
+                    gridMap.Get(n.x, n.y).SetScene(false, "Exchange");
+                }
                 citySize -= 1;
             }
             visited.Add(n);

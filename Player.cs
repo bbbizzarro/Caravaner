@@ -45,6 +45,7 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 		MoveAndSlide(speedModifier * speed * direction);
 		if (direction.Length() > 0) {
 			animator.Walk();
+			Services.Instance.WorldState.AdvanceTimeByTicks(delta);
 		}
 		else {
 			animator.Stop();

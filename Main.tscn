@@ -135,6 +135,21 @@ custom_fonts/font = ExtResource( 26 )
 placeholder_text = ">"
 script = ExtResource( 25 )
 
+[node name="Clock" type="Panel" parent="UI/CanvasLayer"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -192.0
+margin_top = -92.0
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Clock"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "00:00"
+align = 1
+valign = 1
+
 [node name="WorldRenderer" type="Node2D" parent="."]
 visible = false
 script = ExtResource( 1 )

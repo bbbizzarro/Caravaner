@@ -14,7 +14,7 @@ shader_param/palette = ExtResource( 2 )
 current = true
 zoom = Vector2( 1.5, 1.5 )
 script = ExtResource( 3 )
-transitionTime = 30.0
+transitionTime = 10.0
 lengthOfDayInSeconds = 60.0
 lengthOfNightInSeconds = 60.0
 

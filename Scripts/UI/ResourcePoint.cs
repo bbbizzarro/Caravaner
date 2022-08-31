@@ -7,6 +7,7 @@ public class ResourcePoint : DropPoint {
 	private AnimationPlayer animationPlayer;
 	private int integrity = 3;
 	RandomNumberGenerator rng = new RandomNumberGenerator();
+	private const float TimeEffort = 2f;
 
 	public override void _Ready() {
 		base._Ready();
@@ -17,6 +18,7 @@ public class ResourcePoint : DropPoint {
 	protected override void OnMousePress() {
 		animationPlayer.Play("StrongSquish");
 		integrity -= rng.RandiRange(1, integrity);
+		Services.Instance.WorldState.AdvanceTimeByTicks(TimeEffort);
 		if (integrity <= 0 ) {
 			List<IconData> icons = Services.Instance.IconInstancer
 				.SelectMany(1, "*", "*", Location, Rarity.Common, -1);

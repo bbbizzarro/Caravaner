@@ -6,6 +6,10 @@ namespace Caravaner {
     public class Utils {
         public Utils() {
         }
+
+        public static float Mod(float x, float m) {
+            return (x % m + m ) %m;
+        }
     }
 
     public class LongHash {

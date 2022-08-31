@@ -65,5 +65,13 @@ public class Camera : Camera2D {
 			amt = Mathf.Clamp(amt - delta, 0, 1);
 			postProcMat.SetShaderParam("transition_amount", amt);
 		}
+		if (isDay && Services.Instance.WorldState.IsNight()) {
+			isDay = false;
+			DayToNight();
+		}
+		if (!isDay && Services.Instance.WorldState.IsDay()) {
+			isDay = true;
+			NightToDay();
+		}
 	}
 }
