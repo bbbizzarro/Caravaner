@@ -9,6 +9,8 @@ public class Tile : ISavable, IContainer<int> {
 	[SerializeField] public int state;
 	[SerializeField] public bool open;
 	[SerializeField] public bool hasRoad;
+	[SerializeField] public string scene = "None";
+	[SerializeField] public string tileType;
 
 	public Tile() {
 		open = true;
@@ -18,6 +20,16 @@ public class Tile : ISavable, IContainer<int> {
 		this.visible = visible;
 		this.type = type;
 		items = new List<int>();
+	}
+
+	public void SetType(bool isOpen, string tileType) {
+		this.tileType = tileType;
+		this.open = isOpen;
+	}
+
+	public void SetScene(bool isOpen, string tileScene) {
+		this.scene = tileScene;
+		this.open = isOpen;
 	}
 
 	public void Load(Godot.Collections.Dictionary<string, object> data) {

@@ -303,7 +303,8 @@ public class RegionGenerator {
 		foreach (var r in gridMap.GetRegions()) {
 			foreach (var t in r.Adjtiles) {
 				if (!gridMap.Get(t.x, t.y).hasRoad) {
-					gridMap.Get(t.x, t.y).open = false;
+					//gridMap.Get(t.x, t.y).open = false;
+					gridMap.Get(t.x, t.y).SetType(false, "Mountain");
 				}
 				//if (!gridMap.TileIsInRegion(t.x + 1))
 			}
@@ -311,12 +312,12 @@ public class RegionGenerator {
 		}
 		// Ensure edges of map are closed.
 		for (int x = 0; x < Width * GridSize; ++x) {
-			gridMap.Get(x, 0).open = false;
-			gridMap.Get(x, (Height * GridSize) - 1).open = false;
+			gridMap.Get(x, 0).SetType(false, "Mountain");
+			gridMap.Get(x, (Height * GridSize) - 1).SetType(false, "Mountain");
 		}
 		for (int y = 0; y < Height * GridSize; ++y) {
-			gridMap.Get(0, y).open = false;
-			gridMap.Get((Width * GridSize) - 1, y).open = false;
+			gridMap.Get(0, y).SetType(false, "Mountain");
+			gridMap.Get((Width * GridSize) - 1, y).SetType(false, "Mountain");
 		}
 	}
 

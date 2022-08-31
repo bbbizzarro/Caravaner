@@ -1,9 +1,11 @@
 shader_type canvas_item;
 uniform sampler2D noise_pattern;
+uniform sampler2D skybox;
 uniform float speed;
 uniform float scale_factor;
 uniform vec4 water_color;
 uniform vec4 highlight_color;
+uniform float skybox_factor;
 
 void fragment(){
 	float scale = 1.0 / scale_factor;
@@ -19,5 +21,6 @@ void fragment(){
 	float c = step(noise.r, 0.8);
 	//COLOR = noise * vec4(UV.x,1.0- c, UV.y, 1.0 );
 	COLOR = c * water_color + (1.0 -c) * highlight_color;
+	COLOR = COLOR * (1f - skybox_factor) + texture(skybox, SCREEN_UV) * skybox_factor;
 	COLOR.a = 1.0;
 }

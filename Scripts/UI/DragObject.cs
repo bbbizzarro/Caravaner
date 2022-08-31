@@ -23,10 +23,14 @@ public class DragObject : Node2D {
 	private const float Drag = 0.5f;
 	private const float PhysicsTimeLimit = 2f;
 	private RandomNumberGenerator rng = new RandomNumberGenerator();
+	private const float LifeTime = 30f;
 
 	[Export] private int itemType;
 	[Export] private string itemName;
 	private HashSet<string> tags = new HashSet<string>();
+
+	private Timer timer;
+	private float time;
 
 	public static bool HasDragObj() {
 		return currDragObj != null;
@@ -58,6 +62,7 @@ public class DragObject : Node2D {
 		sprite = (Sprite)GetNode("Sprite");
 		shadowSprite = (Sprite)GetNode("Shadow");
 		rng.Randomize();
+		time = LifeTime;
 	}
 
 	public void AddTag(string tag) {
@@ -102,8 +107,19 @@ public class DragObject : Node2D {
 		this.iconContainer = iconContainer;
 	}
 
-	public override void _Process(float delta) {
+	private void HandleLifeTime(float delta) {
+		if (iconContainer == null && !isDragging) {
+			if (time <= 0) {
+				Destroy();
+			}
+			else {
+				time -= delta;
+			}
+		}
+	}
 
+	public override void _Process(float delta) {
+		HandleLifeTime(delta);
 		if (Input.IsActionJustPressed("ui_click")) { 
 			OnDrag();
 		}
@@ -149,6 +165,7 @@ public class DragObject : Node2D {
 	private void OnDrag() { 
 		if (currDragObj == this) {
 			isDragging = true;
+			time = LifeTime;
 			//animation.Stop();
 			shadowAnim.Start(1f, 0f, 15f, Caravaner.AnimType.Constant, false);
 			rotation.Start(sprite.Rotation, 0f, 7f, Caravaner.AnimType.Constant, false);
@@ -167,6 +184,7 @@ public class DragObject : Node2D {
 	private void OnDrop() { 
 		if (currDragObj == this) {
 			isDragging = false;
+			time = LifeTime;
 			if (DropPoint.DropIn(this)) {
 				//GD.Print("Dropped in a container!");
 				physics.Stop();

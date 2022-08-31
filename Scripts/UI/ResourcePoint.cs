@@ -5,24 +5,24 @@ using System.Collections.Generic;
 public class ResourcePoint : DropPoint {
 	[Export] private string Location = "Wastes";
 	private AnimationPlayer animationPlayer;
-	private int integrity = 2;
+	private int integrity = 3;
+	RandomNumberGenerator rng = new RandomNumberGenerator();
 
 	public override void _Ready() {
 		base._Ready();
 		animationPlayer = (AnimationPlayer)GetNode("AnimationPlayer");
+		rng.Randomize();
 	}
 
 	protected override void OnMousePress() {
 		animationPlayer.Play("StrongSquish");
+		integrity -= rng.RandiRange(1, integrity);
 		if (integrity <= 0 ) {
 			List<IconData> icons = Services.Instance.IconInstancer
-				.SelectMany(3, "*", "*", Location, Rarity.Common, -1);
+				.SelectMany(1, "*", "*", Location, Rarity.Common, -1);
 			Services.Instance.IconInstancer
 				.SpawnGroup(GlobalPosition, icons);
 			Destroy();
-		}
-		else {
-			integrity -= 1;
 		}
 	}
 

@@ -63,10 +63,12 @@ public class Game : Node {
 		OnPlayerGridPositionChanged();
 
 		RegionGenerator rg = new RegionGenerator(10, 10, 8, 64);
+		TileGenerator tg = new TileGenerator();
 		GridMap gm = rg.Generate();
 		Map regionMap = (Map)GetNode("RegionMap");
 		RandList<Region> regions = new RandList<Region>(gm.GetOpenRegions());
 		Region startingRegion = regions.Pop();
+		tg.Generate(gm);
 		startingRegion.visible = true;
 		Vector2 startingPosition = gm.GridToWorld(startingRegion.center);
 		GD.Print(startingPosition, startingRegion.center);

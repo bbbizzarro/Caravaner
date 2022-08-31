@@ -9,6 +9,10 @@ public class GridMap : IPathGrid {
     public int Width {private set; get; }
     public int NumActiveRegions { private set; get;}
     public float Scale { private set; get; }
+    public int NumRegions {private set { return; } get {return regions.Count; } }
+    public int NumOpenRegions {private set {return; } get {
+        return regions.Count(r => r.type != 0);
+    }}
 
     private readonly Tile[,] map;
     private readonly HashSet<Region> activeRegions = new HashSet<Region>();
@@ -54,12 +58,24 @@ public class GridMap : IPathGrid {
 
     public void SetActiveRegions(IEnumerable<Region> regions) {
         activeRegions.Clear();
-        foreach (var r in regions) activeRegions.Add(r);
+        NumActiveRegions = 0;
+        foreach (var r in regions) {
+            if (regions.Contains(r)) {
+                activeRegions.Add(r);
+                NumActiveRegions += 1;
+            }
+        }
     }
 
     public void SetActiveRegions(params Region[] regions) {
         activeRegions.Clear();
-        foreach (var r in regions) activeRegions.Add(r);
+        NumActiveRegions = 0;
+        foreach (var r in regions) {
+            if (regions.Contains(r)) {
+                activeRegions.Add(r);
+                NumActiveRegions += 1;
+            }
+        }
     }
 
     public List<Vector2Int> GetNeighbors(int x, int y) {
