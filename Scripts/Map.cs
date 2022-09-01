@@ -71,7 +71,7 @@ public class Map : Node {
 		}
 	}
 	
-	public void RenderTile(int x, int y) {
+	public void RenderTile(int x, int y, Region r) {
 		if (gridMap.GetRegionWithTile(x, y).type == 0) return;
 		if (gridMap.Get(x,y).tileType == "Mountain") {
 			maps[MapType.Static].SetCell(x, -y, 5);
@@ -84,17 +84,16 @@ public class Map : Node {
 			maps[MapType.Floor].SetCell(x, -y, 4);
 		}
 		if (gridMap.Get(x,y).scene != null && gridMap.Get(x,y).scene != "None") {
-			Services.Instance.TileInstancer.Spawn(
+			Services.Instance.TileInstancer.SpawnRegionObject(
 				gridMap.GridToWorld(new Vector2Int(x,y)),
-				gridMap.Get(x,y).scene);
+				gridMap.Get(x,y).scene, r);
 		}
 	}
 
 	public void RenderRegion(Region r) {
 		if (rendered.Contains(r)) return;
-
 		foreach (var v in r.tiles) {
-			RenderTile(v.x, v.y);
+			RenderTile(v.x, v.y, r);
 		}
 		rendered.Add(r);
 		maps[MapType.Floor].UpdateBitmaskRegion();

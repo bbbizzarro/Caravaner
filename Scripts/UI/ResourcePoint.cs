@@ -31,7 +31,7 @@ public class ResourcePoint : DropPoint {
 	protected override void Preview(bool preview) {
 		if (preview) { 
 			//animationPlayer.Play("Squish");
-			animationPlayer.Queue("Squish");
+			animationPlayer.Play("Squish");
 			//DragObject.SetMouseOffset(new Vector2(0, -64f));
 		}
 		else { 

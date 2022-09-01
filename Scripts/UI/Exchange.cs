@@ -13,6 +13,11 @@ public class Exchange : MousePoint {
 	[Export] string Category = "*";
 	[Export] Rarity Rarity = Rarity.Common;
 
+	private string Export = "None";
+	private float ExportFactor = 1;
+	private string Import = "None";
+	private float ImportFactor = 1;
+
 	public override void _Ready() {
 		base._Ready();
 		label = (Label)GetNode("Sprite/Label");
@@ -21,6 +26,10 @@ public class Exchange : MousePoint {
 		rng = new RandomNumberGenerator();
 		rng.Randomize();
 		SetItem();
+	}
+
+	public void SetGoods(string import, float importFactor, string export, float exportFactor) {
+		Import = import; Export = export; ImportFactor = importFactor; ExportFactor = exportFactor;
 	}
 
 	protected virtual void SetItem() {

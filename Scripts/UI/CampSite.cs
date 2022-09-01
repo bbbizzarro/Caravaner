@@ -20,6 +20,7 @@ public class CampSite : MousePoint {
 	OnState onState;
 	OffState offState;
 	CookingState cookingState;
+	Node2D FireParticles;
 
 	public override void _Ready() {
 		base._Ready();
@@ -29,6 +30,18 @@ public class CampSite : MousePoint {
 		cookingState = new CookingState(this);
 		ChangeState(offState);
 		timer.Connect("timeout", this, nameof(TimerComplete));
+	}
+
+	public void SetFire(bool on) {
+		if (FireParticles == null)
+			FireParticles = (Node2D)GetNode("FireParticles");
+		if (on) {
+			FireParticles.Visible = true;
+		}
+		else {
+			FireParticles.Visible = false;
+
+		}
 	}
 
 	public override bool Add(DragObject dragObject) {
@@ -108,7 +121,8 @@ public class CampSite : MousePoint {
 		public OnState(CampSite campSite) { this.campSite = campSite; }
 
 		public override void OnEnter() {
-			campSite.SetSprite(campSite.onFrame);
+			//campSite.SetSprite(campSite.onFrame);
+			campSite.SetFire(true);
 		}
 
 		public override bool Execute(IconData input) {
@@ -136,7 +150,8 @@ public class CampSite : MousePoint {
 		public OffState(CampSite campSite) { this.campSite = campSite; }
 
 		public override void OnEnter() {
-			campSite.SetSprite(campSite.offFrame);
+			//campSite.SetSprite(campSite.offFrame);
+			campSite.SetFire(false);
 		}
 
 		public override bool Execute(IconData input) {

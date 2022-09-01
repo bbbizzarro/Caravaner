@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public abstract class DropPoint : Node2D {
+public abstract class DropPoint : Node2D, RegionObject {
 	static DropPoint currDropPoint;
 	protected bool mouseIsOver;
 	bool enabled = true;
@@ -106,4 +106,6 @@ public abstract class DropPoint : Node2D {
 			enabled = false;
 		}
 	}
+
+    public virtual void Initialize(Region region) {}
 }

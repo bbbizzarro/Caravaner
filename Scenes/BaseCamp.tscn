@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Sprites/CityBlock.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/BaseCamp.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/SimpleRegionObject.cs" type="Script" id=2]
 
 [node name="CityCenter" type="Node2D"]

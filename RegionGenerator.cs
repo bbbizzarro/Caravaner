@@ -393,6 +393,7 @@ public class Region {
 	public HashSet<Vector2Int> borderTiles = new HashSet<Vector2Int>();
 	public bool visible;
 	public List<(Vector2Int, Vector2Int)> borders; 
+	public string Import;
 
 	public Region() { 
 	}

@@ -1,40 +1,39 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/UI/CampSite.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/TextLabel.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Fonts/Bubbled.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Shaders/Squish.gdshader" type="Shader" id=4]
+[ext_resource path="res://Sprites/FireParticle.png" type="Texture" id=4]
 [ext_resource path="res://Animations/StaticIdle.tres" type="Animation" id=5]
 [ext_resource path="res://Animations/Squish.tres" type="Animation" id=6]
-[ext_resource path="res://Sprites/DebugAtlas.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/Camp.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 30.5, 32 )
 
-[sub_resource type="ShaderMaterial" id=5]
-shader = ExtResource( 4 )
-shader_param/deformationAmount = 0.16
-shader_param/xScale = 0.3
-shader_param/yScale = 1.0
-
 [sub_resource type="Theme" id=2]
 default_font = ExtResource( 3 )
 
+[sub_resource type="Curve" id=8]
+_data = [ Vector2( 0.00980392, 0.516364 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=9]
+offsets = PoolRealArray( 0.558011, 1 )
+colors = PoolColorArray( 0.372549, 0.372549, 0.372549, 1, 1, 1, 1, 0 )
+
+[sub_resource type="Gradient" id=7]
+colors = PoolColorArray( 1, 1, 1, 1, 1, 0.646874, 0, 1 )
+
 [node name="CampSite" type="Area2D"]
 script = ExtResource( 1 )
-onFrame = 6
-offFrame = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -0.5, 3 )
 shape = SubResource( 6 )
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 5 )
 texture = ExtResource( 7 )
-hframes = 10
-vframes = 10
-frame = 5
+offset = Vector2( 0, -32 )
 
 [node name="Label" parent="Sprite" instance=ExtResource( 2 )]
 visible = false
@@ -46,3 +45,24 @@ anims/Squish = ExtResource( 6 )
 anims/StaticIdle = ExtResource( 5 )
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="FireParticles" type="CPUParticles2D" parent="."]
+position = Vector2( 17, 14 )
+lifetime = 3.0
+texture = ExtResource( 4 )
+direction = Vector2( 0.606, -1 )
+gravity = Vector2( 0, 0 )
+initial_velocity = 5.0
+scale_amount = 0.15
+scale_amount_curve = SubResource( 8 )
+color = Color( 0.305882, 0.305882, 0.305882, 1 )
+color_ramp = SubResource( 9 )
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="FireParticles"]
+texture = ExtResource( 4 )
+direction = Vector2( 0.606, -1 )
+gravity = Vector2( 0, 0 )
+initial_velocity = 10.0
+scale_amount = 0.1
+scale_amount_curve = SubResource( 8 )
+color_ramp = SubResource( 7 )

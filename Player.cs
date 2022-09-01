@@ -5,7 +5,7 @@ using Caravaner;
 
 public class Player : KinematicBody2D, ISavable, IContainer<int> {
 
-	[SerializeField] private float speed = 100f;
+	[SerializeField] private float speed = 90f;
 	[SerializeField] private int scale = 64;
 	[SerializeField] private List<int> items;
 

@@ -24,19 +24,27 @@ public class TileGenerator {
     }
 
     public void PlaceResources(GridMap gridMap, Region r) {
+        gridMap.SetActiveRegions(r);
         var tiles = FindOpenTiles(gridMap, r, 5);
         foreach (var t in tiles) {
-            if (rng.Randf() > 0.5f){
-                gridMap.Get(t.x, t.y).SetScene(true, "ResourcePoint");
+            var rand = rng.Randf();
+            if (rand > 0.9){
+                gridMap.Get(t.x, t.y).SetScene(false, "CampSite");
+            }
+            else if (rand > 0.5f) {
+                gridMap.Get(t.x, t.y).SetScene(false, "ResourcePoint");
             }
         }
     }
 
     public void BuildCity(GridMap gridMap, Region r) {
+        RandList<string> imports = new RandList<string>() {"Food", "Scrap"};
+        gridMap.SetActiveRegions(r);
         // Place city center;
         Vector2Int cityCenter = FindOpenTile(gridMap, r);
         if (cityCenter != Vector2Int.Zero) {
             gridMap.Get(cityCenter.x, cityCenter.y).SetScene(false, "CityCenter");
+            r.Import = imports.Pop();
         }
         int citySize = 5;
 
@@ -45,7 +53,8 @@ public class TileGenerator {
         while (next.Count > 0 && citySize > 0) {
             var n = next.Dequeue();
             if (!gridMap.Get(n.x, n.y).hasRoad && rng.Randf() > 0.1f) {
-                if (rng.Randf() > 0.5f){
+                float rand = rng.Randf();
+                if (rand > 0.8f){
                     gridMap.Get(n.x, n.y).SetScene(false, "CityBlock");
                 }
                 else {
