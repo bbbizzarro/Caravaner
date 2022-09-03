@@ -7,6 +7,7 @@ public class PlayerDropPoint : DropPoint {
 		IconData iconData = Services.Instance.IconInstancer.Get(dragObject.GetItemName());
 		if (iconData.InCategory("Food")) { 
 			dragObject.Destroy();
+			Services.Instance.PlayerData.Energy += 100f;
 			return true;
 		}
 		return false;

@@ -107,12 +107,11 @@ margin_top = 40.0
 margin_right = -872.0
 margin_bottom = -372.0
 rect_scale = Vector2( 0.75, 0.75 )
-value = 100.0
+value = 90.0
 texture_over = ExtResource( 23 )
 texture_progress = ExtResource( 24 )
 fill_mode = 4
-radial_initial_angle = 199.8
-radial_fill_degrees = 323.6
+radial_initial_angle = 203.1
 __meta__ = {
 "_edit_use_anchors_": true
 }

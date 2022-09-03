@@ -2,7 +2,12 @@ using System;
 using Godot;
 using System.Collections.Generic;
 public class Mechanist : Exchange {
-	protected override void SetItem() {
+
+	public override void Initialize(Region region) {
+		base.Initialize(region);
+	}
+
+	protected override void SetItem(string category) {
 		itemBeingSold = Services.Instance.IconInstancer
 			.Select("*", "*", "Mechanist", Rarity.Singular, -1);
 	}

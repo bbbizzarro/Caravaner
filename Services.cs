@@ -12,6 +12,7 @@ public class Services : Node {
 	//public CategoryTree categoryTree { get; private set; }
 	public InputManager inputManager { get; private set; }
 	public WorldState WorldState {get; private set;}
+	public PlayerData PlayerData {get; private set;}
 
 	public override void _Ready() {
 		if (Instance != null) QueueFree();
@@ -28,5 +29,6 @@ public class Services : Node {
 		PauseMode = PauseModeEnum.Process;
 		WorldState = new WorldState();
 		WorldState.SetToDay();
+		PlayerData = new PlayerData();
 	}
 }

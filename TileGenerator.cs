@@ -47,6 +47,7 @@ public class TileGenerator {
             r.Import = imports.Pop();
         }
         int citySize = 5;
+        bool hasBank = rng.Randf() > 0.5f;
 
         HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
         Queue<Vector2Int> next = new Queue<Vector2Int>(gridMap.GetOpenNeighbors(cityCenter.x, cityCenter.y));
@@ -54,7 +55,11 @@ public class TileGenerator {
             var n = next.Dequeue();
             if (!gridMap.Get(n.x, n.y).hasRoad && rng.Randf() > 0.1f) {
                 float rand = rng.Randf();
-                if (rand > 0.8f){
+                if (hasBank) {
+                    gridMap.Get(n.x, n.y).SetScene(false, "Container");
+                    hasBank = false;
+                }
+                else if (rand > 0.8f){
                     gridMap.Get(n.x, n.y).SetScene(false, "CityBlock");
                 }
                 else {

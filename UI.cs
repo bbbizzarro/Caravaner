@@ -10,6 +10,9 @@ public class UI : Node2D {
 	private Hotbar hotbar;
 	[Signal] delegate void DisplayItem(int x, int y, string title);
 	Label clock;
+	TextureProgress energyHUD;
+	PlayerData playerData;
+	private const float MaxRadialDegrees = 360f;
 
 	public void Initialize(World world, IContainer<int> player) {
 		this.world = world;
@@ -19,6 +22,14 @@ public class UI : Node2D {
 		hotbar = (Hotbar)GetNode("CanvasLayer/MarginContainer/PanelContainer/Hotbar");
 		clock = (Label)GetNode("CanvasLayer/Clock/Label");
 		UpdatePlayerUI();
+		energyHUD = (TextureProgress)GetNode("CanvasLayer/EnergyHud");
+		playerData = Services.Instance.PlayerData;
+		playerData.OnEnergySet += SetEnergyHudValue;
+	}
+
+	public void SetEnergyHudValue(float value) {
+		energyHUD.RadialFillDegrees 
+			= playerData.EnergyPercent * MaxRadialDegrees;
 	}
 
 	public override void _Process(float delta) {

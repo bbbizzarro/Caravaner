@@ -4,25 +4,25 @@ Land,Icon1,1,any,Material,Everywhere,Unique,1,FALSE
 Item,Icon2,0,any,Material,Everywhere,Unique,1,FALSE
 Ash,Ash,0,Waste,Carbon,Everywhere,Common,0,FALSE
 Godkin Knuckle,Godkin Knuckle,0,Divine,Antimatter,Everywhere,Ludicrous,100,FALSE
-Sizziling Kidney Lumps,Sizziling Kidney Lumps,0,Cooked,Insect Kidney,Markets,Uncommon,2,FALSE
-Bubbling Green Mulk,Bubbling Green Mulk,0,Cooked,Mulk,Markets,Uncommon,4,FALSE
-Mulk Broth,Mulk Broth,0,Cooked,Mulk,Markets,Uncommon,2,FALSE
-Meat Slop,Meat Slop,0,Cooked,Meat,Markets,Uncommon,4,FALSE
-Unnaturally Tasty Meal,Unnaturally Tasty Meal,0,Meal,Organic,Markets,Rare,5,FALSE
-Terrible Meal,Terrible Meal,0,Meal,Organic,Markets,Common,1,FALSE
-19th Century Wood,19th Century Wood,0,Relic,Wood,Markets,Rare,3,FALSE
-Supercold Fusion Engine,Supercold Fusion Engine,0,Advanced Mechanics,Metal,Mechanist,Legendary,11,FALSE
-Antimass Carbonator,Antimass Carbonator,0,Advanced Mechanics,Metal,Mechanist,Singular,8,FALSE
-Bloody Bone,Bloody Bone,0,Raw,Bone,Wastes,Uncommon,1,FALSE
-Grisly Stuffed Marrow,Grisly Stuffed Marrow,0,Cooked,Bone,Wastes,Uncommon,2,FALSE
-Mulk Powder,Mulk Powder,0,Raw,Mulk,Wastes,Uncommon,3,FALSE
-Scrap Metal,Scrap Metal,0,Scrap,Metal,Wastes,Common,1,FALSE
-Old Newspaper,Old Newspaper,0,Scrap,Paper,Wastes,Common,1,FALSE
-Cricket Kidney,Cricket Kidney,0,Raw,Insect Kidney,Wastes,Uncommon,1,FALSE
-Spent Charcoal,Spent Charcoal,0,Waste,Carbon,Wastes,Common,0,FALSE
-Oily Rags,Oily Rags,0,Scrap,Textile,Wastes,Common,1,FALSE
-Petrified Brain Stem,Petrified Brain Stem,0,Scrap,Blessed Meat,Wastes,Singular,6,FALSE
-Cirulla's Copper Cane,Cirulla's Copper Cane,0,Relic,Metal,Wastes,Legendary,10,TRUE
-Ruby Finger Bone,Ruby Finger Bone,0,Scrap,Inorganic,Wastes,Rare,4,FALSE
-Living Eye of Saint Loba,Living Eye of Saint Loba,0,Divine,Organic,Wastes,Ludicrous,40,TRUE
-Holy Vapors,Holy Vapors,0,Divine,Inorganic,Holy Wastes,Singular,10,FALSE
+Sizziling Kidney Lumps,Sizziling Kidney Lumps,0,Cooked,Insect Kidney,Markets,Uncommon,4,FALSE
+Bubbling Green Mulk,Bubbling Green Mulk,0,Cooked,Mulk,Markets,Uncommon,8,FALSE
+Mulk Broth,Mulk Broth,0,Cooked,Mulk,Markets,Uncommon,4,FALSE
+Meat Slop,Meat Slop,0,Cooked,Meat,Markets,Uncommon,8,FALSE
+Unnaturally Tasty Meal,Unnaturally Tasty Meal,0,Meal,Organic,Markets,Rare,10,FALSE
+Terrible Meal,Terrible Meal,0,Meal,Organic,Markets,Common,2,FALSE
+19th Century Wood,19th Century Wood,0,Relic,Wood,Markets,Rare,6,FALSE
+Supercold Fusion Engine,Supercold Fusion Engine,0,Advanced Mechanics,Metal,Mechanist,Legendary,22,FALSE
+Antimass Carbonator,Antimass Carbonator,0,Advanced Mechanics,Metal,Mechanist,Singular,16,FALSE
+Bloody Bone,Bloody Bone,0,Raw,Bone,Wastes,Uncommon,2,FALSE
+Grisly Stuffed Marrow,Grisly Stuffed Marrow,0,Cooked,Bone,Wastes,Uncommon,4,FALSE
+Mulk Powder,Mulk Powder,0,Raw,Mulk,Wastes,Uncommon,6,FALSE
+Scrap Metal,Scrap Metal,0,Scrap,Metal,Wastes,Common,2,FALSE
+Old Newspaper,Old Newspaper,0,Scrap,Paper,Wastes,Common,2,FALSE
+Cricket Kidney,Cricket Kidney,0,Raw,Insect Kidney,Wastes,Uncommon,2,FALSE
+Spent Charcoal,Spent Charcoal,0,Waste,Carbon,Wastes,Common,1,FALSE
+Oily Rags,Oily Rags,0,Scrap,Textile,Wastes,Common,2,FALSE
+Petrified Brain Stem,Petrified Brain Stem,0,Scrap,Blessed Meat,Wastes,Singular,12,FALSE
+Cirulla's Copper Cane,Cirulla's Copper Cane,0,Relic,Metal,Wastes,Legendary,20,TRUE
+Ruby Finger Bone,Ruby Finger Bone,0,Scrap,Inorganic,Wastes,Rare,8,FALSE
+Living Eye of Saint Loba,Living Eye of Saint Loba,0,Divine,Organic,Wastes,Ludicrous,80,TRUE
+Holy Vapors,Holy Vapors,0,Divine,Inorganic,Holy Wastes,Singular,20,FALSE

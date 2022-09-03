@@ -46,6 +46,7 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 		if (direction.Length() > 0) {
 			animator.Walk();
 			Services.Instance.WorldState.AdvanceTimeByTicks(delta);
+			Services.Instance.PlayerData.SetEnergyByTicks(delta);
 		}
 		else {
 			animator.Stop();
