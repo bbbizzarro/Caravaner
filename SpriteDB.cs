@@ -7,10 +7,12 @@ public class SpriteDB {
     Dictionary<string, SpriteData> db;
     Dictionary<string, AtlasData> atlases;
 	private readonly PackedScene textLabel = (PackedScene)ResourceLoader.Load("res://Scenes/TextLabel.tscn");
+    private Dictionary<string, AtlasTexture> sprites;
 
     public SpriteDB() {
         path = "res://Sprites/";
         IndexPNGFiles(path);
+        IndexAtlasFiles("res://Sprites/AtlasTextures/");
     }
 
     public StreamTexture Get(string name) { 
@@ -22,6 +24,16 @@ public class SpriteDB {
             return null;
 		}
 	}
+
+    public AtlasTexture GetAtlasTexture(string name) {
+        if (sprites.ContainsKey(name)) {
+            return sprites[name];
+        }
+        else {
+            GD.PrintErr(String.Format("Could not find sprite {0} in database.", name));
+            return null;
+        }
+    }
 
     public void SetTextLabel(string name, Sprite sprite) {
         sprite.Texture = null;
@@ -57,6 +69,26 @@ public class SpriteDB {
         sprite.Frame = db[name].frame;
 	}
 
+    private void IndexAtlasFiles(string path) {
+        sprites = new Dictionary<string, AtlasTexture>();
+
+        var directory = new Directory();
+        directory.Open(path);
+        directory.ListDirBegin();
+
+        string file = directory.GetNext();
+        while (file != "") {
+            // Avoid hidden files and grab PNG files only
+            if (!file.BeginsWith(".") && file.EndsWith(".tres")) {
+                string name = file.Substring(0, file.Length - 5);
+                //db.Add(name, new SpriteData(file, 0, ""));
+                sprites.Add(name, (AtlasTexture)ResourceLoader.Load(path + file));
+			}
+            file = directory.GetNext();
+		}
+
+        directory.ListDirEnd();
+	}
     private void IndexPNGFiles(string path) {
         db = new Dictionary<string, SpriteData>();
         atlases = new Dictionary<string, AtlasData>();

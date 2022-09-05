@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://SpriteDistributor.cs" type="Script" id=1]
+[ext_resource path="res://MultiSprite.cs" type="Script" id=2]
+[ext_resource path="res://SpriteDistributor.tscn" type="PackedScene" id=3]
+
+[node name="MultiSprite" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="SpriteDistributor" type="Node2D" parent="." instance=ExtResource( 3 )]
+script = ExtResource( 1 )

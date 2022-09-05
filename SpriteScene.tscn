@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Sprites/AtlasTextures/atex_000.tres" type="Texture" id=1]
+
+[node name="SpriteScene" type="Sprite"]
+texture = ExtResource( 1 )
+region_rect = Rect2( 2, 110, 35, 40 )

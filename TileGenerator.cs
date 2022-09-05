@@ -25,14 +25,16 @@ public class TileGenerator {
 
     public void PlaceResources(GridMap gridMap, Region r) {
         gridMap.SetActiveRegions(r);
-        var tiles = FindOpenTiles(gridMap, r, 5);
+        //var tiles = FindOpenTiles(gridMap, r, 5);
+        var tiles = FindOpenTiles(gridMap, r, 100);
         foreach (var t in tiles) {
             var rand = rng.Randf();
             if (rand > 0.9){
                 gridMap.Get(t.x, t.y).SetScene(false, "CampSite");
             }
-            else if (rand > 0.5f) {
-                gridMap.Get(t.x, t.y).SetScene(false, "ResourcePoint");
+            else if (rand > 0.3f) {
+                //gridMap.Get(t.x, t.y).SetScene(false, "ResourcePoint");
+                gridMap.Get(t.x, t.y).SetScene(false, "MultiSprite");
             }
         }
     }
