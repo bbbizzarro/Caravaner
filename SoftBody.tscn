@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://SoftBody.gdshader" type="Shader" id=2]
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 2 )
+shader_param/pos = Vector2( -1, 0 )
+shader_param/mag = 0.001
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = ExtResource( 2 )
+shader_param/pos = Vector2( -1, 0 )
+shader_param/mag = 0.001
+
+[node name="SoftBody" type="Sprite"]
+material = SubResource( 2 )
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+material = SubResource( 3 )
+texture = ExtResource( 1 )
+polygon = PoolVector2Array( -64, -64, 0, -64, 64, -64, 64, 0, 64, 64, 0, 64, -64, 64, -64, 0 )
+uv = PoolVector2Array( 0, 0, 32, 0, 64, 0, 64, 32, 64, 64, 32, 64, 0, 64, 0, 32 )
