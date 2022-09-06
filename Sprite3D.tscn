@@ -1,0 +1,77 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Sprites/AnimalConcept.png" type="Texture" id=1]
+[ext_resource path="res://DebugCamera.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Sprite3D.cs" type="Script" id=3]
+[ext_resource path="res://Body3D.cs" type="Script" id=4]
+
+[node name="Sprite3D" type="Node2D"]
+script = ExtResource( 4 )
+Speed = 3.0
+
+[node name="Body" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+hframes = 2
+vframes = 2
+script = ExtResource( 3 )
+headPosition = Vector3( 0, 0, 0 )
+
+[node name="Head" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+hframes = 2
+vframes = 2
+frame = 1
+script = ExtResource( 3 )
+headPosition = Vector3( 0, 0, 0.5 )
+
+[node name="CameraTransform" parent="." instance=ExtResource( 2 )]
+DefaultZoom = 0
+
+[node name="LeftFrontLeg" type="Sprite" parent="."]
+z_index = -2
+texture = ExtResource( 1 )
+hframes = 2
+vframes = 2
+frame = 2
+script = ExtResource( 3 )
+headPosition = Vector3( -0.25, 0.25, 0.25 )
+AlwaysBehind = true
+
+[node name="RightFrontLeg" type="Sprite" parent="."]
+z_index = -2
+texture = ExtResource( 1 )
+hframes = 2
+vframes = 2
+frame = 2
+script = ExtResource( 3 )
+headPosition = Vector3( 0.25, 0.25, 0.25 )
+AlwaysBehind = true
+
+[node name="LeftBackLeg" type="Sprite" parent="."]
+z_index = -2
+texture = ExtResource( 1 )
+hframes = 2
+vframes = 2
+frame = 2
+script = ExtResource( 3 )
+headPosition = Vector3( -0.25, 0.25, -0.25 )
+AlwaysBehind = true
+
+[node name="RightBackLeg" type="Sprite" parent="."]
+z_index = -2
+texture = ExtResource( 1 )
+hframes = 2
+vframes = 2
+frame = 2
+script = ExtResource( 3 )
+headPosition = Vector3( 0.25, 0.25, -0.25 )
+AlwaysBehind = true
+
+[node name="Line2D" type="Line2D" parent="."]
+position = Vector2( -237, 16 )
+points = PoolVector2Array( 253, -2, 252, 23 )
+width = 7.0
+default_color = Color( 0, 0, 0, 1 )
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
