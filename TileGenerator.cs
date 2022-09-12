@@ -30,7 +30,7 @@ public class TileGenerator {
         foreach (var t in tiles) {
             var rand = rng.Randf();
             if (rand > 0.9){
-                gridMap.Get(t.x, t.y).SetScene(false, "CampSite");
+                //gridMap.Get(t.x, t.y).SetScene(false, "CampSite");
             }
             else if (rand > 0.3f) {
                 //gridMap.Get(t.x, t.y).SetScene(false, "ResourcePoint");

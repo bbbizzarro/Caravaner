@@ -59,7 +59,7 @@ public class Map : Node {
 		rng = new RandomNumberGenerator();
 		rng.Randomize();
 		this.gridMap = gridMap;
-		Services.Instance.TileInstancer.Spawn(player.GlobalPosition, "Water");
+		//Services.Instance.TileInstancer.Spawn(player.GlobalPosition, "Water");
 		RenderVisible();
 	}
 
@@ -74,14 +74,17 @@ public class Map : Node {
 	public void RenderTile(int x, int y, Region r) {
 		if (gridMap.GetRegionWithTile(x, y).type == 0) return;
 		if (gridMap.Get(x,y).tileType == "Mountain") {
-			maps[MapType.Static].SetCell(x, -y, 5);
+			//maps[MapType.Static].SetCell(x, -y, 8);
+		}
+		else {
+			maps[MapType.Floor].SetCell(x, -y, 8);
 		}
 
 		if (gridMap.Get(x, y).hasRoad == true) {
-			maps[MapType.Floor].SetCell(x, -y, 6);
+			//maps[MapType.Floor].SetCell(x, -y, 6);
 		}
 		else {
-			maps[MapType.Floor].SetCell(x, -y, 4);
+			//maps[MapType.Floor].SetCell(x, -y, 4);
 		}
 		if (gridMap.Get(x,y).scene != null && gridMap.Get(x,y).scene != "None") {
 			Services.Instance.TileInstancer.SpawnRegionObject(

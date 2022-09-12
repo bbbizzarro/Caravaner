@@ -21,12 +21,17 @@ public class Animator : Node2D {
 	}
 
 	public void UpdateAnimation(string animation) { 
+
 		if (nextAnimation != "") {
 			animationPlayer.Play(nextAnimation);
 		}
 	}
 
 	public void Walk() {
+		//!!!!!
+		animationPlayer.Stop();
+		//!!!!!
+		return;
 		if (animationPlayer.IsPlaying()) {
 			nextAnimation = "Walk";
 			animationPlayer.Play("Walk");
@@ -36,6 +41,10 @@ public class Animator : Node2D {
 		}
 	}
 	public void Stop() {
+		//!!!!!
+		animationPlayer.Stop();
+		//!!!!!
+		return;
 		if (animationPlayer.IsPlaying()) { 
 			nextAnimation = "Idle";
 		}

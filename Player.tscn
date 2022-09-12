@@ -11,6 +11,7 @@ radius = 9.05539
 
 [node name="Player" type="KinematicBody2D" groups=["Persist"]]
 script = ExtResource( 1 )
+speed = 120.0
 
 [node name="EntityView" parent="." instance=ExtResource( 2 )]
 
