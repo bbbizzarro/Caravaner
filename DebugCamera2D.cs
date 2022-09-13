@@ -8,6 +8,7 @@ public class DebugCamera2D : KinematicBody2D {
 	float CurrSpeed;
 	[Export] int DefaultZoom = 18;
 	[Export] Vector2 DefaultPosition;
+	[Export] bool LockPosition;
 
 	public override void _Ready() {
 		camera = (Camera2D)GetNode("Camera2D");
@@ -20,7 +21,8 @@ public class DebugCamera2D : KinematicBody2D {
 
 	public override void _Process(float delta) {
 		var direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-		MoveAndSlide(CurrSpeed * direction);
+		if (!LockPosition) 
+			MoveAndSlide(CurrSpeed * direction);
 		if (Input.IsActionJustPressed("scroll_up")) {
 			IncreaseZoom();
 		}

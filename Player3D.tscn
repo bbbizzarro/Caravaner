@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://SpringSprite.cs" type="Script" id=1]
+[ext_resource path="res://DebugCamera.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Sprite3D.cs" type="Script" id=3]
+[ext_resource path="res://Body3D.cs" type="Script" id=4]
+[ext_resource path="res://Sprites/AtlasTextures/atex_012.tres" type="Texture" id=5]
+[ext_resource path="res://Sprites/AtlasTextures/atex_013.tres" type="Texture" id=6]
+[ext_resource path="res://Sprites/AtlasTextures/atex_011.tres" type="Texture" id=7]
+
+[node name="Player3D" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="Parts" type="Node2D" parent="."]
+
+[node name="Body" type="Sprite" parent="Parts"]
+texture = ExtResource( 7 )
+script = ExtResource( 1 )
+headPosition = Vector3( 0, 0, 0 )
+period = -20.0
+amplitude = 0.03
+
+[node name="Tween" type="Tween" parent="Parts/Body"]
+
+[node name="Head" type="Sprite" parent="Parts"]
+texture = ExtResource( 5 )
+script = ExtResource( 1 )
+headPosition = Vector3( 0, -0.5, 0.1 )
+
+[node name="Tween" type="Tween" parent="Parts/Head"]
+
+[node name="LeftLeg" type="Sprite" parent="Parts"]
+z_index = -2
+texture = ExtResource( 6 )
+script = ExtResource( 3 )
+headPosition = Vector3( -0.2, 0.3, 0.05 )
+AlwaysBehind = true
+
+[node name="RightLeg" type="Sprite" parent="Parts"]
+z_index = -2
+texture = ExtResource( 6 )
+script = ExtResource( 3 )
+headPosition = Vector3( 0.2, 0.3, 0.05 )
+AlwaysBehind = true
+
+[node name="CameraTransform" parent="." instance=ExtResource( 2 )]
+DefaultZoom = 0
+LockPosition = true

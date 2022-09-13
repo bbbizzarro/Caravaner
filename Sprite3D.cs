@@ -1,11 +1,18 @@
 using Godot;
 using System;
+using Caravaner;
 
 public class Sprite3D : Node2D {
+    /*
+    (z)+ >(x)
+       V(y)
+    */
+    
     [Export] protected Vector3 headPosition = new Vector3(0, 0, 1);
     [Export] protected float WorldScale = 64f;
     [Export] protected bool AlwaysBehind = false;
     private float theta = 0;
+    protected Vector3 offset = Vector3.Zero;
 
     private Vector2 Project2D(Vector3 v3) {
         return new Vector2(v3.x, v3.y);
@@ -26,16 +33,20 @@ public class Sprite3D : Node2D {
     private Vector2 ProjectIso(Vector3 v3, float d) {
         return Project2D(RotateX(v3, d));
     }
+    
+    public void SetRotation3D(float theta) {
+        this.theta = theta;
+    }
 
     public void RotateSprite(float delta) {
         theta += delta;
     }
 
     public void TransformTo2D() {
-        var rotPos =  RotateY(headPosition, theta);
+        var rotPos =  RotateY(headPosition + offset, theta);
         Position = WorldScale * ProjectIso(rotPos, -45f);
         if (!AlwaysBehind)
-            ZIndex = (rotPos.z >= 0) ? 0 : -1;
+            ZIndex = (rotPos.z >= -0.01) ? 0 : -1;
     }
 
     public override void _Process(float delta) {

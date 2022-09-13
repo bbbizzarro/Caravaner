@@ -4,6 +4,8 @@ using Godot;
 
 namespace Caravaner {
     public class Utils {
+        public static float Tau = 2f * Mathf.Pi;
+
         public Utils() {
         }
 
