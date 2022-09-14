@@ -6,7 +6,7 @@ public class DebugCamera2D : KinematicBody2D {
 	Camera2D camera;
 	[Export] float ZoomSpeed;
 	float CurrSpeed;
-	[Export] int DefaultZoom = 18;
+	[Export] int DefaultZoom = 0;
 	[Export] Vector2 DefaultPosition;
 	[Export] bool LockPosition;
 
@@ -41,6 +41,7 @@ public class DebugCamera2D : KinematicBody2D {
 		camera.Zoom = new Vector2(Mathf.Max(1, camera.Zoom.x - 1),
 								  Mathf.Max(1, camera.Zoom.y - 1)); 
 		CurrSpeed = Speed * camera.Zoom.x;
+		
 	}
 
 	//  // Called every frame. 'delta' is the elapsed time since the previous frame.
