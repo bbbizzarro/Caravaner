@@ -4,16 +4,16 @@ using Caravaner;
 
 public class PlayerView : KinematicBody2D {
     int _pixelsPerUnit;
-    PlayerModel _playerModel;
+    GameWorld.Entity _player;
 
-    public void Init(PlayerModel playerModel, int PixelsPerUnit) {
-        _playerModel = playerModel;
+    public void Init(GameWorld.Entity player, int PixelsPerUnit) {
+        _player = player;
         _pixelsPerUnit = PixelsPerUnit;
     }
 
     public override void _Process(float delta) {
 		Vector2 direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-		MoveAndSlide(_pixelsPerUnit * _playerModel.MovementSpeed * direction);
+		MoveAndSlide(_pixelsPerUnit * _player.MovementSpeed * direction);
         UpdatePosition();
     }
 
@@ -22,6 +22,6 @@ public class PlayerView : KinematicBody2D {
             Mathf.RoundToInt(GlobalPosition.x / _pixelsPerUnit),
             Mathf.RoundToInt(GlobalPosition.y / _pixelsPerUnit)
         );
-        _playerModel.Position = gridPosition;
+        _player.SetPosition(gridPosition.x, gridPosition.y);
     }
 }

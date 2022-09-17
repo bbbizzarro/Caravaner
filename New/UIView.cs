@@ -4,16 +4,17 @@ using Caravaner;
 
 public class UIView : CanvasLayer {
 
-    PlayerModel _playerModel;
+    GameWorld.Entity _player;
     GameWorld _gameWorld;
     bool _initialized;
     Label _eventText;
     Label _inspectorText;
     Label _fpsText;
     WorldSim _worldSim;
+    Vector2Int _lastPlayerPosition;
 
-    public void Init(PlayerModel playerModel, GameWorld gameWorld) {
-        _playerModel = playerModel;
+    public void Init(GameWorld.Entity player, GameWorld gameWorld) {
+        _player = player;
         _gameWorld = gameWorld;
         _inspectorText = (Label)GetNode("HBoxContainer/Inspector/Text");
         _fpsText = (Label)GetNode("Top/FPS/Text");
@@ -26,21 +27,25 @@ public class UIView : CanvasLayer {
         base._Process(delta);
         if (!_initialized) return;
         //inspectorText.Text = _playerModel.Position.ToString();
+        if (_lastPlayerPosition != _player.Position) {
+        }
         _inspectorText.Text = GetInspectorText();
         _fpsText.Text = GetFPSText();
         _eventText.Text = GetEventText();
+        _lastPlayerPosition = _player.Position;
         if (Input.IsActionJustPressed("interact")) {
-            var options = _worldSim.GetOptions(_gameWorld, _playerModel);
-            if (options.Count > 0) {
-                options[0].Execute();
+            GameWorld.Prop prop = _gameWorld.GetTileAt(_player.Position.x, _player.Position.y)
+                                            .GetTopProp();
+            if (prop != null) {
+                prop.Interact();
             }
         }
     }
 
     private string GetEventText() {
         string sm = "";
-        foreach (var option in _worldSim.GetOptions(_gameWorld, _playerModel)) {
-            sm += option.ToString() + "\n";
+        foreach (var prop in _gameWorld.GetPropsAt(_player.Position.x, _player.Position.y)) {
+            sm += prop.Preview() + "\n";
         }
         return sm;
     }
@@ -51,7 +56,7 @@ public class UIView : CanvasLayer {
 
     private string GetInspectorText() {
         return String.Format("Pos: {0}\nTile: {1}", 
-            _playerModel.Position, 
-            _gameWorld.GetTerrainAt(_playerModel.Position.x, _playerModel.Position.y));
+            _player.Position, 
+            _gameWorld.GetTileAt(_player.Position.x, _player.Position.y));
     }
 }

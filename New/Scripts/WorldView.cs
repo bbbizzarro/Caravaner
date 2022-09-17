@@ -6,30 +6,27 @@ public class WorldView {
     Node2D _parent;
     int _pixelsPerUnit;
     int[] _textureFrames = new int[] {20, 55, 91};
-    Sprite[,] _spriteMap;
+    TileView[,] _spriteMap;
     GameWorld _world;
+    SpriteTable _spriteTable;
 
     public WorldView(Node2D parent, int pixelsPerUnit) {
         _parent = parent;
         _pixelsPerUnit = pixelsPerUnit;
+        _spriteTable = new SpriteTable();
     }
 
     public void RenderWorld(GameWorld world) {
         _world = world;
-        world.TileChangedEvent += SetTileView;
-        _spriteMap = new Sprite[world.Width, world.Height];
+        _spriteMap = new TileView[world.Width, world.Height];
         for (int x = 0; x < world.Width; ++x) {
             for (int y = 0; y < world.Height; ++y) {
-                var tileView = (Sprite)TileViewScene.Instance();
-                tileView.Frame = _textureFrames[(int)_world.GetTerrainAt(x, y)];
+                var tileView = (TileView)TileViewScene.Instance();
+                tileView.Init(_world.GetTileAt(x, y), _spriteTable);
                 _spriteMap[x, y] = tileView;
                 tileView.GlobalPosition = new Vector2(x * _pixelsPerUnit, y * _pixelsPerUnit);
                 _parent.AddChild(tileView);
             }
         }
-    }
-
-    public void SetTileView(int x, int y) {
-        _spriteMap[x,y].Frame = _textureFrames[(int)_world.GetTerrainAt(x, y)];
     }
 }
