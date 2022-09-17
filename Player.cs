@@ -21,16 +21,37 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 	InventoryUI inventoryUI;
 	PlayerDropPoint playerDropPoint;
 	Animator animator;
+	public Inventory Inventory {private set; get; }
+	public Inventory BuildInventory {private set; get; }
 
 	private float INTERACT_DIST = 80f;
+	Timer timer;
+	bool waiting = false;
+	Sprite workingIndicator;
 
 	public override void _Ready() {
 		animator = (Animator)GetNode("EntityView");
+		timer = (Timer)GetNode("Timer");
+		timer.Connect("timeout", this, nameof(SetWaiting));
+		workingIndicator = (Sprite)GetNode("WorkingSprite");
+	}
+
+	public void SetWaiting() {
+		waiting = false;
+		((Sprite)workingIndicator).Hide();
+	}
+
+	public void SimulateAnimation(float length) {
+		waiting = true;
+		((Sprite)workingIndicator).Show();
+		timer.Start(length);
 	}
 
 	public void Initialize(World world) {
 		this.world = world;
 		items = new List<int>() { 0, 1, 2, 3, 4, 5 };
+		Inventory = new Inventory(100);
+		BuildInventory = new Inventory(100);
 		inventoryUI = (InventoryUI)GetNode("IconContainer");
 		playerDropPoint = (PlayerDropPoint)GetNode("PlayerDropPoint");
 		inventoryUI.Enable(false);
@@ -38,6 +59,7 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta) {
+		if (waiting) return;
 		direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 		if (DragObject.IsDragging()) speedModifier = 0.3f;
 		else speedModifier = 1f;
@@ -50,6 +72,12 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 		}
 		else {
 			animator.Stop();
+		}
+
+		if (Input.IsActionJustPressed("interact2")) {
+			if (Interactable.active != null) {
+				Interactable.active.Interact();
+			}
 		}
 
 		TrackLocation();
@@ -128,4 +156,22 @@ public class Player : KinematicBody2D, ISavable, IContainer<int> {
 	public void SubscribeToUpdate(ContainerUpdated receiver) {
 		ContainerUpdated += receiver;
 	}
+}
+
+public class DebugItem : IItem {
+
+	public string Name {private set; get; }
+	public int Weight {private set; get; }
+
+	public DebugItem(string name, int weight) {
+		Name = name; Weight = weight;
+	}
+
+    public string GetID() {
+		return Name;
+    }
+
+    public int GetWeight() {
+		return Weight;
+    }
 }

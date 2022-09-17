@@ -13,6 +13,7 @@ public class UI : Node2D {
 	TextureProgress energyHUD;
 	PlayerData playerData;
 	private const float MaxRadialDegrees = 360f;
+	Label TerminalLabel;
 
 	public void Initialize(World world, IContainer<int> player) {
 		this.world = world;
@@ -25,6 +26,20 @@ public class UI : Node2D {
 		energyHUD = (TextureProgress)GetNode("CanvasLayer/EnergyHud");
 		playerData = Services.Instance.PlayerData;
 		playerData.OnEnergySet += SetEnergyHudValue;
+		TerminalLabel = (Label)GetNode("CanvasLayer/Terminal/Label");
+	}
+
+	public void UpdateTerminalText(string text) {
+		TerminalLabel.Text = text;
+	}
+
+	public void PlayerInformationToText(Player player) {
+		string text = "INV: ";
+		if (player == null || player.Inventory == null) return;
+		foreach (Inventory.ItemStack item in player.Inventory.GetItems() ) {
+			text += String.Format("[{0}(x{1})] ", item.Item.GetID(), item.Count);
+		}
+		UpdateTerminalText(text);
 	}
 
 	public void SetEnergyHudValue(float value) {

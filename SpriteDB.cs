@@ -15,6 +15,15 @@ public class SpriteDB {
         IndexAtlasFiles("res://Sprites/AtlasTextures/");
     }
 
+    public AtlasTexture GetSprite(string name) {
+        try {
+            return ResourceLoader.Load<AtlasTexture>("res://Sprites/AtlasTextures/" + name + ".tres");
+        }
+        catch {
+            return null;
+        }
+    }
+
     public StreamTexture Get(string name) { 
         if (db.ContainsKey(name)) {
             return ResourceLoader.Load<StreamTexture>(path + db[name].filename);

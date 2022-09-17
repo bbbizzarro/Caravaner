@@ -34,7 +34,7 @@ public class TileGenerator {
             }
             else if (rand > 0.3f) {
                 //gridMap.Get(t.x, t.y).SetScene(false, "ResourcePoint");
-                gridMap.Get(t.x, t.y).SetScene(false, "MultiSprite");
+                gridMap.Get(t.x, t.y).SetScene(false, "Plant");
             }
         }
     }

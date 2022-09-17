@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Player.cs" type="Script" id=1]
 [ext_resource path="res://EntityView.tscn" type="PackedScene" id=2]
@@ -6,11 +6,12 @@
 [ext_resource path="res://IconContainer.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/PlayerDropPoint.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Player3D.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Sprites/FireParticle.png" type="Texture" id=7]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 9.05539
 
-[node name="Player" type="KinematicBody2D" groups=["Persist"]]
+[node name="Player" type="KinematicBody2D" groups=["Persist", "Player"]]
 script = ExtResource( 1 )
 speed = 120.0
 
@@ -21,10 +22,16 @@ visible = false
 shape = SubResource( 1 )
 
 [node name="Camera2D" parent="." instance=ExtResource( 3 )]
-current = false
 
 [node name="PlayerDropPoint" parent="." instance=ExtResource( 5 )]
 
 [node name="IconContainer" parent="." instance=ExtResource( 4 )]
 
 [node name="Player3D" parent="." instance=ExtResource( 6 )]
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="WorkingSprite" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 7 )
+offset = Vector2( 0, -64 )
