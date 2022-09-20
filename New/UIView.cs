@@ -61,8 +61,11 @@ public class UIView : CanvasLayer {
     }
 
     private void SetActiveOption(int add) {
-        var mx = GetPlayerTile().Preview(_player).Count;
-        activeOption = (activeOption + add) % mx;
+        var tile = GetPlayerTile();
+        if (tile != null) {
+            var mx = tile.Preview(_player).Count;
+            activeOption = (activeOption + add) % mx;
+        }
     }
 
     private string GetEventText() {
