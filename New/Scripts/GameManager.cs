@@ -13,9 +13,9 @@ public class GameManager : Node2D {
 
     public override void _Ready() {
         WorldGenerator worldGenerator = new WorldGenerator();
-        _gameWorld = worldGenerator.Generate(WorldWidth, WorldHeight);
-        _worldView = new WorldView(this, PixelsPerUnit);
-        _worldView.RenderWorld(_gameWorld);
+        _gameWorld = new GameWorld(WorldWidth, WorldHeight);
+        _worldView = new WorldView(this, _gameWorld, PixelsPerUnit);
+        worldGenerator.Set(_gameWorld);
 
         ((PlayerView)GetNode("Player")).Init(_gameWorld.GetPlayer(), PixelsPerUnit);
         _mainCamera = (Camera2D)GetNode("Camera2D");

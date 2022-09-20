@@ -9,17 +9,16 @@ public class TileView : Sprite {
     public void Init(GameWorld.Tile tile, SpriteTable spriteTable) {
         _tile = tile;
         _tile.TileChangedEvent += UpdateSprite;
+        _tile.TileDestroyedEvent += DestroyView;
         _spriteTable = spriteTable;
         UpdateSprite();
     }
 
-    public void UpdateSprite() {
-        GameWorld.Prop prop = _tile.GetTopProp();
-        if (prop != null) Render(prop.Name);
-        else Render("Dirt");
+    public void DestroyView() {
+        QueueFree();
     }
 
-    private void Render(string id) {
-        Frame = _spriteTable.Get(id);
+    public void UpdateSprite() {
+        Frame = _spriteTable.Get(_tile.Name);
     }
 }

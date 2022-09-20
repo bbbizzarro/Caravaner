@@ -1,32 +1,29 @@
 using Godot;
 using System;
+using Caravaner;
 
 public class WorldView {
     PackedScene TileViewScene = (PackedScene)ResourceLoader.Load("res://New/TileView.tscn");
     Node2D _parent;
     int _pixelsPerUnit;
     int[] _textureFrames = new int[] {20, 55, 91};
-    TileView[,] _spriteMap;
     GameWorld _world;
     SpriteTable _spriteTable;
 
-    public WorldView(Node2D parent, int pixelsPerUnit) {
+    public WorldView(Node2D parent, GameWorld world, int pixelsPerUnit) {
         _parent = parent;
         _pixelsPerUnit = pixelsPerUnit;
         _spriteTable = new SpriteTable();
+        _world = world;
+        world.TileCreatedEvent += InstantiateTile;
     }
 
-    public void RenderWorld(GameWorld world) {
-        _world = world;
-        _spriteMap = new TileView[world.Width, world.Height];
-        for (int x = 0; x < world.Width; ++x) {
-            for (int y = 0; y < world.Height; ++y) {
-                var tileView = (TileView)TileViewScene.Instance();
-                tileView.Init(_world.GetTileAt(x, y), _spriteTable);
-                _spriteMap[x, y] = tileView;
-                tileView.GlobalPosition = new Vector2(x * _pixelsPerUnit, y * _pixelsPerUnit);
-                _parent.AddChild(tileView);
-            }
-        }
+    public void InstantiateTile(GameWorld.Tile tile) {
+        Vector2Int pos = tile.Position;
+        var tileView = (TileView)TileViewScene.Instance();
+        tileView.Init(tile, _spriteTable);
+        tileView.GlobalPosition = new Vector2(pos.x * _pixelsPerUnit, 
+                                              pos.y * _pixelsPerUnit);
+        _parent.AddChild(tileView);
     }
 }

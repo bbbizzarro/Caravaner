@@ -49,6 +49,7 @@ color = Color( 0, 0, 0, 0.686275 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_fonts/font = ExtResource( 4 )
+autowrap = true
 
 [node name="Events" type="ColorRect" parent="UI/HBoxContainer"]
 margin_left = 321.0

@@ -10,8 +10,10 @@ public class UIView : CanvasLayer {
     Label _eventText;
     Label _inspectorText;
     Label _fpsText;
+    Label _inventoryText;
     WorldSim _worldSim;
     Vector2Int _lastPlayerPosition;
+    int activeOption = 0;
 
     public void Init(GameWorld.Entity player, GameWorld gameWorld) {
         _player = player;
@@ -21,6 +23,7 @@ public class UIView : CanvasLayer {
         _initialized = true;
         _eventText = (Label)GetNode("HBoxContainer/Events/Text");
         _worldSim = new WorldSim();
+        _inventoryText = (Label)GetNode("HBoxContainer/Inventory/Text");
     }
 
     public override void _Process(float delta) {
@@ -32,20 +35,46 @@ public class UIView : CanvasLayer {
         _inspectorText.Text = GetInspectorText();
         _fpsText.Text = GetFPSText();
         _eventText.Text = GetEventText();
+        _inventoryText.Text = GetInventoryText();
         _lastPlayerPosition = _player.Position;
         if (Input.IsActionJustPressed("interact")) {
-            GameWorld.Prop prop = _gameWorld.GetTileAt(_player.Position.x, _player.Position.y)
-                                            .GetTopProp();
-            if (prop != null) {
-                prop.Interact();
-            }
+            var tile = GetPlayerTile();
+            if (tile != null) tile.Interact(_player, activeOption);
+        }
+        if (Input.IsActionJustPressed("Cycle")) {
+            SetActiveOption(1);
         }
     }
 
-    private string GetEventText() {
+    private string GetInventoryText() {
         string sm = "";
-        foreach (var prop in _gameWorld.GetPropsAt(_player.Position.x, _player.Position.y)) {
-            sm += prop.Preview() + "\n";
+        foreach (var i in _player.Items.GetItemValues()) {
+            sm += String.Format("[x{0} {1}]", 
+                _player.Items.NumberOf(i),
+                i);
+        }
+        return sm;
+    }
+
+    private GameWorld.Tile GetPlayerTile() {
+        return _gameWorld.GetTileAt(_player.Position.x, _player.Position.y);
+    }
+
+    private void SetActiveOption(int add) {
+        var mx = GetPlayerTile().Preview(_player).Count;
+        activeOption = (activeOption + add) % mx;
+    }
+
+    private string GetEventText() {
+        SetActiveOption(0);
+        var playerTile = GetPlayerTile();
+        string sm = "";
+        if (playerTile != null) {
+            var options = playerTile.Preview(_player);
+            for (int i = 0; i < options.Count; ++i) {
+                sm += String.Format("{0}({1}) {2}\n", (i == activeOption) ? "*" : "", 
+                        (i + 1).ToString(), options[i]);
+            }
         }
         return sm;
     }

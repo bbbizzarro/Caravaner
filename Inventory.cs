@@ -21,6 +21,23 @@ public class Inventory {
         return _items.ContainsKey(item.GetID());
     }
 
+    public int NumberOf(IItem item) {
+        if (_items.ContainsKey(item.GetID())) {
+            return _items[item.GetID()].Count;
+        }
+        else {
+            return 0;
+        }
+    }
+
+    public IEnumerable<IItem> GetItemValues() {
+        var idList = new List<IItem>();
+        foreach (var stack in _items.Values) {
+            idList.Add(stack.Item);
+        }
+        return idList;
+    }
+
     public IEnumerable<ItemStack> GetItems() {
         return _items.Values;
     }

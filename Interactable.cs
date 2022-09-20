@@ -5,11 +5,11 @@ public class Interactable : Area2D {
     public static Interactable active;
 
     private int _energyCost = 10;
-    Game.Entity _entity;
-    Game.WorldMapRenderer _renderer;
+    Entity _entity;
+    WorldMapRenderer _renderer;
     Sprite _sprite;
 
-    public void Init(Game.Entity entity, Game.WorldMapRenderer renderer) {
+    public void Init(Entity entity, WorldMapRenderer renderer) {
         _renderer = renderer;
         _entity = entity;
         _entity.EntityDestroyedEvent += HandleEntityDestroyed;
@@ -33,7 +33,7 @@ public class Interactable : Area2D {
         if (active == this) active = null;
     }
 
-    public void HandleEntityDestroyed(Game.Entity entity) {
+    public void HandleEntityDestroyed(Entity entity) {
         QueueFree();
     }
 
@@ -42,11 +42,5 @@ public class Interactable : Area2D {
         Player p = ((Player)GetNode("/root/Main/Player"));
         p.SimulateAnimation(0.1f);
         _entity.Interact(p, Services.Instance.PlayerData);
-
-       // if (Services.Instance.PlayerData.Energy >= _energyCost) {
-       //     Services.Instance.PlayerData.SetEnergyByTicks(_energyCost);
-       //     p.Inventory.TryToAdd(new DebugItem("Plant Matter", 1), 1);
-       //     QueueFree();
-       // }
     }
 }
