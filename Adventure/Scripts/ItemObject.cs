@@ -17,7 +17,6 @@ public class ItemObject : KinematicBody2D {
         _timer = (Timer)GetNode("Timer");
         _timer.Connect("timeout", this, nameof(Stop));
         _timer.Start(_flyTime);
-        AddChild(_damageCast);
     }
 
     public override void _Process(float delta) {
@@ -34,6 +33,7 @@ public class ItemObject : KinematicBody2D {
         _flyTime = flyTime;
         _damageCast = ((DamageCast)_damageCastScene.Instance()).Init(10, flyTime, origin);
         _damageCast.SetOneHit();
+        AddChild(_damageCast);
         return this;
     }
 

@@ -13,9 +13,10 @@ public class EntitySpawner {
         GD.Print(_pixelsPerUnit);
     }
 
-    public void SpawnPlayer(Vector2 position) {
+    public PlayerEntity SpawnPlayer(Vector2 position) {
         var player = (PlayerEntity)PlayerPackedScene.Instance();
         player.Init(_pixelsPerUnit, 4f, _entityService);
         _main.AddChild(player);
+        return player;
     }
 }

@@ -1,8 +1,29 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Adventure/Scripts/GameController.cs" type="Script" id=1]
 [ext_resource path="res://Adventure/Scenes/StaticEntity.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Adventure/Scenes/Item.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Adventure/Sprites/black_box.png" type="Texture" id=4]
+[ext_resource path="res://Adventure/Scripts/LocalMapRenderer.cs" type="Script" id=5]
+
+[sub_resource type="OccluderPolygon2D" id=1]
+polygon = PoolVector2Array( -26, 16, -15, 16, -15, 18, -26, 18 )
+
+[sub_resource type="TileSet" id=2]
+0/name = "black_box.png 0"
+0/texture = ExtResource( 4 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 12, 12 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
@@ -16,19 +37,37 @@ zoom = Vector2( 0.5, 0.5 )
 [node name="ColorRect" type="ColorRect" parent="ParallaxBackground"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0, 0, 0, 1 )
+color = Color( 0.505882, 0.505882, 0.505882, 1 )
 
 [node name="StaticEntity" parent="." instance=ExtResource( 2 )]
-position = Vector2( -21, 21 )
+position = Vector2( -12, 12 )
 
 [node name="StaticEntity2" parent="." instance=ExtResource( 2 )]
-position = Vector2( -62, -4 )
+position = Vector2( -24, 0 )
 
 [node name="StaticEntity3" parent="." instance=ExtResource( 2 )]
-position = Vector2( -45, 16 )
+position = Vector2( -36, 12 )
 
 [node name="StaticEntity4" parent="." instance=ExtResource( 2 )]
-position = Vector2( -39, -6 )
+position = Vector2( -36, -12 )
 
 [node name="Item" parent="." instance=ExtResource( 3 )]
 position = Vector2( -35, 40 )
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+visible = false
+color = Color( 0, 0, 0, 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+visible = false
+occluder = SubResource( 1 )
+
+[node name="LocalMapRenderer" type="Node2D" parent="."]
+script = ExtResource( 5 )
+
+[node name="FOV" type="TileMap" parent="LocalMapRenderer"]
+position = Vector2( -6, -6 )
+tile_set = SubResource( 2 )
+cell_size = Vector2( 12, 12 )
+cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
+format = 1
