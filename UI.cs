@@ -112,11 +112,6 @@ public class UI : Node2D {
 }
 
 
-public class Interactor { 
-	public Interactor() { 
-	}
-}
-
 public interface Interaction {
 
 }

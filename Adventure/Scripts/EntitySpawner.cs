@@ -15,7 +15,7 @@ public class EntitySpawner {
 
     public void SpawnPlayer(Vector2 position) {
         var player = (PlayerEntity)PlayerPackedScene.Instance();
-        _main.AddChild(player);
         player.Init(_pixelsPerUnit, 4f, _entityService);
+        _main.AddChild(player);
     }
 }
