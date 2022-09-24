@@ -1,13 +1,90 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Adventure/Scripts/GameController.cs" type="Script" id=1]
-[ext_resource path="res://Adventure/Scenes/StaticEntity.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Adventure/Scenes/WallEntity.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Adventure/Scenes/Item.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Adventure/Sprites/black_box.png" type="Texture" id=4]
 [ext_resource path="res://Adventure/Scripts/LocalMapRenderer.cs" type="Script" id=5]
+[ext_resource path="res://New/Sprites.png" type="Texture" id=6]
+[ext_resource path="res://Adventure/Scenes/NPCEntity.tscn" type="PackedScene" id=7]
 
-[sub_resource type="OccluderPolygon2D" id=1]
-polygon = PoolVector2Array( -26, 16, -15, 16, -15, 18, -26, 18 )
+[sub_resource type="TileSet" id=3]
+0/name = "Sprites.png 0"
+0/texture = ExtResource( 6 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 53, 27, 12, 12 )
+0/tile_mode = 2
+0/autotile/icon_coordinate = Vector2( 0, 0 )
+0/autotile/tile_size = Vector2( 12, 12 )
+0/autotile/spacing = 0
+0/autotile/occluder_map = [  ]
+0/autotile/navpoly_map = [  ]
+0/autotile/priority_map = [  ]
+0/autotile/z_index_map = [  ]
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "Sprites.png 1"
+1/texture = ExtResource( 6 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 1, 1, 259, 259 )
+1/tile_mode = 2
+1/autotile/icon_coordinate = Vector2( 0, 0 )
+1/autotile/tile_size = Vector2( 12, 12 )
+1/autotile/spacing = 1
+1/autotile/occluder_map = [  ]
+1/autotile/navpoly_map = [  ]
+1/autotile/priority_map = [  ]
+1/autotile/z_index_map = [  ]
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+2/name = "Sprites.png 2"
+2/texture = ExtResource( 6 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 196, 27, 12, 12 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
+
+[sub_resource type="OccluderPolygon2D" id=4]
+polygon = PoolVector2Array( 0, 0, 12, 0, 12, 12, 0, 12 )
+
+[sub_resource type="TileSet" id=5]
+0/name = "Sprites.png 0"
+0/texture = ExtResource( 6 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 209, 1, 12, 12 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/occluder = SubResource( 4 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
 
 [sub_resource type="TileSet" id=2]
 0/name = "black_box.png 0"
@@ -37,19 +114,7 @@ zoom = Vector2( 0.5, 0.5 )
 [node name="ColorRect" type="ColorRect" parent="ParallaxBackground"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.505882, 0.505882, 0.505882, 1 )
-
-[node name="StaticEntity" parent="." instance=ExtResource( 2 )]
-position = Vector2( -12, 12 )
-
-[node name="StaticEntity2" parent="." instance=ExtResource( 2 )]
-position = Vector2( -24, 0 )
-
-[node name="StaticEntity3" parent="." instance=ExtResource( 2 )]
-position = Vector2( -36, 12 )
-
-[node name="StaticEntity4" parent="." instance=ExtResource( 2 )]
-position = Vector2( -36, -12 )
+color = Color( 0, 0, 0, 1 )
 
 [node name="Item" parent="." instance=ExtResource( 3 )]
 position = Vector2( -35, 40 )
@@ -58,16 +123,74 @@ position = Vector2( -35, 40 )
 visible = false
 color = Color( 0, 0, 0, 1 )
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-visible = false
-occluder = SubResource( 1 )
-
 [node name="LocalMapRenderer" type="Node2D" parent="."]
 script = ExtResource( 5 )
 
-[node name="FOV" type="TileMap" parent="LocalMapRenderer"]
+[node name="Land" type="TileMap" parent="LocalMapRenderer"]
 position = Vector2( -6, -6 )
+z_index = -100
+tile_set = SubResource( 3 )
+cell_size = Vector2( 12, 12 )
+cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
+format = 1
+
+[node name="Occluder" type="TileMap" parent="LocalMapRenderer"]
+visible = false
+position = Vector2( -6, -6 )
+z_index = -100
+tile_set = SubResource( 5 )
+cell_size = Vector2( 12, 12 )
+cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
+format = 1
+
+[node name="FOV" type="TileMap" parent="LocalMapRenderer"]
+visible = false
+position = Vector2( -6, -6 )
+z_index = 1
 tile_set = SubResource( 2 )
 cell_size = Vector2( 12, 12 )
 cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
 format = 1
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="WallEntity4" parent="Walls" instance=ExtResource( 2 )]
+position = Vector2( -72, 12 )
+
+[node name="WallEntity5" parent="Walls" instance=ExtResource( 2 )]
+position = Vector2( -60, -24 )
+
+[node name="WallEntity6" parent="Walls" instance=ExtResource( 2 )]
+position = Vector2( -48, -24 )
+
+[node name="WallEntity7" parent="Walls" instance=ExtResource( 2 )]
+position = Vector2( -84, 0 )
+
+[node name="WallEntity8" parent="Walls" instance=ExtResource( 2 )]
+position = Vector2( -108, -24 )
+
+[node name="WallEntity9" parent="Walls" instance=ExtResource( 2 )]
+position = Vector2( -108, -12 )
+
+[node name="WallEntity10" parent="Walls" instance=ExtResource( 2 )]
+position = Vector2( -60, 24 )
+
+[node name="WallEntity11" parent="Walls" instance=ExtResource( 2 )]
+position = Vector2( -72, 24 )
+
+[node name="WallEntity12" parent="Walls" instance=ExtResource( 2 )]
+position = Vector2( -108, 24 )
+
+[node name="WallEntity" parent="Walls" instance=ExtResource( 2 )]
+position = Vector2( -72, -24 )
+
+[node name="WallEntity2" parent="Walls" instance=ExtResource( 2 )]
+position = Vector2( -72, -12 )
+
+[node name="WallEntity3" parent="Walls" instance=ExtResource( 2 )]
+position = Vector2( -72, 0 )
+
+[node name="Entities" type="Node2D" parent="."]
+
+[node name="NPC" parent="Entities" instance=ExtResource( 7 )]
+position = Vector2( 0, 24 )
