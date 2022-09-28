@@ -14,6 +14,10 @@ config/name="Caravaner"
 run/main_scene="res://Main.tscn"
 config/icon="res://Sprites/ConceptArt/PortraitConcept.svg"
 
+[autoload]
+
+Globals="*res://Adventure/Scenes/Globals.tscn"
+
 [display]
 
 window/size/width=960

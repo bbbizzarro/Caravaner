@@ -1,5 +1,6 @@
 using Godot;
 using Caravaner;
+using System.Collections.Generic;
 
 public class PlayerEntity : DynamicEntity, IHasHealth {
     Health _health;
@@ -9,9 +10,20 @@ public class PlayerEntity : DynamicEntity, IHasHealth {
     Facing _facing;
     Interactor _interactor;
     public Carrier Carrier {private set; get; }
+    Sensor _sensor;
+    List<string> _inventory = new List<string>();
 
     public Health GetHealth() {
         return _health;
+    }
+
+    public override void _Ready() {
+        _sensor = (Sensor)GetNode("Sensor");
+        _sensor.AddItemEvent += AddItemToInventory;
+    }
+
+    public void AddItemToInventory(object sender, string itemid) {
+        GD.Print("added item to inventory.");
     }
 
     public override void Init(int pixelsPerUnit, float movementSpeed, EntityService entityService) {

@@ -30,6 +30,8 @@ script = ExtResource( 3 )
 z_index = 1
 frame = 165
 
+[node name="Source" type="Node2D" parent="Player"]
+
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource( 5 )
 

@@ -4,9 +4,9 @@ using Caravaner;
 public class StaticEntity : Node2D, IHasHealth {
     Health _health;
     Attackable _attackable;
-    [Export] int LiveFrame = 348;
-    [Export] int DeadFrame = 48;
-    [Export] int TotalHealth = 10;
+    [Export] protected int LiveFrame = 348;
+    [Export] protected int DeadFrame = 48;
+    [Export] protected int TotalHealth = 10;
     Sprite _sprite;
     CollisionShape2D _collisionShape;
     LocalMap _localMap;
@@ -31,7 +31,7 @@ public class StaticEntity : Node2D, IHasHealth {
         return this;
     }
 
-    public void Destroy() {
+    public virtual void Destroy() {
         _sprite.Frame = DeadFrame;
         _attackable.Deactivate();
         _collisionShape.SetDeferred("disabled", true);

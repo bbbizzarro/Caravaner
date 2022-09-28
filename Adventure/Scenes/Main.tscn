@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Adventure/Scripts/GameController.cs" type="Script" id=1]
 [ext_resource path="res://Adventure/Scenes/WallEntity.tscn" type="PackedScene" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://Adventure/Scripts/LocalMapRenderer.cs" type="Script" id=5]
 [ext_resource path="res://New/Sprites.png" type="Texture" id=6]
 [ext_resource path="res://Adventure/Scenes/NPCEntity.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Adventure/Scenes/PickUp.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Adventure/Scenes/Tree.tscn" type="PackedScene" id=9]
 
 [sub_resource type="TileSet" id=3]
 0/name = "Sprites.png 0"
@@ -142,6 +144,7 @@ tile_set = SubResource( 5 )
 cell_size = Vector2( 12, 12 )
 cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
 format = 1
+tile_data = PoolIntArray( -65545, 0, 0, -65542, 0, 0, -65541, 0, 0, -65540, 0, 0, -9, 0, 0, -6, 0, 0, 65529, 0, 0, 65530, 0, 0, 131066, 0, 0, 196599, 0, 0, 196602, 0, 0, 196603, 0, 0 )
 
 [node name="FOV" type="TileMap" parent="LocalMapRenderer"]
 visible = false
@@ -194,3 +197,14 @@ position = Vector2( -72, 0 )
 
 [node name="NPC" parent="Entities" instance=ExtResource( 7 )]
 position = Vector2( 0, 24 )
+
+[node name="PickUp" parent="." instance=ExtResource( 8 )]
+
+[node name="Tree" parent="." instance=ExtResource( 9 )]
+position = Vector2( -12, -24 )
+
+[node name="Tree2" parent="." instance=ExtResource( 9 )]
+position = Vector2( -24, -24 )
+
+[node name="Tree3" parent="." instance=ExtResource( 9 )]
+position = Vector2( -24, -36 )

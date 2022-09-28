@@ -27,6 +27,7 @@ public class Map : Node {
 	}
 
 	public override void _Process(float delta) {
+		/*
 		if (Input.IsActionJustPressed("interact")) {
 			Vector2Int currTile = gridMap.WorldToGrid(player.GlobalPosition);
 			Region r = gridMap.GetRegionWithTile(currTile.x, currTile.y);
@@ -35,6 +36,7 @@ public class Map : Node {
 				RenderRegion(adj);
 			}
 		}
+		*/
 	}
 
 	private void DrawBorderOutline(Region r) {
