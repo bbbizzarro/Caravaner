@@ -4,7 +4,7 @@
 [ext_resource path="res://Adventure/Scripts/PlayerEntity.cs" type="Script" id=2]
 [ext_resource path="res://Adventure/Scenes/AttackableNode.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Adventure/Scenes/Interactor.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Adventure/Scripts/Attacker.cs" type="Script" id=5]
+[ext_resource path="res://Adventure/Scenes/Attacker.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Adventure/Scripts/Carrier.cs" type="Script" id=6]
 [ext_resource path="res://Adventure/Scenes/Light2D.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Adventure/Scripts/Sensor.cs" type="Script" id=8]
@@ -41,10 +41,7 @@ frame = 161
 
 [node name="Attackable" parent="." instance=ExtResource( 3 )]
 
-[node name="Attacker" type="Node" parent="."]
-script = ExtResource( 5 )
-
-[node name="Timer" type="Timer" parent="Attacker"]
+[node name="Attacker" parent="." instance=ExtResource( 5 )]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/EntityAnimation = SubResource( 1 )

@@ -5,17 +5,26 @@ public class PickUp : KinematicBody2D {
 
 
     [Export] float speed = 10;
-    string ItemID;
+    string ItemID = "DebugItem";
     Area2D sensor;
     Sensor target;
+    Timer _timer;
+    bool _isReady;
 
     public override void _Ready() {
         sensor = (Area2D)GetNode("Sensor");
         sensor.Connect("area_entered", this, nameof(OnSensorDetect));
+        _timer = (Timer)GetNode("Timer");
+        _timer.Connect("timeout", this, nameof(SetReady));
+        _timer.Start(0.5f);
+    }
+
+    private void SetReady() {
+        _isReady = true;
     }
 
     public override void _Process(float delta) {
-        if (target != null) {
+        if (target != null && _isReady) {
             Move(target);
         }
     }

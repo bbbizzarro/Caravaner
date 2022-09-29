@@ -3,8 +3,8 @@
 [ext_resource path="res://New/Scripts/GameManager.cs" type="Script" id=1]
 [ext_resource path="res://New/TileView.tscn" type="PackedScene" id=2]
 [ext_resource path="res://New/PlayerView.cs" type="Script" id=3]
-[ext_resource path="res://New/Hack.tres" type="DynamicFont" id=4]
-[ext_resource path="res://New/UIView.cs" type="Script" id=5]
+[ext_resource path="res://Adventure/Scripts/UIController.cs" type="Script" id=4]
+[ext_resource path="res://Adventure/Scenes/UIController.tscn" type="PackedScene" id=5]
 
 [node name="GameManager" type="Node2D"]
 script = ExtResource( 1 )
@@ -32,96 +32,5 @@ frame = 165
 
 [node name="Source" type="Node2D" parent="Player"]
 
-[node name="UI" type="CanvasLayer" parent="."]
-script = ExtResource( 5 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = 448.0
-
-[node name="Inventory" type="ColorRect" parent="UI/HBoxContainer"]
-margin_right = 317.0
-margin_bottom = 92.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color( 0, 0, 0, 0.686275 )
-
-[node name="Text" type="Label" parent="UI/HBoxContainer/Inventory"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = ExtResource( 4 )
-autowrap = true
-
-[node name="Events" type="ColorRect" parent="UI/HBoxContainer"]
-margin_left = 321.0
-margin_right = 638.0
-margin_bottom = 92.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color( 0, 0, 0, 0.686275 )
-
-[node name="Text" type="Label" parent="UI/HBoxContainer/Events"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = ExtResource( 4 )
-
-[node name="Inspector" type="ColorRect" parent="UI/HBoxContainer"]
-margin_left = 642.0
-margin_right = 960.0
-margin_bottom = 92.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color( 0, 0, 0, 0.686275 )
-
-[node name="Text" type="Label" parent="UI/HBoxContainer/Inspector"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = ExtResource( 4 )
-text = "test"
-align = 2
-
-[node name="Top" type="HBoxContainer" parent="UI"]
-anchor_right = 1.0
-margin_bottom = 64.0
-
-[node name="ColorRect" type="ColorRect" parent="UI/Top"]
-margin_right = 317.0
-margin_bottom = 64.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color( 0, 0, 0, 0.686275 )
-
-[node name="Label" type="Label" parent="UI/Top/ColorRect"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = ExtResource( 4 )
-
-[node name="ColorRect2" type="ColorRect" parent="UI/Top"]
-margin_left = 321.0
-margin_right = 638.0
-margin_bottom = 64.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color( 0, 0, 0, 0.686275 )
-
-[node name="Label" type="Label" parent="UI/Top/ColorRect2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = ExtResource( 4 )
-
-[node name="FPS" type="ColorRect" parent="UI/Top"]
-margin_left = 642.0
-margin_right = 960.0
-margin_bottom = 64.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color( 0, 0, 0, 0.686275 )
-
-[node name="Text" type="Label" parent="UI/Top/FPS"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = ExtResource( 4 )
-text = "
-"
-align = 2
+[node name="UI" parent="." instance=ExtResource( 5 )]
+script = ExtResource( 4 )

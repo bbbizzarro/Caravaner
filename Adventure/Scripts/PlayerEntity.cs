@@ -2,6 +2,7 @@ using Godot;
 using Caravaner;
 using System.Collections.Generic;
 
+public delegate void InventoryUpdatedHandler(EntityInventory inventory);
 public class PlayerEntity : DynamicEntity, IHasHealth {
     Health _health;
     AnimationPlayer _animationPlayer;
@@ -11,7 +12,9 @@ public class PlayerEntity : DynamicEntity, IHasHealth {
     Interactor _interactor;
     public Carrier Carrier {private set; get; }
     Sensor _sensor;
-    List<string> _inventory = new List<string>();
+    EntityInventory _inventory = new EntityInventory();
+
+    public event InventoryUpdatedHandler InventoryUpdatedEvent;
 
     public Health GetHealth() {
         return _health;
@@ -24,6 +27,8 @@ public class PlayerEntity : DynamicEntity, IHasHealth {
 
     public void AddItemToInventory(object sender, string itemid) {
         GD.Print("added item to inventory.");
+        _inventory.Add(itemid, 1);
+        InventoryUpdatedEvent?.Invoke(_inventory);
     }
 
     public override void Init(int pixelsPerUnit, float movementSpeed, EntityService entityService) {
@@ -36,7 +41,7 @@ public class PlayerEntity : DynamicEntity, IHasHealth {
         _attackable = ((Attackable)GetNode("Attackable")).Init(_health);
         _attacker = ((Attacker)GetNode("Attacker")).Init(this, _pixelsPerUnit, _attackable, _animationPlayer);
         _facing = new Facing();
-        _interactor = ((Interactor)GetNode("Interactor")).Init(this);
+        _interactor = (Interactor)GetNode("Interactor");
         Carrier = ((Carrier)GetNode("Carrier")).Init(this, pixelsPerUnit, _attackable);
     }
 
@@ -69,7 +74,7 @@ public class PlayerEntity : DynamicEntity, IHasHealth {
             }
         }
         if (Input.IsActionJustPressed("interact")) {
-            _interactor.Interact();
+            _interactor.Send(this);
         }
     }
 }

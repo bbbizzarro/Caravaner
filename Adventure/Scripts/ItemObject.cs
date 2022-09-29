@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 public class ItemObject : KinematicBody2D {
-    InteractionTarget _interactionTarget;
+    Interactor _interactor;
     float _magnitude;
     Vector2 _direction;
     const float Friction = 0.5f;
@@ -12,8 +12,8 @@ public class ItemObject : KinematicBody2D {
     DamageCast _damageCast;
 
     public override void _Ready() {
-        _interactionTarget = ((InteractionTarget)GetNode("InteractionTarget"));
-        _interactionTarget.InteractionEvent += PickUp;
+        _interactor = (Interactor)GetNode("Interactor");
+        _interactor.ReceiveEvent += PickUp;
         _timer = (Timer)GetNode("Timer");
         _timer.Connect("timeout", this, nameof(Stop));
         _timer.Start(_flyTime);
@@ -37,8 +37,8 @@ public class ItemObject : KinematicBody2D {
         return this;
     }
 
-    public void PickUp(PlayerEntity playerEntity) {
-        playerEntity.Carrier.Set();
+    public void PickUp(Node node) {
+        //playerEntity.Carrier.Set();
         QueueFree();
     }
 }

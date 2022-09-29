@@ -9,6 +9,7 @@ public class GameController : Node2D {
     LocalMapRenderer _renderer;
     LocalMap _localMap;
     RandomNumberGenerator _rng;
+    UIController _ui;
 
     public override void _Ready() {
         _entityService = new EntityService();
@@ -22,6 +23,8 @@ public class GameController : Node2D {
         _renderer.UpdateOcclusionMap();
         InitializeWalls();
         InitializeEntities();
+        _ui = (UIController)GetNode("UI");
+        _player.InventoryUpdatedEvent += _ui.UpdatePlayerInventory;
     }
 
     public void InitializeWalls() {

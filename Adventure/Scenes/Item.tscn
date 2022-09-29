@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Adventure/Scripts/InteractionTarget.cs" type="Script" id=1]
+[ext_resource path="res://Adventure/Scripts/Interactor.cs" type="Script" id=1]
 [ext_resource path="res://Adventure/Scripts/ItemObject.cs" type="Script" id=2]
 [ext_resource path="res://New/Sprites.png" type="Texture" id=3]
 
@@ -20,12 +20,12 @@ hframes = 20
 vframes = 20
 frame = 120
 
-[node name="InteractionTarget" type="Area2D" parent="."]
+[node name="Interactor" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource( 1 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionTarget"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactor"]
 shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]

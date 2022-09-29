@@ -24,3 +24,5 @@ texture = ExtResource( 3 )
 hframes = 20
 vframes = 20
 frame = 150
+
+[node name="Timer" type="Timer" parent="."]
